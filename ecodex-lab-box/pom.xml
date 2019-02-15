@@ -56,8 +56,30 @@
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-domibus-connector</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
 
+                            <outputDirectory>${project.basedir}/lab/domibus</outputDirectory>
 
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>eu.domibus.connector</groupId>
+                                    <artifactId>domibus-distribution</artifactId>
+                                    <classifier>tomcat-full</classifier>
+                                    <version>4.0.2</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
