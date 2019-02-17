@@ -44,7 +44,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-gateway</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
@@ -59,6 +59,23 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-h2-database</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.h2database</groupId>
+                                    <artifactId>h2</artifactId>
+                                    <version>1.4.197</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-domibus-connector</id>
                         <phase>package</phase>
                         <goals>
@@ -68,15 +85,15 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-connector</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>eu.domibus.connector</groupId>
-                                    <artifactId>domibus-distribution</artifactId>
-                                    <classifier>tomcat-full</classifier>
-                                    <version>4.0.2</version>
+                                    <artifactId>domibusConnectorStandaloneLauncher</artifactId>
+                                    <!--<classifier>tomcat-full</classifier>-->
+                                    <version>4.1.1-RELEASE</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
