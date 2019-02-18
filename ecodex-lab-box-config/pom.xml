@@ -31,6 +31,7 @@
                                 <descriptor>src/main/assembly/testKeyStoresAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/connectorTestKeyStoresAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/gatewayTestKeyStoresAssembly.xml</descriptor>
+                                <descriptor>src/main/assembly/gatewayTestConfigAssembly.xml</descriptor>
                                 <!-- <descriptor>src/main/assembly/assemblyWebAppWAROnly.xml</descriptor> -->
                             </descriptors>
                         </configuration>

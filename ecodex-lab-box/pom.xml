@@ -184,6 +184,31 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-gw-config</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/config/domibus-gateway</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>eu.ecodex</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>gwtestconfig</classifier>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -221,15 +246,184 @@
         </plugins>
     </build>
 
-    <!--<profiles>-->
+    <profiles>
         <!--<profile>-->
-            <!--<id>gw4</id>-->
+            <!--<id>env04</id>-->
+            <!--<properties>-->
+                <!--<lab.id>04</lab.id>-->
+            <!--</properties>-->
         <!--</profile>-->
 
         <!--<profile>-->
-            <!--<id>gw5</id>-->
+            <!--<id>env05</id>-->
+            <!--<properties>-->
+                <!--<lab.id>05</lab.id>-->
+            <!--</properties>-->
         <!--</profile>-->
-    <!--</profiles>-->
+
+        <profile>
+            <id>environment</id>
+
+            <activation>
+                <property>
+                    <name>lab.id</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>clean-env-dir</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <configuration>
+                                    <directory>${project.basedir}/labenv${lab.id}</directory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-domibus-gw</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/domibus-gateway/domibus</directory>
+                                            <filtering>false</filtering>
+                                            <excludes>
+                                                <exclude>conf/domibus/plugins/config/*.*</exclude>
+                                                <exclude>conf/domibus/plugins/lib/*.*</exclude>
+                                            </excludes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>copy-domibus-gw-plugin</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/conf/domibus/plugins</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/domibus-gateway-plugin/domibus-v4_0/conf/plugins</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>copy-domibus-gw-keystores</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/conf/domibus/keystores</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/config/keystores</directory>
+                                            <filtering>false</filtering>
+                                            <includes>
+                                                <include>gw-*.jks</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>copy-domibus-gw-config</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/config/domibus-gateway/</directory>
+                                            <!-- apply env filter on config! -->
+                                            <filtering>true</filtering>
+
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+
+                            <execution>
+                                <id>copy-domibus-connector</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-standalone-launcher</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/domibus-connector-standalone-launcher</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!--<profile>-->
+            <!--<id>cleanEnv</id>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<artifactId>maven-clean-plugin</artifactId>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>clean-env-dir</id>-->
+                                <!--<phase>clean</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>clean</goal>-->
+                                <!--</goals>-->
+                                <!--<configuration>-->
+                                    <!--<directory>${project.basedir}/env${lab.id}</directory>-->
+                                <!--</configuration>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
+    </profiles>
 
 
 </project>
