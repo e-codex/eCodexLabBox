@@ -12,6 +12,15 @@
 
     <description>ECodex environment for local experiments and usage...</description>
 
+
+    <properties>
+        <domibus-gw.version>4.0.2</domibus-gw.version>
+        <domibus-connector-plugin.version>4.1.0-RELEASE</domibus-connector-plugin.version>
+        <domibus-connector.version>4.1.1-RELEASE</domibus-connector.version>
+        <h2database.version>1.4.197</h2database.version>
+    </properties>
+
+
     <repositories>
         <repository>
             <id>cefdigital-releases</id>
@@ -34,6 +43,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
+                    <!-- download domibus AS4 gw -->
                     <execution>
                         <id>copy-domibus</id>
                         <phase>package</phase>
@@ -52,33 +62,59 @@
                                     <groupId>eu.domibus</groupId>
                                     <artifactId>domibus-distribution</artifactId>
                                     <classifier>tomcat-full</classifier>
-                                    <version>4.0.2</version>
+                                    <version>${domibus-gw.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
 
+                    <!-- download domibus connector gateway plugin -->
                     <execution>
-                        <id>copy-h2-database-into-domibus-lib</id>
+                        <id>copy-domibus-connector-gw-plugin</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy</goal>
+                            <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/lab/domibus-gateway/domibus/lib</outputDirectory>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/domibus-gateway-plugin</outputDirectory>
+
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>com.h2database</groupId>
-                                    <artifactId>h2</artifactId>
-                                    <version>1.4.197</version>
-                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <groupId>eu.domibus.connector.plugin</groupId>
+                                    <artifactId>domibus-connector-plugin-Distribution</artifactId>
+                                    <version>${domibus-connector-plugin.version}</version>
+                                    <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
 
+                    <!-- download h2 database and copy it into domibus -->
+                    <!--<execution>-->
+                        <!--<id>copy-h2-database-into-domibus-lib</id>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>copy</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<outputDirectory>${project.basedir}/lab/domibus-gateway/domibus/lib</outputDirectory>-->
+                            <!--<artifactItems>-->
+                                <!--<artifactItem>-->
+                                    <!--<groupId>com.h2database</groupId>-->
+                                    <!--<artifactId>h2</artifactId>-->
+                                    <!--<version>1.4.197</version>-->
+                                    <!--<type>jar</type>-->
+                                <!--</artifactItem>-->
+                            <!--</artifactItems>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
 
+                    <!-- download h2 database -->
                     <execution>
                         <id>copy-h2-database</id>
                         <phase>package</phase>
@@ -91,12 +127,14 @@
                                 <artifactItem>
                                     <groupId>com.h2database</groupId>
                                     <artifactId>h2</artifactId>
-                                    <version>1.4.197</version>
+                                    <version>${h2database.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
+
+                    <!-- download domibus connector itself -->
                     <execution>
                         <id>copy-domibus-connector</id>
                         <phase>package</phase>
@@ -107,7 +145,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus-connector</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-connector-standalone-launcher</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
@@ -115,7 +153,32 @@
                                     <groupId>eu.domibus.connector</groupId>
                                     <artifactId>domibusConnectorStandaloneLauncher</artifactId>
                                     <!--<classifier>tomcat-full</classifier>-->
-                                    <version>4.1.1-RELEASE</version>
+                                    <version>${domibus-connector.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>download-config</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/config</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>eu.ecodex</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>testkeystores</classifier>
+                                    <version>${project.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
@@ -123,8 +186,50 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean-lab-dir</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <directory>${project.basedir}/lab</directory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--<plugin>-->
+                <!--<groupId>io.takari</groupId>-->
+                <!--<artifactId>maven-wrapper</artifactId>-->
+                <!--<version>0.4.2</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>install-maven-wrapper</id>-->
+                        <!--<goals>-->
+                            <!--<goal>wrapper</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>prepare-package</phase>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
         </plugins>
     </build>
+
+    <!--<profiles>-->
+        <!--<profile>-->
+            <!--<id>gw4</id>-->
+        <!--</profile>-->
+
+        <!--<profile>-->
+            <!--<id>gw5</id>-->
+        <!--</profile>-->
+    <!--</profiles>-->
 
 
 </project>
