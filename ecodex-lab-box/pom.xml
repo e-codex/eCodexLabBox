@@ -58,6 +58,27 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>copy-h2-database-into-domibus-lib</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/lab/domibus-gateway/domibus/lib</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.h2database</groupId>
+                                    <artifactId>h2</artifactId>
+                                    <version>1.4.197</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
+
                     <execution>
                         <id>copy-h2-database</id>
                         <phase>package</phase>
@@ -65,6 +86,7 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${project.basedir}/lab/h2-database</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.h2database</groupId>
