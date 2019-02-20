@@ -12,5 +12,17 @@
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-box-gw-pmode-upload</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.72</version>
+        </dependency>
+        <dependency>
+            <groupId>org.toile-libre.libe</groupId>
+            <artifactId>curl</artifactId>
+            <version>LATEST</version>
+        </dependency>
+    </dependencies>
 
 </project>
