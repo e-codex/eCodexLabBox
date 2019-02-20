@@ -11,7 +11,18 @@
             <includes>
                 <include>**/*.*</include>
             </includes>
-            <directory>${project.basedir}/src/main/resources/gateway-config</directory>
+            <excludes>
+                <exclude>*.sh</exclude>
+            </excludes>
+            <directory>${project.basedir}/src/main/resources/domibus-gateway</directory>
+            <outputDirectory>./</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directory>${project.basedir}/src/main/resources/domibus-gateway</directory>
             <outputDirectory>./</outputDirectory>
         </fileSet>
     </fileSets>

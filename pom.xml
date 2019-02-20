@@ -4,23 +4,48 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>eu.ecodex</groupId>
+    <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <description>Ecodex related stuff</description>
 
+    <properties>
+        <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <modules>
         <module>ecodex-lab-box-config</module>
-        <module>ecodex-lab-box</module>
         <module>ecodex-lab-box-tutorial</module>
+        <module>ecodex-lab-box-gw-db-setup</module>
+        <module>ecodex-lab-box-distribution</module>
+
+        <module>ecodex-lab-box</module>
+        <module>ecodex-lab-box-gw-pmode-upload</module>
     </modules>
 
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+
     <build>
+
+
 
         <pluginManagement>
             <plugins>

@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>eu.ecodex</groupId>
+    <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-box</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -14,6 +14,21 @@
 
 
     <properties>
+
+        <gw01.host>localhost</gw01.host>
+        <gw02.host>localhost</gw02.host>
+        <gw03.host>localhost</gw03.host>
+        <gw04.host>localhost</gw04.host>
+        <gw05.host>localhost</gw05.host>
+        <gw01.port>8010</gw01.port>
+        <gw02.port>8020</gw02.port>
+        <gw03.port>8030</gw03.port>
+        <gw04.port>8040</gw04.port>
+        <gw05.port>8050</gw05.port>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <domibus-gw.version>4.0.2</domibus-gw.version>
         <domibus-connector-plugin.version>4.1.0-RELEASE</domibus-connector-plugin.version>
         <domibus-connector.version>4.1.1-RELEASE</domibus-connector.version>
@@ -123,6 +138,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.basedir}/lab/h2-database</outputDirectory>
+                            <stripVersion>true</stripVersion>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.h2database</groupId>
@@ -175,7 +191,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <overWrite>true</overWrite>
-                                    <groupId>eu.ecodex</groupId>
+                                    <groupId>${project.groupId}</groupId>
                                     <artifactId>ecodex-lab-box-config</artifactId>
                                     <classifier>testkeystores</classifier>
                                     <version>${project.version}</version>
@@ -200,7 +216,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <overWrite>true</overWrite>
-                                    <groupId>eu.ecodex</groupId>
+                                    <groupId>${project.groupId}</groupId>
                                     <artifactId>ecodex-lab-box-config</artifactId>
                                     <classifier>gwtestconfig</classifier>
                                     <version>${project.version}</version>
@@ -209,6 +225,32 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>download-pmodes-template-config</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/config/</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>pmodes</classifier>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -269,6 +311,10 @@
                     <name>lab.id</name>
                 </property>
             </activation>
+
+            <properties>
+                <gw.self>gw${lab.id}</gw.self>
+            </properties>
 
             <build>
                 <plugins>
@@ -377,6 +423,24 @@
                                 </configuration>
                             </execution>
 
+                            <execution>
+                                <id>copy-domibus-gw-db-driver</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/lib</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/h2-database</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
 
                             <execution>
                                 <id>copy-domibus-connector</id>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <id>pmodes</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>*.xml</include>
+            </includes>
+            <directory>${project.basedir}/src/main/resources/pmodes</directory>
+            <outputDirectory>pmodes</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+</assembly>

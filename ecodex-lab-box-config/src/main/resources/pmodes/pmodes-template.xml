@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<db:configuration xmlns:db="http://domibus.eu/configuration" party="${gw}">
+<db:configuration xmlns:db="http://domibus.eu/configuration" party="${gw.self}">
 
     <mpcs>
         <mpc name="defaultMpc"
@@ -17,17 +17,20 @@
             <partyIdTypes>
                 <partyIdType name="partyTypeUrn" value="urn:oasis:names:tc:ebcore:partyid-type:unregistered"/>
             </partyIdTypes>
-            <party name="gw1" endpoint="http://gw1:8080/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw1" partyIdType="partyTypeUrn"/>
+            <party name="gw01" endpoint="http://${gw01.host}:${gw01.port}/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw01" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw2" endpoint="http://gw2:8080/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw2" partyIdType="partyTypeUrn"/>
+            <party name="gw02" endpoint="http://${gw02.host}:${gw02.port}/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw02" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw3" endpoint="http://gw3:8080/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw3" partyIdType="partyTypeUrn"/>
+            <party name="gw03" endpoint="http://${gw03.host}:${gw03.port}/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw03" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw4" endpoint="http://gw4:8080/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw4" partyIdType="partyTypeUrn"/>
+            <party name="gw04" endpoint="http://${gw04.host}:${gw04.port}/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw04" partyIdType="partyTypeUrn"/>
+            </party>
+            <party name="gw05" endpoint="http://${gw05.host}:${gw05.port}/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw05" partyIdType="partyTypeUrn"/>
             </party>
         </parties>
         <meps>
@@ -74,6 +77,7 @@
             <service name="GWTESTService" value="GW-TEST" type="urn:e-codex:services:" />
             <service name="ConTESTService" value="Connector-TEST" type="urn:e-codex:services:" />
             <service name="SystemTESTService" value="System-TEST" type="urn:e-codex:services:" />
+            <service name="service1" value="service1" type="urn:e-codex:services:" />
             <!--<service name="SCService" value="SmallClaims" type="urn:e-codex:services:"/>-->
         </services>
         <actions>
@@ -84,6 +88,7 @@
             <action name="GWTESTActionTestForm" value="Test_Form"/>
             <action name="ConTESTActionTestForm" value="Connector-TEST"/>
             <action name="SystemTestAction" value="System-TEST" />
+            <action name="action1" value="action1" />
         </actions>
         <as4>
             <receptionAwareness name="receptionAwareness" retry="600;3;CONSTANT" duplicateDetection="true"/>
@@ -194,8 +199,82 @@
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
+
+
+            <legConfiguration name="service1LegConTESTActionTestForm"
+                              service="service1"
+                              action="action1"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="noSigNoEnc"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="service1LegeCODEXEvidenceSubmissionAcceptanceRejection"
+                              service="service1"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="noSigNoEnc"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="service1LegeCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              service="service1"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="noSigNoEnc"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="service1LegeCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              service="service1"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="noSigNoEnc"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="service1LegeCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              service="service1"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="noSigNoEnc"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
         </legConfigurations>
 
+
+        <process name="Process1"
+                 agreement="agreementEmpty"
+                 mep="twoway"
+                 binding="pushAndPush"
+                 initiatorRole="eCODEXRole"
+                 responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="gw01"/>
+                <initiatorParty name="gw02"/>
+                <initiatorParty name="gw03"/>
+                <initiatorParty name="gw04"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="gw01"/>
+                <responderParty name="gw02"/>
+                <responderParty name="gw03"/>
+                <responderParty name="gw04"/>
+            </responderParties>
+            <legs>
+                <leg name="service1LegConTESTActionTestForm"/>
+                <leg name="service1LegeCODEXEvidenceSubmissionAcceptanceRejection"/>
+                <leg name="service1LegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
+                <leg name="service1LegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>
+                <leg name="service1LegeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
+            </legs>
+        </process>
 
         <process name="GWTESTProcess"
                  agreement="agreementEmpty"
@@ -204,16 +283,16 @@
                  initiatorRole="eCODEXRole"
                  responderRole="eCODEXRole">
             <initiatorParties>
-                <initiatorParty name="gw1"/>
-                <initiatorParty name="gw2"/>
-                <initiatorParty name="gw3"/>
-                <initiatorParty name="gw4"/>
+                <initiatorParty name="gw01"/>
+                <initiatorParty name="gw02"/>
+                <initiatorParty name="gw03"/>
+                <initiatorParty name="gw04"/>
             </initiatorParties>
             <responderParties>
-                <responderParty name="gw1"/>
-                <responderParty name="gw2"/>
-                <responderParty name="gw3"/>
-                <responderParty name="gw4"/>
+                <responderParty name="gw01"/>
+                <responderParty name="gw02"/>
+                <responderParty name="gw03"/>
+                <responderParty name="gw04"/>
             </responderParties>
             <legs>
                 <leg name="GWTESTLegGWTESTActionTestForm"/>
@@ -226,16 +305,16 @@
                  initiatorRole="eCODEXRole"
                  responderRole="eCODEXRole">
             <initiatorParties>
-                <initiatorParty name="gw1"/>
-                <initiatorParty name="gw2"/>
-                <initiatorParty name="gw3"/>
-                <initiatorParty name="gw4"/>
+                <initiatorParty name="gw01"/>
+                <initiatorParty name="gw02"/>
+                <initiatorParty name="gw03"/>
+                <initiatorParty name="gw04"/>
             </initiatorParties>
             <responderParties>
-                <responderParty name="gw1"/>
-                <responderParty name="gw2"/>
-                <responderParty name="gw3"/>
-                <responderParty name="gw4"/>
+                <responderParty name="gw01"/>
+                <responderParty name="gw02"/>
+                <responderParty name="gw03"/>
+                <responderParty name="gw04"/>
             </responderParties>
             <legs>
                 <leg name="ConTESTLegConTESTActionTestForm"/>
