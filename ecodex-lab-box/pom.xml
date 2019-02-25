@@ -194,8 +194,8 @@
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>eu.domibus.connector-client</groupId>
-                                    <artifactId>domibusConnectorClient</artifactId>
-                                    <classifier>standalonePackage</classifier>
+                                    <artifactId>domibusConnectorClientWebRest</artifactId>
+                                    <!--<classifier>standalonePackage</classifier>-->
                                     <version>${domibus-connector-client.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
