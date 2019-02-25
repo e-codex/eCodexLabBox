@@ -18,11 +18,54 @@
             <artifactId>jcommander</artifactId>
             <version>1.72</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.toile-libre.libe</groupId>-->
+            <!--<artifactId>curl</artifactId>-->
+            <!--<version>LATEST</version>-->
+        <!--</dependency>-->
+
+
+
         <dependency>
-            <groupId>org.toile-libre.libe</groupId>
-            <artifactId>curl</artifactId>
-            <version>LATEST</version>
+            <groupId>io.joshworks.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.0.7.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.json</groupId>-->
+            <!--<artifactId>json</artifactId>-->
+            <!--<version>20160212</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 </project>

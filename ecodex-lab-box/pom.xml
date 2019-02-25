@@ -176,8 +176,34 @@
                         </configuration>
                     </execution>
 
+
                     <execution>
                         <id>download-config</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/config/tools</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId> ecodex-lab-box-gw-pmode-upload</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <destFileName>pModeUploader.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>download-p-mode-upload-tool</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -314,6 +340,16 @@
 
             <properties>
                 <gw.self>gw${lab.id}</gw.self>
+                <gw01.host>localhost</gw01.host>
+                <gw02.host>localhost</gw02.host>
+                <gw03.host>localhost</gw03.host>
+                <gw04.host>localhost</gw04.host>
+                <gw05.host>localhost</gw05.host>
+                <gw01.port>8010</gw01.port>
+                <gw02.port>8020</gw02.port>
+                <gw03.port>8030</gw03.port>
+                <gw04.port>8040</gw04.port>
+                <gw05.port>8050</gw05.port>
             </properties>
 
             <build>
@@ -417,7 +453,25 @@
                                             <directory>${project.basedir}/lab/config/domibus-gateway/</directory>
                                             <!-- apply env filter on config! -->
                                             <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
 
+                            <execution>
+                                <id>copy-domibus-gw-pmodes</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/setup/</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/config/pmodes</directory>
+                                            <filtering>true</filtering>
                                         </resource>
                                     </resources>
                                 </configuration>

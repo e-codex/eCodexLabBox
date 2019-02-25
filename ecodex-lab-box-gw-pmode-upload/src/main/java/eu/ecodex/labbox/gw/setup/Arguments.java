@@ -10,19 +10,17 @@ public class Arguments {
     @Parameter(names = {"-p", "-password"}, description = "Domibus password")
     private String password = "123456";
 
-    @Parameter(names = {"-p", "-pmode"}, required = true, description = "p-mode file")
+    @Parameter(names = {"-pmode"}, required = true, description = "p-mode file")
     private String pModeFile;
 
-    @Parameter(names = {"-u", "-url"}, required = true, description = "url to domibus example: [http://localhost:8080/domibus]")
+    @Parameter(names = {"-url"}, required = true, description = "url to domibus example: [http://localhost:8080/domibus]")
     private String url;
 
-    public String getPassword() {
-        return password;
-    }
+    @Parameter(names = {"-r", "-retry"}, required = false, description = "how often should the upload be retried in case of connection errors")
+    private int maxRetries = 1;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    @Parameter(names = {"-ms", "-retrywait"}, required = false, description = "how long should be wait in milliseconds until a connection can be established?")
+    private int waitBetweenRetries = 1000;
 
     public String getUsername() {
         return username;
@@ -30,6 +28,14 @@ public class Arguments {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getpModeFile() {
@@ -46,5 +52,21 @@ public class Arguments {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getMaxRetries() {
+        return maxRetries;
+    }
+
+    public void setMaxRetries(int maxRetries) {
+        this.maxRetries = maxRetries;
+    }
+
+    public int getWaitBetweenRetries() {
+        return waitBetweenRetries;
+    }
+
+    public void setWaitBetweenRetries(int waitBetweenRetries) {
+        this.waitBetweenRetries = waitBetweenRetries;
     }
 }
