@@ -23,9 +23,11 @@
         <module>ecodex-lab-box-tutorial</module>
         <module>ecodex-lab-box-gw-db-setup</module>
         <module>ecodex-lab-box-distribution</module>
-
-        <module>ecodex-lab-box</module>
         <module>ecodex-lab-box-gw-pmode-upload</module>
+
+        <!-- make sure ecodex-lab-box is the last module to build -->
+        <module>ecodex-lab-box</module>
+
     </modules>
 
 
@@ -49,7 +51,11 @@
 
         <pluginManagement>
             <plugins>
-
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>

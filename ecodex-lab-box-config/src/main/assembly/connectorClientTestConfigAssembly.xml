@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <assembly>
-	<id>gwtestconfig</id>
+	<id>connectorclienttestconfig</id>
 	<formats>
 		<format>zip</format>
 	</formats>
@@ -14,16 +14,16 @@
             <excludes>
                 <exclude>*.sh</exclude>
             </excludes>
-            <directory>${project.basedir}/src/main/resources/domibus-gateway</directory>
-            <outputDirectory>domibus-gateway</outputDirectory>
+            <directory>${project.basedir}/src/main/resources/domibus-connector-client</directory>
+            <outputDirectory>domibus-connector-client</outputDirectory>
         </fileSet>
         <fileSet>
             <includes>
                 <include>*.sh</include>
             </includes>
             <fileMode>0755</fileMode>
-            <directory>${project.basedir}/src/main/resources/domibus-gateway</directory>
-            <outputDirectory>domibus-gateway</outputDirectory>
+            <directory>${project.basedir}/src/main/resources/domibus-connector-client</directory>
+            <outputDirectory>domibus-connector-client</outputDirectory>
         </fileSet>
     </fileSets>
 

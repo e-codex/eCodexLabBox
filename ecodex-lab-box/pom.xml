@@ -15,6 +15,15 @@
 
     <properties>
 
+        <!-- if a proxy is used during build or test configure this properties by overwriting them in your settings.xml file -->
+        <https.proxy.enabled>false</https.proxy.enabled>
+        <http.proxy.enabled>false</http.proxy.enabled>
+        <!-- keep this empty properties! -->
+        <https.proxy.host></https.proxy.host>
+        <http.proxy.host></http.proxy.host>
+        <http.proxy.port></http.proxy.port>
+        <https.proxy.port></https.proxy.port>
+
         <gw01.host>localhost</gw01.host>
         <gw02.host>localhost</gw02.host>
         <gw03.host>localhost</gw03.host>
@@ -162,7 +171,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus-connector-standalone-launcher</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-connector</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
@@ -188,7 +197,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus-connector-client-web-ui</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-connector-client</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
@@ -254,8 +263,33 @@
                         </configuration>
                     </execution>
 
+                    <!--<execution>-->
+                        <!--<id>download-gw-config</id>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>unpack</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<overWriteSnapshots>true</overWriteSnapshots>-->
+                            <!--<overWriteReleases>true</overWriteReleases>-->
+
+                            <!--<outputDirectory>${project.basedir}/lab/config/domibus-gateway</outputDirectory>-->
+
+                            <!--<artifactItems>-->
+                                <!--<artifactItem>-->
+                                    <!--<overWrite>true</overWrite>-->
+                                    <!--<groupId>${project.groupId}</groupId>-->
+                                    <!--<artifactId>ecodex-lab-box-config</artifactId>-->
+                                    <!--<classifier>gwtestconfig</classifier>-->
+                                    <!--<version>${project.version}</version>-->
+                                    <!--<type>zip</type>-->
+                                <!--</artifactItem>-->
+                            <!--</artifactItems>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+
                     <execution>
-                        <id>download-gw-config</id>
+                        <id>download-configs</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -264,32 +298,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/config/domibus-gateway</outputDirectory>
-
-                            <artifactItems>
-                                <artifactItem>
-                                    <overWrite>true</overWrite>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>ecodex-lab-box-config</artifactId>
-                                    <classifier>gwtestconfig</classifier>
-                                    <version>${project.version}</version>
-                                    <type>zip</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>download-pmodes-template-config</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <overWriteReleases>true</overWriteReleases>
-
-                            <outputDirectory>${project.basedir}/lab/config/</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/component-config/</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
@@ -297,6 +306,30 @@
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>ecodex-lab-box-config</artifactId>
                                     <classifier>pmodes</classifier>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>connectortestconfig</classifier>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>connectorclienttestconfig</classifier>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>gwtestconfig</classifier>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
@@ -465,25 +498,25 @@
                                 </configuration>
                             </execution>
 
-                            <execution>
-                                <id>copy-domibus-gw-config</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
+                            <!--<execution>-->
+                                <!--<id>copy-domibus-gw-config</id>-->
+                                <!--<phase>install</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>copy-resources</goal>-->
+                                <!--</goals>-->
 
-                                <configuration>
-                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/</outputDirectory>
-                                    <overwrite>true</overwrite>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/lab/config/domibus-gateway/</directory>
-                                            <!-- apply env filter on config! -->
-                                            <filtering>true</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
+                                <!--<configuration>-->
+                                    <!--<outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/</outputDirectory>-->
+                                    <!--<overwrite>true</overwrite>-->
+                                    <!--<resources>-->
+                                        <!--<resource>-->
+                                            <!--<directory>${project.basedir}/lab/config/domibus-gateway/</directory>-->
+                                            <!--&lt;!&ndash; apply env filter on config! &ndash;&gt;-->
+                                            <!--<filtering>true</filtering>-->
+                                        <!--</resource>-->
+                                    <!--</resources>-->
+                                <!--</configuration>-->
+                            <!--</execution>-->
 
                             <execution>
                                 <id>copy-domibus-gw-pmodes</id>
@@ -531,16 +564,61 @@
                                 </goals>
 
                                 <configuration>
-                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-standalone-launcher</outputDirectory>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/lab/domibus-connector-standalone-launcher</directory>
+                                            <directory>${project.basedir}/lab/domibus-connector</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
                                 </configuration>
                             </execution>
+
+
+                            <execution>
+                                <id>copy-domibus-connector-client</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/domibus-connector-client</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+
+
+                            <!-- copy all the configuration with replaced env variables into the labenv -->
+                            <execution>
+                                <id>copy-component-config</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/component-config</directory>
+                                            <!-- apply env filter on config! -->
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+
                         </executions>
                     </plugin>
                 </plugins>

@@ -33,6 +33,8 @@
                                 <descriptor>src/main/assembly/gatewayTestKeyStoresAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/gatewayTestConfigAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/pModesTestAssembly.xml</descriptor>
+                                <descriptor>src/main/assembly/connectorClientTestConfigAssembly.xml</descriptor>
+                                <descriptor>src/main/assembly/connectorTestConfigAssembly.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>
