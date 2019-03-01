@@ -214,7 +214,7 @@
 
 
                     <execution>
-                        <id>download-config</id>
+                        <id>download-pmode-uploader</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
@@ -575,6 +575,28 @@
                                 </configuration>
                             </execution>
 
+                            <execution>
+                                <id>copy-domibus-connector-keystores</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector/config/keystores</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/config/keystores</directory>
+                                            <filtering>false</filtering>
+                                            <includes>
+                                                <include>connector-*.jks</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
 
                             <execution>
                                 <id>copy-domibus-connector-client</id>
@@ -595,6 +617,27 @@
                                 </configuration>
                             </execution>
 
+                            <execution>
+                                <id>copy-domibus-connector-client-keystores</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client/config/keystores</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/config/keystores</directory>
+                                            <filtering>false</filtering>
+                                            <includes>
+                                                <include>client-*.jks</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
 
 
                             <!-- copy all the configuration with replaced env variables into the labenv -->
