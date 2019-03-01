@@ -58,12 +58,31 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>e-codex</id>
+            <url>https://secure.e-codex.eu/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
 
 
     <build>
         <plugins>
+            <!-- disable deploy for this module/project -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -414,6 +433,8 @@
 
             <build>
                 <plugins>
+
+
 
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>

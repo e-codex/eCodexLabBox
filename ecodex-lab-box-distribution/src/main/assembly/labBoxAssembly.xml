@@ -32,6 +32,14 @@
             <directory>${project.basedir}/src/main/mavenwrapper</directory>
             <outputDirectory>lab-box</outputDirectory>
         </fileSet>
+        <fileSet>
+            <includes>
+                <include>*.txt</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directory>${project.basedir}/src/main/readme</directory>
+            <outputDirectory>lab-box</outputDirectory>
+        </fileSet>
     </fileSets>
 
 </assembly>
