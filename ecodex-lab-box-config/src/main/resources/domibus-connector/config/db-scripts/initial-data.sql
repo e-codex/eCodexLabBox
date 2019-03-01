@@ -1,28 +1,32 @@
 --liquibase formatted sql
---
---changeset initialPersistenceTestdata_1
+
+--changeset StephanSpindler:initialBackendData_1
 ----------------------- Values for DOMIBUS_CONNECTOR_BACKEND_INFO ------------------------------
 
--- create 2 clients
 INSERT INTO DOMIBUS_CONNECTOR_BACKEND_INFO (ID, BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_KEY_PASS, BACKEND_SERVICE_TYPE, BACKEND_DESCRIPTION, BACKEND_PUSH_ADDRESS)
-VALUES (1, 'CN=bob', 'bob', '', 'EPO', 'a epo backend', null);
+VALUES (1, 'cn=bob', 'bob', '', 'EPO', 'a epo backend', null);
 
 INSERT INTO DOMIBUS_CONNECTOR_BACKEND_INFO (ID, BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_KEY_PASS, BACKEND_DESCRIPTION, BACKEND_PUSH_ADDRESS, BACKEND_ENABLED, BACKEND_DEFAULT)
-VALUES (1, 'CN=alice', 'alice', '', 'a alice backend', 'http://localhost:8${lab.id}0//services/domibusConnectorDeliveryWebservice', true, true);
+VALUES (2, 'cn=alice', 'alice', '', 'a alice backend', 'http://localhost:8${lab.id}1//services/domibusConnectorDeliveryWebservice', true, true);
 
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
+  ('gw01', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
 
--- import test gateways
 INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw1', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+  ('gw02', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+
 INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw2', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+  ('gw03', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+
 INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw3', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+  ('gw04', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+
 INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw4', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
+  ('gw05', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:iso3166-1');
 
 INSERT INTO DOMIBUS_CONNECTOR_SERVICE (SERVICE, SERVICE_TYPE) VALUES ('Connector-TEST', 'urn:e-codex:services:');
 INSERT INTO DOMIBUS_CONNECTOR_SERVICE (SERVICE, SERVICE_TYPE) VALUES ('System-TEST', 'urn:e-codex:services:');
+INSERT INTO DOMIBUS_CONNECTOR_SERVICE (SERVICE, SERVICE_TYPE) VALUES ('Message', 'urn:e-codex:services:');
 
 INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
 VALUES ('SubmissionAcceptanceRejection', false);
@@ -39,4 +43,11 @@ VALUES ('RetrievalNonRetrievalToRecipient', false);
 INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
 VALUES ('System-TEST', false);
 
+INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
+VALUES ('Connector-TEST', false);
 
+INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
+VALUES ('Message1', false);
+
+INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
+VALUES ('Message2', false);
