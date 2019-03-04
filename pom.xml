@@ -6,7 +6,7 @@
 
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -46,12 +46,12 @@
 
     <distributionManagement>
         <repository>
-            <id>${releases-repo.id}</id>
-            <url>${releases-repo.url}</url>
+            <id>${ecodex-releases-repo.id}</id>
+            <url>${ecodex-releases-repo.url}</url>
         </repository>
         <snapshotRepository>
-            <id>${snapshots-repo.id}</id>
-            <url>${snapshots-repo.url}</url>
+            <id>${ecodex-snapshots-repo.id}</id>
+            <url>${ecodex-snapshots-repo.url}</url>
         </snapshotRepository>
     </distributionManagement>
 
