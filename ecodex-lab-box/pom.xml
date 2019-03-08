@@ -41,7 +41,7 @@
         <domibus-gw.version>4.0.2</domibus-gw.version>
         <domibus-connector-plugin.version>4.1.0-RELEASE</domibus-connector-plugin.version>
         <domibus-connector.version>4.1.1-RELEASE</domibus-connector.version>
-        <domibus-connector-client.version>4.1.0-SNAPSHOT</domibus-connector-client.version>
+        <domibus-connector-client.version>4.1.0-alpha1-RELEASE</domibus-connector-client.version>
         <h2database.version>1.4.197</h2database.version>
     </properties>
 
