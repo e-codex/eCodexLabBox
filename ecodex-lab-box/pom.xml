@@ -42,6 +42,7 @@
         <domibus-connector-plugin.version>4.1.0-RELEASE</domibus-connector-plugin.version>
         <domibus-connector.version>4.1.1-RELEASE</domibus-connector.version>
         <domibus-connector-client.version>4.1.0-alpha1-RELEASE</domibus-connector-client.version>
+        <domibus-connector-standalone-client.version>4.0.2</domibus-connector-standalone-client.version>
         <h2database.version>1.4.197</h2database.version>
     </properties>
 
@@ -207,7 +208,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- download domibus client rest based -->
+                    <!-- download domibus connector client rest based -->
                     <execution>
                         <id>copy-domibus-connector-rest-client</id>
                         <phase>package</phase>
@@ -227,6 +228,32 @@
                                     <artifactId>domibusConnectorClientWebRest</artifactId>
                                     <!--<classifier>standalonePackage</classifier>-->
                                     <version>${domibus-connector-client.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
+                    <!-- download domibus client standalone -->
+                    <execution>
+                        <id>copy-domibus-connector-standalone-client</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/domibus-connector-client-standalone</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>eu.domibus.connector-client</groupId>
+                                    <artifactId>domibusConnectorClientDistribution</artifactId>
+                                    <classifier>Standalone</classifier>
+                                    <version>${domibus-connector-standalone-client.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
@@ -343,6 +370,14 @@
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>ecodex-lab-box-config</artifactId>
                                     <classifier>connectorclienttestconfig</classifier>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>ecodex-lab-box-config</artifactId>
+                                    <classifier>connectorclientstandalonetestconfig</classifier>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
@@ -641,6 +676,26 @@
                                 </configuration>
                             </execution>
 
+
+                            <execution>
+                                <id>copy-domibus-connector-standalone-client</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-standalone</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/domibus-connector-client-standalone</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
                             <execution>
                                 <id>copy-domibus-connector-client-keystores</id>
                                 <phase>install</phase>
@@ -650,6 +705,28 @@
 
                                 <configuration>
                                     <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client/config/keystores</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/lab/config/keystores</directory>
+                                            <filtering>false</filtering>
+                                            <includes>
+                                                <include>client-*.jks</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>copy-domibus-connector-client-standalone-keystores</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-standalone/conf/keystores</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>

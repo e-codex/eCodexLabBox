@@ -35,6 +35,7 @@
                                 <descriptor>src/main/assembly/pModesTestAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/connectorClientTestConfigAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/connectorTestConfigAssembly.xml</descriptor>
+                                <descriptor>src/main/assembly/connectorClientStandaloneTestConfigAssembly.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>

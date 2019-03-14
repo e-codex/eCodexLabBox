@@ -71,13 +71,13 @@
             <agreement name="agreementEmpty" value="" type=""/>
         </agreements>
         <services>
-            <service name="SystemTest1" value="SystemTest" />
+            <!--<service name="SystemTest1" value="SystemTest" />-->
             <!--<service name="BRService" value="BR" type="urn:e-codex:services:"/>-->
             <!--<service name="EPOService" value="EPO" type="urn:e-codex:services:"/>-->
             <service name="GWTESTService" value="GW-TEST" type="urn:e-codex:services:" />
             <service name="ConTESTService" value="Connector-TEST" type="urn:e-codex:services:" />
             <service name="SystemTESTService" value="System-TEST" type="urn:e-codex:services:" />
-            <service name="service1" value="service1" type="urn:e-codex:services:" />
+            <service name="service1" value="Service1" type="urn:e-codex:services:" />
             <!--<service name="SCService" value="SmallClaims" type="urn:e-codex:services:"/>-->
         </services>
         <actions>
@@ -88,7 +88,8 @@
             <action name="GWTESTActionTestForm" value="Test_Form"/>
             <action name="ConTESTActionTestForm" value="Connector-TEST"/>
             <action name="SystemTestAction" value="System-TEST" />
-            <action name="action1" value="action1" />
+            <action name="action1" value="Action1" />
+            <action name="action2" value="Action2" />
         </actions>
         <as4>
             <receptionAwareness name="receptionAwareness" retry="600;3;CONSTANT" duplicateDetection="true"/>
@@ -96,7 +97,7 @@
         </as4>
         <legConfigurations>
 
-            <!-- TODO: configure SystemTest legs -->
+
 
             <legConfiguration name="GWTESTLegGWTESTActionTestForm"
                               service="GWTESTService"
@@ -108,6 +109,7 @@
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
 
+            <!-- connector test legs -->
             <legConfiguration name="ConTESTLegConTESTActionTestForm"
                               service="ConTESTService"
                               action="ConTESTActionTestForm"
@@ -154,6 +156,7 @@
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
 
+            <!-- system test legs -->
             <legConfiguration name="SystemTESTLegConTESTActionTestForm"
                               service="SystemTESTService"
                               action="SystemTestAction"
@@ -200,10 +203,19 @@
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
 
-
-            <legConfiguration name="service1LegConTESTActionTestForm"
+            <!-- service1 MessageService legs -->
+            <legConfiguration name="service1LegAction1"
                               service="service1"
                               action="action1"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="noSigNoEnc"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="service1LegAction2"
+                              service="service1"
+                              action="action2"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
                               security="noSigNoEnc"
@@ -268,7 +280,8 @@
                 <responderParty name="gw04"/>
             </responderParties>
             <legs>
-                <leg name="service1LegConTESTActionTestForm"/>
+                <leg name="service1LegAction1"/>
+                <leg name="service1LegAction2"/>
                 <leg name="service1LegeCODEXEvidenceSubmissionAcceptanceRejection"/>
                 <leg name="service1LegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
                 <leg name="service1LegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>

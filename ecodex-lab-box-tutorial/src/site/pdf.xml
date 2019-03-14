@@ -4,12 +4,13 @@
   outputName="domibusConnectorWebApp_InstallationGuide.pdf">
 
   <meta>
-    <title>DomibusConnectorWebApp Installation Guide</title>
+    <title>eCodex LabBox Guide</title>
     <author></author>
   </meta>
 
   <toc name="Table of Contents">
-    <item name="Tutorial" ref="tutorial.md"/>
+    <!--<item name="Tutorial" ref="tutorial.md"/>-->
+    <item name="Start a labenvironment" ref="starting_labenv.md" />
   </toc>
 
   <cover>

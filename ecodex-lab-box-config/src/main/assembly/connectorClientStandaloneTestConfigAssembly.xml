@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+	<id>connectorclientstandalonetestconfig</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<fileSets>
+        <fileSet>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <excludes>
+                <exclude>*.sh</exclude>
+            </excludes>
+            <directory>${project.basedir}/src/main/resources/domibus-connector-client-standalone</directory>
+            <outputDirectory>domibus-connector-client-standalone</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directory>${project.basedir}/src/main/resources/domibus-connector-client-standalone</directory>
+            <outputDirectory>domibus-connector-client-standalone</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+</assembly>
