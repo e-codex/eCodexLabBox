@@ -57,8 +57,9 @@
         </payloadProfiles>
         <securities>
             <security name="eDeliveryPolicy" policy="eDeliveryPolicy.xml" signatureMethod="RSA_SHA256" />
-            <security name="noSigNoEnc" policy="doNothingPolicy.xml" signatureMethod="RSA_SHA256"/>
+            <!--<security name="noSigNoEnc" policy="doNothingPolicy.xml" signatureMethod="RSA_SHA256"/>-->
             <security name="eSensPolicy" policy="eSensPolicy.v2.0.xml" signatureMethod="RSA_SHA256"/>
+            <security name="eDeliveryAS4Policy" policy="eDeliveryAS4Policy.xml" signatureMethod="RSA_SHA256" />
         </securities>
         <errorHandlings>
             <errorHandling name="eCODEXErrorHandling"
@@ -104,7 +105,7 @@
                               action="GWTESTActionTestForm"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -115,7 +116,7 @@
                               action="ConTESTActionTestForm"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -124,7 +125,7 @@
                               action="eCODEXEvidenceSubmissionAcceptanceRejection"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -133,7 +134,7 @@
                               action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -142,7 +143,7 @@
                               action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -151,7 +152,7 @@
                               action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -162,7 +163,7 @@
                               action="SystemTestAction"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -171,7 +172,7 @@
                               action="eCODEXEvidenceSubmissionAcceptanceRejection"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -180,7 +181,7 @@
                               action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -189,7 +190,7 @@
                               action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -198,7 +199,7 @@
                               action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -209,7 +210,7 @@
                               action="action1"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -218,7 +219,7 @@
                               action="action2"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -227,7 +228,7 @@
                               action="eCODEXEvidenceSubmissionAcceptanceRejection"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -236,7 +237,7 @@
                               action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -245,7 +246,7 @@
                               action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
@@ -254,7 +255,7 @@
                               action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
                               defaultMpc="defaultMpc"
                               reliability="AS4Reliability"
-                              security="noSigNoEnc"
+                              security="eDeliveryAS4Policy"
                               receptionAwareness="receptionAwareness"
                               errorHandling="eCODEXErrorHandling"
                               compressPayloads="false"/>
