@@ -1,7 +1,7 @@
 <document xmlns="http://maven.apache.org/DOCUMENT/1.0.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DOCUMENT/1.0.1 http://maven.apache.org/xsd/document-1.0.1.xsd"
-  outputName="domibusConnectorWebApp_InstallationGuide.pdf">
+  outputName="eCodexLabBox_Guide.pdf">
 
   <meta>
     <title>eCodex LabBox Guide</title>
@@ -9,7 +9,7 @@
   </meta>
 
   <toc name="Table of Contents">
-    <!--<item name="Tutorial" ref="tutorial.md"/>-->
+    <item name="Introduction" ref="index.md"/>
     <item name="Start a labenvironment" ref="starting_labenv.md" />
   </toc>
 
