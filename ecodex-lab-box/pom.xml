@@ -40,7 +40,7 @@
 
         <domibus-gw.version>4.0.2</domibus-gw.version>
         <domibus-connector-plugin.version>4.1.0-RELEASE</domibus-connector-plugin.version>
-        <domibus-connector.version>4.1.1-RELEASE</domibus-connector.version>
+        <domibus-connector.version>4.1.3</domibus-connector.version>
         <domibus-connector-client.version>4.1.0-alpha1-RELEASE</domibus-connector-client.version>
         <domibus-connector-standalone-client.version>4.0.2</domibus-connector-standalone-client.version>
         <h2database.version>1.4.197</h2database.version>
@@ -200,6 +200,31 @@
                                     <overWrite>true</overWrite>
                                     <groupId>eu.domibus.connector</groupId>
                                     <artifactId>domibusConnectorStandaloneLauncher</artifactId>
+                                    <!--<classifier>tomcat-full</classifier>-->
+                                    <version>${domibus-connector.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-domibus-connector-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
+
+                            <outputDirectory>${project.basedir}/lab/domibus-connector-distribution</outputDirectory>
+
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>eu.domibus.connector</groupId>
+                                    <artifactId>domibusConnectorDistribution</artifactId>
                                     <!--<classifier>tomcat-full</classifier>-->
                                     <version>${domibus-connector.version}</version>
                                     <type>zip</type>
