@@ -30,6 +30,7 @@
 
     </modules>
 
+    <!-- TODO: idea: allow p2p testing over testing network maybe: https://github.com/i2p/i2p.i2p -->
 
     <dependencyManagement>
         <dependencies>

@@ -38,9 +38,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <domibus-gw.version>4.0.2</domibus-gw.version>
+        <domibus-gw.version>4.0.3</domibus-gw.version>
         <domibus-connector-plugin.version>4.1.0-RELEASE</domibus-connector-plugin.version>
-        <domibus-connector.version>4.1.3</domibus-connector.version>
+        <domibus-connector.version>4.1.4</domibus-connector.version>
         <domibus-connector-client.version>4.1.0-alpha1-RELEASE</domibus-connector-client.version>
         <domibus-connector-standalone-client.version>4.0.2</domibus-connector-standalone-client.version>
         <h2database.version>1.4.197</h2database.version>
