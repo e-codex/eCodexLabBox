@@ -12,7 +12,7 @@ INSERT INTO DOMIBUS_CONNECTOR_BACKEND_INFO (ID, BACKEND_NAME, BACKEND_KEY_ALIAS,
 VALUES (2, 'cn=alice', 'alice', '', '', 'a alice backend with push', 'http://localhost:8${lab.id}2/services/domibusConnectorDeliveryWebservice', true, false);
 
 INSERT INTO DOMIBUS_CONNECTOR_BACKEND_INFO (ID, BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_KEY_PASS, BACKEND_SERVICE_TYPE, BACKEND_DESCRIPTION, BACKEND_PUSH_ADDRESS, BACKEND_ENABLED, BACKEND_DEFAULT)
-VALUES (2, 'cn=exec_ri', 'exec_ri', '', '', 'a alice backend with push', 'http://localhost:8${lab.id}3/case-service/services/connectorClientBackendDelivery', true, false);
+VALUES (3, 'cn=exec_ri', 'exec_ri', '', '', 'a alice backend with push', 'http://localhost:8${lab.id}3/case-service/services/connectorClientBackendDelivery', true, false);
 
 DELETE FROM DOMIBUS_CONNECTOR_PARTY;
 
@@ -46,8 +46,6 @@ INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
 INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
   ('gw10', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
 
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw07', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
 
 INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
   ('at', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
