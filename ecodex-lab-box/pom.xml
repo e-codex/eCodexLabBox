@@ -6,7 +6,7 @@
 
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-box</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.6-RELEASE</version>
 
     <packaging>pom</packaging>
 
@@ -29,11 +29,22 @@
         <gw03.host>localhost</gw03.host>
         <gw04.host>localhost</gw04.host>
         <gw05.host>localhost</gw05.host>
+        <gw06.host>localhost</gw06.host>
+        <gw07.host>localhost</gw07.host>
+        <gw08.host>localhost</gw08.host>
+        <gw09.host>localhost</gw09.host>
+        <gw10.host>localhost</gw10.host>
         <gw01.port>8010</gw01.port>
         <gw02.port>8020</gw02.port>
         <gw03.port>8030</gw03.port>
         <gw04.port>8040</gw04.port>
         <gw05.port>8050</gw05.port>
+        <gw06.port>8060</gw06.port>
+        <gw07.port>8070</gw07.port>
+        <gw08.port>8080</gw08.port>
+        <gw09.port>8090</gw09.port>
+        <gw10.port>8100</gw10.port>
+
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
