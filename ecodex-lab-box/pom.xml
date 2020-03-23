@@ -6,7 +6,7 @@
 
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-box</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.5-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -200,7 +200,7 @@
                                     <overWrite>true</overWrite>
                                     <groupId>eu.domibus.connector</groupId>
                                     <artifactId>domibusConnectorStandaloneLauncher</artifactId>
-                                    <!--<classifier>tomcat-full</classifier>-->
+                                    <classifier>standalonePackage</classifier>
                                     <version>${domibus-connector.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
