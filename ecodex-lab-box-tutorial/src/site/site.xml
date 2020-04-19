@@ -27,11 +27,11 @@
             <!--<item name="Certificate Configuration" href="installation/certificates.html"/>-->
             <!--<item name="Backend configuration" href="installation/backend_configuration.html"/>-->
         <!--</menu>-->
-        <menu name="Technical/Developer Documentation">
-            <item name="Architecture" href="development/architecture_overview.html"/>
+        <!-- <menu name="Technical/Developer Documentation"> -->
+            <!-- <item name="Architecture" href="development/architecture_overview.html"/> -->
             <!--<item name="Changelog" href="development/changelog.html"/>-->
-            <item name="Backend Message Routing" href="development/backend_message_routing.html"/>
-        </menu>
+            <!-- <item name="Backend Message Routing" href="development/backend_message_routing.html"/> -->
+        <!-- </menu> -->
         <!--<menu ref="modules" />-->
         <!--<menu ref="reports"/>-->
 
