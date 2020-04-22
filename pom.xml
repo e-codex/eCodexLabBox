@@ -54,13 +54,14 @@
             <id>${ecodex-snapshots-repo.id}</id>
             <url>${ecodex-snapshots-repo.url}</url>
         </snapshotRepository>
+        <site>
+            <id>${project.artifactId}-site</id>
+            <url>http://www.ecodex.eu/labbox-site</url>
+        </site>
     </distributionManagement>
 
 
     <build>
-
-
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -179,6 +180,20 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.8.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <version>1.5.6</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
