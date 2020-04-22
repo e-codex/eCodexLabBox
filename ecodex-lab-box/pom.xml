@@ -4,9 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>eu.ecodex.labbox</groupId>
+    <parent>
+        <artifactId>ecodex-lab-parent</artifactId>
+        <groupId>eu.ecodex.labbox</groupId>
+        <version>1.0.6-RELEASE</version>
+    </parent>
+<!--    <groupId>eu.ecodex.labbox</groupId>-->
     <artifactId>ecodex-lab-box</artifactId>
-    <version>1.0.6-RELEASE</version>
+<!--    <version>1.0.6-RELEASE</version>-->
 
     <packaging>pom</packaging>
 
@@ -51,7 +56,7 @@
 
         <domibus-gw.version>4.1.3</domibus-gw.version>
         <domibus-connector-plugin.version>4.1.3-RELEASE</domibus-connector-plugin.version>
-        <domibus-connector.version>4.2.0-RC8</domibus-connector.version>
+        <domibus-connector.version>4.2.0-RC9</domibus-connector.version>
         <domibus-connector-client.version>4.1.0-alpha1-RELEASE</domibus-connector-client.version>
         <domibus-connector-standalone-client.version>4.0.2</domibus-connector-standalone-client.version>
         <h2database.version>1.4.200</h2database.version>
