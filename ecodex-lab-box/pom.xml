@@ -4,11 +4,11 @@
   <parent>
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>1.1.0-RELEASE</version>
+    <version>1.1.x-SNAPSHOT</version>
   </parent>
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-box</artifactId>
-  <version>1.1.0-RELEASE</version>
+  <version>1.1.x-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>ECodex environment for local experiments and usage...</description>
   <properties>
