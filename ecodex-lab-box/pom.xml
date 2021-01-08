@@ -6,7 +6,7 @@
 
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-box</artifactId>
-    <version>1.0.6-RELEASE</version>
+    <version>1.1.x-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
