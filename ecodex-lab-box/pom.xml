@@ -49,11 +49,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <domibus-gw.version>4.1.3</domibus-gw.version>
-        <domibus-connector-plugin.version>4.1.3-RELEASE</domibus-connector-plugin.version>
-        <domibus-connector.version>4.2.0-RC5</domibus-connector.version>
-        <domibus-connector-client.version>4.1.0-alpha1-RELEASE</domibus-connector-client.version>
-        <domibus-connector-standalone-client.version>4.0.2</domibus-connector-standalone-client.version>
+        <domibus-gw.version>4.2</domibus-gw.version>
+        <domibus-connector-plugin.version>4.1.4.1</domibus-connector-plugin.version>
+        <domibus-connector.version>4.2.6</domibus-connector.version>
+        <domibus-connector-client-application.version>4.2.1</domibus-connector-client-application.version>
+		<domibus-connector-client-ui.version>4.2.0-RELEASE</domibus-connector-client-ui.version>
         <h2database.version>1.4.200</h2database.version>
     </properties>
 
@@ -244,9 +244,11 @@
                         </configuration>
                     </execution>
 
-                    <!-- download domibus connector client rest based -->
+                    
+
+                    <!-- download domibus client application -->
                     <execution>
-                        <id>copy-domibus-connector-rest-client</id>
+                        <id>copy-domibus-connector-client-application</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -255,24 +257,24 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus-connector-client</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-connector-client-application</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>eu.domibus.connector-client</groupId>
-                                    <artifactId>domibusConnectorClientWebRest</artifactId>
-                                    <!--<classifier>standalonePackage</classifier>-->
-                                    <version>${domibus-connector-client.version}</version>
+                                    <artifactId>domibusConnectorClientApplication</artifactId>
+                                    <!-- <classifier>Standalone</classifier> -->
+                                    <version>${domibus-connector-client-application.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
-
-                    <!-- download domibus client standalone -->
+					
+					<!-- download domibus client UI -->
                     <execution>
-                        <id>copy-domibus-connector-standalone-client</id>
+                        <id>copy-domibus-connector-client-ui</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -281,15 +283,15 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteReleases>true</overWriteReleases>
 
-                            <outputDirectory>${project.basedir}/lab/domibus-connector-client-standalone</outputDirectory>
+                            <outputDirectory>${project.basedir}/lab/domibus-connector-client-ui</outputDirectory>
 
                             <artifactItems>
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>eu.domibus.connector-client</groupId>
-                                    <artifactId>domibusConnectorClientDistribution</artifactId>
-                                    <classifier>Standalone</classifier>
-                                    <version>${domibus-connector-standalone-client.version}</version>
+                                    <artifactId>domibusConnectorClientUI</artifactId>
+                                    <classifier>UI</classifier>
+                                    <version>${domibus-connector-client-ui.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
@@ -405,7 +407,7 @@
                                     <overWrite>true</overWrite>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>ecodex-lab-box-config</artifactId>
-                                    <classifier>connectorclienttestconfig</classifier>
+                                    <classifier>connectorclientapplicationtestconfig</classifier>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
@@ -413,7 +415,7 @@
                                     <overWrite>true</overWrite>
                                     <groupId>${project.groupId}</groupId>
                                     <artifactId>ecodex-lab-box-config</artifactId>
-                                    <classifier>connectorclientstandalonetestconfig</classifier>
+                                    <classifier>connectorclientuitestconfig</classifier>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
@@ -564,7 +566,7 @@
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/lab/domibus-gateway-plugin/domibus-v4_0/conf/plugins</directory>
+                                            <directory>${project.basedir}/lab/domibus-gateway-plugin/domibus-v4_1/conf/plugins</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
@@ -694,18 +696,18 @@
 
 
                             <execution>
-                                <id>copy-domibus-connector-client</id>
+                                <id>copy-domibus-connector-client-application</id>
                                 <phase>install</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
 
                                 <configuration>
-                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client</outputDirectory>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-application</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/lab/domibus-connector-client</directory>
+                                            <directory>${project.basedir}/lab/domibus-connector-client-application</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
@@ -714,18 +716,18 @@
 
 
                             <execution>
-                                <id>copy-domibus-connector-standalone-client</id>
+                                <id>copy-domibus-connector-client-ui</id>
                                 <phase>install</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
 
                                 <configuration>
-                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-standalone</outputDirectory>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-ui</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/lab/domibus-connector-client-standalone</directory>
+                                            <directory>${project.basedir}/lab/domibus-connector-client-ui</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
@@ -740,7 +742,7 @@
                                 </goals>
 
                                 <configuration>
-                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client/config/keystores</outputDirectory>
+                                    <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-application/config/keystores</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
@@ -754,7 +756,7 @@
                                 </configuration>
                             </execution>
 
-                            <execution>
+                            <!-- <execution>
                                 <id>copy-domibus-connector-client-standalone-keystores</id>
                                 <phase>install</phase>
                                 <goals>
@@ -774,7 +776,7 @@
                                         </resource>
                                     </resources>
                                 </configuration>
-                            </execution>
+                            </execution> -->
 
 
                             <!-- copy all the configuration with replaced env variables into the labenv -->
