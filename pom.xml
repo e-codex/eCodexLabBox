@@ -58,7 +58,44 @@
 
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
 
+                <dependencies>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <version>2.1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>it.mulders.puml</groupId>
+                <artifactId>plantuml-maven-plugin</artifactId>
+                <version>0.1</version>
+                <configuration>
+                    <sourceFiles>
+                        <directory>${basedir}</directory>
+                        <includes>
+                            <include>src/plantuml/**/*.txt</include>
+                        </includes>
+                    </sourceFiles>
+                    <outputDirectory>${basedir}/src/site/resources/images</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
 
         <pluginManagement>
