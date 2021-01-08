@@ -33,9 +33,9 @@
                                 <descriptor>src/main/assembly/gatewayTestKeyStoresAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/gatewayTestConfigAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/pModesTestAssembly.xml</descriptor>
-                                <descriptor>src/main/assembly/connectorClientTestConfigAssembly.xml</descriptor>
+                                <descriptor>src/main/assembly/connectorClientUITestConfigAssembly.xml</descriptor>
                                 <descriptor>src/main/assembly/connectorTestConfigAssembly.xml</descriptor>
-                                <descriptor>src/main/assembly/connectorClientStandaloneTestConfigAssembly.xml</descriptor>
+                                <descriptor>src/main/assembly/connectorClientApplicationTestConfigAssembly.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>
