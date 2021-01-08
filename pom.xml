@@ -54,6 +54,10 @@
             <id>${ecodex-snapshots-repo.id}</id>
             <url>${ecodex-snapshots-repo.url}</url>
         </snapshotRepository>
+        <site>
+            <id>labbox-site</id>
+            <url>http://www.ecodex.eu/labbox-site</url>
+        </site>
     </distributionManagement>
 
 
