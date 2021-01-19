@@ -17,35 +17,35 @@
             <partyIdTypes>
                 <partyIdType name="partyTypeUrn" value="urn:oasis:names:tc:ebcore:partyid-type:unregistered"/>
             </partyIdTypes>
-            <party name="gw01" endpoint="http://${gw01.host}:${gw01.port}/domibus/services/msh" allowChunking="false">
+            <party name="gw01" endpoint="http://localhost:8010/domibus/services/msh" allowChunking="false">
                 <identifier partyId="gw01" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw02" endpoint="http://${gw02.host}:${gw02.port}/domibus/services/msh" allowChunking="false">
+            <party name="gw02" endpoint="http://localhost:8020/domibus/services/msh" allowChunking="false">
                 <identifier partyId="gw02" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw03" endpoint="http://${gw03.host}:${gw03.port}/domibus/services/msh" allowChunking="false">
+            <party name="gw03" endpoint="http://localhost:8030/domibus/services/msh" allowChunking="false">
                 <identifier partyId="gw03" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw04" endpoint="http://${gw04.host}:${gw04.port}/domibus/services/msh" allowChunking="false">
+            <party name="gw04" endpoint="http://localhost:8040/domibus/services/msh" allowChunking="false">
                 <identifier partyId="gw04" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw05" endpoint="http://${gw05.host}:${gw05.port}/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw04" partyIdType="partyTypeUrn"/>
-            </party>
-            <party name="gw06" endpoint="http://${gw06.host}:${gw06.port}/domibus/services/msh" allowChunking="false">
+            <party name="gw05" endpoint="http://localhost:8050/domibus/services/msh" allowChunking="false">
                 <identifier partyId="gw05" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw07" endpoint="http://${gw07.host}:${gw07.port}/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw05" partyIdType="partyTypeUrn"/>
+            <party name="gw06" endpoint="http://localhost:8060/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw06" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw08" endpoint="http://${gw08.host}:${gw08.port}/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw05" partyIdType="partyTypeUrn"/>
+            <party name="gw07" endpoint="http://localhost:8070/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw07" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw09" endpoint="http://${gw09.host}:${gw09.port}/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw05" partyIdType="partyTypeUrn"/>
+            <party name="gw08" endpoint="http://localhost:8080/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw08" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw10" endpoint="http://${gw10.host}:${gw10.port}/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw05" partyIdType="partyTypeUrn"/>
+            <party name="gw09" endpoint="http://localhost:8090/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw09" partyIdType="partyTypeUrn"/>
+            </party>
+            <party name="gw10" endpoint="http://localhost:8100/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw10" partyIdType="partyTypeUrn"/>
             </party>
 
         </parties>
