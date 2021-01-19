@@ -456,9 +456,6 @@
           </plugin>
           <plugin>
             <artifactId>maven-resources-plugin</artifactId>
-			<configuration>
-				<includeEmptyDirs>true</includeEmptyDirs>
-			</configuration>
             <executions>
               <execution>
                 <id>copy-domibus-gw</id>
@@ -702,6 +699,9 @@
                 </configuration>
               </execution>
             </executions>
+            <configuration>
+              <includeEmptyDirs>true</includeEmptyDirs>
+            </configuration>
           </plugin>
         </plugins>
       </build>
