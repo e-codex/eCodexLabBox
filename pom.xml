@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-parent</artifactId>
-  <version>1.1.0-RELEASE</version>
+  <version>1.2.0-RELEASE</version>
   <packaging>pom</packaging>
   <description>Ecodex related stuff</description>
   <modules>
