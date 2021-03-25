@@ -22,10 +22,29 @@ As the e-codex components are java software you need a Java Runtime Environment 
 running this components. You also have to set your JAVA_HOME environment variable so 
 it points to your java runtime environment.
 
+## Installing the Software
+
+This folder contains a maven project which downloads the labbox. Just type
+
+mvn -De-codex.repo.username=<username> -De-codex.repo.password=<password> -Dlab.id=${labid} install
+
+install to download all the e-codex components and create a preconfigured labbox-environment with the
+corresponding id.
+
+If you do not have maven installed you can run
+
+mvnw.bat which uses the maven-wrapper project to download and install maven and execute it afterwards. 
+
+Anyway you have to setup the passwords for the e-codex repository. Username and password are available via the e-codex project: https://www.e-codex.eu
+
+NOTE: if you are behind a corporate proxy you should configure maven according to this guide:
+https://maven.apache.org/guides/mini/guide-proxies.html
+
 ## Required Internet Connection
 
 The connector is loading trusted lists of lists from the EC. For this purpose a internet connection
 should be available.
+  
 
 ## Required Ports 
 

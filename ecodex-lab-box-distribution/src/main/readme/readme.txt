@@ -6,9 +6,10 @@ install to download all the e-codex components.
 
 If you do not have maven installed you can run
 
-mvnw.bat -De-codex.repo.username=<username> -De-codex.repo.password=<password>
+mvnw.bat -De-codex.repo.username=<username> -De-codex.repo.password=<password> -Dlab.id={labid} install
 
-install which will download maven into this folder and use this installation to download the e-codex components.
+which will download maven into this folder and use this installation to download the e-codex components.
+Labid can be a labenvironment from 01 up to 05.
 
 Anyway you have to setup the passwords for the e-codex repository. Username and password are available via the e-codex project: https://www.e-codex.eu
 
