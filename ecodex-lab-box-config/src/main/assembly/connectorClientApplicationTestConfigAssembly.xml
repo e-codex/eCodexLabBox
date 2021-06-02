@@ -15,7 +15,7 @@
                 <exclude>*.sh</exclude>
             </excludes>
             <directory>${project.basedir}/src/main/resources/domibus-connector-client-application</directory>
-            <outputDirectory>domibus-connector-client</outputDirectory>
+            <outputDirectory>domibus-connector-client-application</outputDirectory>
         </fileSet>
         <fileSet>
             <includes>
@@ -23,7 +23,7 @@
             </includes>
             <fileMode>0755</fileMode>
             <directory>${project.basedir}/src/main/resources/domibus-connector-client-application</directory>
-            <outputDirectory>domibus-connector-client</outputDirectory>
+            <outputDirectory>domibus-connector-client-application</outputDirectory>
         </fileSet>
     </fileSets>
 
