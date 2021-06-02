@@ -43,10 +43,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <domibus-gw.version>4.2</domibus-gw.version>
-    <domibus-connector-plugin.version>4.1.4.1</domibus-connector-plugin.version>
-    <domibus-connector.version>4.2.6</domibus-connector.version>
-    <domibus-connector-client-application.version>4.2.1</domibus-connector-client-application.version>
-    <domibus-connector-client-ui.version>4.2.0-RELEASE</domibus-connector-client-ui.version>
+    <domibus-connector-plugin.version>4.2.0</domibus-connector-plugin.version>
+    <domibus-connector.version>4.3.0</domibus-connector.version>
+    <domibus-connector-client-application.version>4.3.0</domibus-connector-client-application.version>
     <h2database.version>1.4.200</h2database.version>
   </properties>
   <repositories>
@@ -233,7 +232,7 @@
                   <overWrite>true</overWrite>
                   <groupId>eu.domibus.connector-client</groupId>
                   <artifactId>domibusConnectorClientApplication</artifactId>
-                  <!-- <classifier>Standalone</classifier> -->
+                  <classifier>Standalone</classifier>
                   <version>${domibus-connector-client-application.version}</version>
                   <type>zip</type>
                 </artifactItem>
@@ -241,7 +240,7 @@
             </configuration>
           </execution>
           <!-- download domibus client UI -->
-          <execution>
+          <!-- <execution>
             <id>copy-domibus-connector-client-ui</id>
             <phase>package</phase>
             <goals>
@@ -262,7 +261,7 @@
                 </artifactItem>
               </artifactItems>
             </configuration>
-          </execution>
+          </execution> -->
           <execution>
             <id>download-pmode-uploader</id>
             <phase>package</phase>
@@ -364,14 +363,14 @@
                   <version>${project.version}</version>
                   <type>zip</type>
                 </artifactItem>
-                <artifactItem>
+                <!--<artifactItem>
                   <overWrite>true</overWrite>
                   <groupId>${project.groupId}</groupId>
                   <artifactId>ecodex-lab-box-config</artifactId>
                   <classifier>connectorclientuitestconfig</classifier>
                   <version>${project.version}</version>
                   <type>zip</type>
-                </artifactItem>
+                </artifactItem>-->
                 <artifactItem>
                   <overWrite>true</overWrite>
                   <groupId>${project.groupId}</groupId>
@@ -456,6 +455,9 @@
           </plugin>
           <plugin>
             <artifactId>maven-resources-plugin</artifactId>
+			<configuration>
+        <includeEmptyDirs>true</includeEmptyDirs>
+    </configuration>
             <executions>
               <execution>
                 <id>copy-domibus-gw</id>
@@ -621,7 +623,7 @@
                   </resources>
                 </configuration>
               </execution>
-              <execution>
+              <!-- <execution>
                 <id>copy-domibus-connector-client-ui</id>
                 <phase>install</phase>
                 <goals>
@@ -637,7 +639,7 @@
                     </resource>
                   </resources>
                 </configuration>
-              </execution>
+              </execution> -->
               <execution>
                 <id>copy-domibus-connector-client-keystores</id>
                 <phase>install</phase>
