@@ -1,7 +1,6 @@
 package eu.ecodex.labbox.ui.view;
 
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,9 +13,10 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.labboxes.LabboxLayout;
 import eu.ecodex.labbox.ui.view.labboxes.LabboxOverview;
+import org.springframework.stereotype.Component;
 
 @UIScope
-@org.springframework.stereotype.Component
+@Component
 @Push
 public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
 

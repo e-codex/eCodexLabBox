@@ -18,6 +18,6 @@ public class LabboxOverview extends VerticalLayout implements BeforeEnterObserve
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-//        event.forwardTo(MessagesList.class);
+//        event.forwardTo(Some.class);
     }
 }
