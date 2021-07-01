@@ -20,7 +20,7 @@ public class DomibusConnectorAdminHeader extends HorizontalLayout implements Bef
 		
 		
 		Div domibusConnector = new Div();
-		LumoLabel dC = new LumoLabel("domibusConnector - Administration");
+		LumoLabel dC = new LumoLabel("Labbox - UI");
 		dC.getStyle().set("font-size", "30px");
 		dC.getStyle().set("font-style", "italic");
 		dC.getStyle().set("color", "grey");

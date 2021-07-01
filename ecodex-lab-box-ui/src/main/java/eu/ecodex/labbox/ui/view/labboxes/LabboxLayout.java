@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 public class LabboxLayout extends VerticalLayout implements BeforeEnterObserver, RouterLayout {
 
     public static final String ROUTE_PREFIX = "labbox";
-    public static final String TAB_GROUP_NAME = "Labbox";
+    public static final String TAB_GROUP_NAME = "Labboxes";
 
     private final DCTabHandler DCTabHandler = new DCTabHandler();
     private final ApplicationContext applicationContext;

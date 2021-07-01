@@ -34,7 +34,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         tabManager.setTabFontSize("bigger");
         tabManager
                 .createTab()
-                .withLabel("Labbox")
+                .withLabel("Labboxes")
                 .withIcon(new Icon(VaadinIcon.LIST))
                 .addForComponent(LabboxOverview.class);
 
