@@ -88,6 +88,7 @@ public class DCTabHandler implements BeforeEnterObserver {
     private void setTabEnabledOnUserRole() {
         pagesToTab.entrySet().stream()
                 .forEach(entry -> {
+                    // TODO re-enable Roles
 //                    entry.getValue().setEnabled(SecurityUtils.isUserAllowedToView(entry.getKey()));
                     entry.getValue().setEnabled(true);
                 });

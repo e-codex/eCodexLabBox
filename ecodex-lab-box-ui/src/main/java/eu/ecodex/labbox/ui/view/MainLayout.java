@@ -1,6 +1,7 @@
 package eu.ecodex.labbox.ui.view;
 
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,6 +12,8 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
+import eu.ecodex.labbox.ui.view.labboxes.LabboxLayout;
+import eu.ecodex.labbox.ui.view.labboxes.LabboxOverview;
 
 @UIScope
 @org.springframework.stereotype.Component
@@ -25,56 +28,38 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         setPrimarySection(Section.DRAWER);
 
         VerticalLayout topBar = new VerticalLayout();
-//        topBar.add(new DomibusConnectorAdminHeader());
+        topBar.add(new DomibusConnectorAdminHeader());
         addToNavbar(topBar);
 
         tabManager.setTabFontSize("bigger");
         tabManager
                 .createTab()
-                .withLabel("Messages")
+                .withLabel("Labbox")
                 .withIcon(new Icon(VaadinIcon.LIST))
-                .addForComponent(HelloWorldView.class);
+                .addForComponent(LabboxOverview.class);
 
-//        tabManager
-//                .createTab()
-//                .withLabel("PModes")
-//                .withIcon(new Icon(VaadinIcon.FILE_CODE))
-//                .addForComponent(PmodeOverview.class);
-//
-//        tabManager
-//                .createTab()
-//                .withLabel("Configuration")
-//                .withIcon(new Icon(VaadinIcon.COG_O))
-//                .addForComponent(ConfigurationOverview.class);
-//
-//        tabManager
-//                .createTab()
-//                .withLabel("Users")
-//                .withIcon(new Icon(VaadinIcon.USERS))
-//                .addForComponent(UserOverview.class);
-//
-//        tabManager
-//                .createTab()
-//                .withLabel("Info")
-//                .withIcon(VaadinIcon.INFO_CIRCLE_O)
-//                .addForComponent(Info.class);
-//
-//        tabManager
-//                .createTab()
-//                .withLabel("Logout")
-//                .withIcon(new Icon(VaadinIcon.ARROW_RIGHT))
-//                .addForComponent(LogoutView.class);
-//
-//        tabs = tabManager.getTabs();
-//        tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
-//
-//        topBar.add(tabs);
+        tabManager
+                .createTab()
+                .withLabel("Configuration")
+                .withIcon(new Icon(VaadinIcon.FILE_CODE));
 
-//        addToDrawer(menuTabs);
+        tabManager
+                .createTab()
+                .withLabel("Configuration")
+                .withIcon(new Icon(VaadinIcon.COG_O));
+
+        tabManager
+                .createTab()
+                .withLabel("Info")
+                .withIcon(VaadinIcon.INFO_CIRCLE_O);
+
+        tabs = tabManager.getTabs();
+        tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
+
+        topBar.add(tabs);
     }
 
     public void beforeEnter(BeforeEnterEvent event) {
-//        currentlyLoggedInUser.setText("User: " + SecurityUtils.getUsername());
         tabManager.beforeEnter(event);
     }
 }
