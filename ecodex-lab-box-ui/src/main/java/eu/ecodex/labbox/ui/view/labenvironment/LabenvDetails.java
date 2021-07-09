@@ -1,29 +1,30 @@
-package eu.ecodex.labbox.ui.view.labboxes;
+package eu.ecodex.labbox.ui.view.labenvironment;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
+import eu.ecodex.labbox.ui.domain.Labenv;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 @Component
-@Route(value = Labbox01.ROUTE, layout = LabboxLayout.class)
 @UIScope
-@TabMetadata(title = "Labbox 01", tabGroup = LabboxLayout.TAB_GROUP_NAME)
-public class Labbox01 extends VerticalLayout {
+@Route(value = LabenvDetails.ROUTE, layout = LabenvLayout.class)
+@TabMetadata(title = "Lab Details", tabGroup = LabenvLayout.TAB_GROUP_NAME)
+public class LabenvDetails extends VerticalLayout implements HasUrlParameter<Integer> {
 
-    public static final String ROUTE = "labbox01";
+    public static final String ROUTE = "labdetails";
 
     @PostConstruct
     void init() {
@@ -52,5 +53,18 @@ public class Labbox01 extends VerticalLayout {
 
 //        Platform dependent
 //        Runtime.getRuntime().exec("explorer.exe /select, " + workingDirectory);
+    }
+
+    public void show(Labenv lab) {
+        UI.getCurrent().navigate(LabenvDetails.class, lab.getId());
+    }
+
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Integer parameter) {
+        if(parameter!=null) {
+            // TODO load labenv
+        }else {
+            // TODO show maybe a CREATE View ???
+        }
     }
 }

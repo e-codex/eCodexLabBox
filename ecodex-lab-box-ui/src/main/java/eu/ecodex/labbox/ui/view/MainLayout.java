@@ -11,8 +11,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
-import eu.ecodex.labbox.ui.view.labboxes.LabboxLayout;
-import eu.ecodex.labbox.ui.view.labboxes.LabboxOverview;
+import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import org.springframework.stereotype.Component;
 
 @UIScope
@@ -34,9 +33,9 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         tabManager.setTabFontSize("bigger");
         tabManager
                 .createTab()
-                .withLabel("Labboxes")
+                .withLabel("Lab Environments")
                 .withIcon(new Icon(VaadinIcon.LIST))
-                .addForComponent(LabboxOverview.class);
+                .addForComponent(LabenvOverview.class);
 
         tabManager
                 .createTab()

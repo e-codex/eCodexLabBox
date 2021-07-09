@@ -1,4 +1,4 @@
-package eu.ecodex.labbox.ui.view.labboxes;
+package eu.ecodex.labbox.ui.view.labenvironment;
 
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 @UIScope
 @Component
-@Route(value = LabboxOverview.ROUTE, layout = LabboxLayout.class)
+@Route(value = LabenvOverview.ROUTE, layout = LabenvLayout.class)
 //@RoleRequired(role = "ADMIN")
-public class LabboxOverview extends VerticalLayout implements BeforeEnterObserver {
+public class LabenvOverview extends VerticalLayout implements BeforeEnterObserver {
 
     public static final String ROUTE = "";
 

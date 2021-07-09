@@ -12,11 +12,13 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
+import eu.ecodex.labbox.ui.view.labenvironment.LabenvDetails;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,7 +109,8 @@ public class DCTabHandler implements BeforeEnterObserver {
         private Component component;
         private Class<? extends Component> clz;
 
-        private TabBuilder() {}
+        private TabBuilder() {
+        }
 
         public TabBuilder withIcon(Icon icon) {
             this.tabIcon = icon;
@@ -150,12 +153,9 @@ public class DCTabHandler implements BeforeEnterObserver {
             tabMenu.add(tab);
             return tab;
         }
-
-
     }
 
-    public void createTabs(ApplicationContext applicationContext, String group)
-    {
+    public void createTabs(ApplicationContext applicationContext, String group) {
         applicationContext.getBeansWithAnnotation(TabMetadata.class)
                 .entrySet().stream()
                 .filter(e -> ((Component) e.getValue()).getClass().getAnnotation(TabMetadata.class).tabGroup().equals(group))
@@ -167,6 +167,15 @@ public class DCTabHandler implements BeforeEnterObserver {
                             .withLabel(annotation.title())
                             .addForComponent(component.getClass());
                 });
+    }
+
+    public void createTabReplicas(List<LabenvDetails> labenvDetails) {
+        for (int i = 0; i < labenvDetails.size(); ++i) {
+            this.createTab()
+                    .withLabel("Labenv " + i)
+                    .addForComponent(LabenvDetails.class);
+
+        }
     }
 }
 
