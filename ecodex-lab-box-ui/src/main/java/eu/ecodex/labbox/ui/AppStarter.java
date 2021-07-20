@@ -2,10 +2,13 @@ package eu.ecodex.labbox.ui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(scanBasePackages = "eu.ecodex.labbox.ui")
 public class AppStarter {
     public static void main(String[] args) {
-        SpringApplication.run(AppStarter.class);
+        // .headless(false) is needed to open File Browser via Java Desktop API
+        new SpringApplicationBuilder(AppStarter.class).headless(false).run(args);
     }
 }
