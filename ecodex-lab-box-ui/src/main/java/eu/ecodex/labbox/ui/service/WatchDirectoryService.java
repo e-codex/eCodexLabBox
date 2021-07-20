@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.service;
 
+import lombok.NoArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,7 @@ import java.util.Set;
 public class WatchDirectoryService {
 
     public Set<Path> paths = new HashSet<>();
-    private final Path folder;
-
-    WatchDirectoryService(Path folder) {
-        this.folder = folder;
-    }
+    private Path folder;
 
     @Async
     public void watchFilesystem() {
