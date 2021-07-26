@@ -10,6 +10,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.domain.Labenv;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import java.net.URISyntaxException;
 @Component
 @UIScope
 @Route(value = LabenvDetails.ROUTE, layout = LabenvLayout.class)
+@Order(2)
 @TabMetadata(title = "Lab Details", tabGroup = LabenvLayout.TAB_GROUP_NAME)
 public class LabenvDetails extends VerticalLayout implements HasUrlParameter<Integer> {
 

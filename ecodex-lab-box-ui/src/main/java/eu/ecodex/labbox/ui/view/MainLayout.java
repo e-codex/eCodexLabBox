@@ -12,15 +12,16 @@ import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.stereotype.Component;
 
 @UIScope
 @Component
+// TODO Check if really needed
 @Push
 public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
 
-    private Tabs tabs;
-    private DCTabHandler tabManager = new DCTabHandler();
+    private final DCTabHandler tabManager = new DCTabHandler();
 
     public MainLayout() {
 
@@ -52,10 +53,8 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
                 .withLabel("Info")
                 .withIcon(VaadinIcon.INFO_CIRCLE_O);
 
-        tabs = tabManager.getTabs();
-        tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
-
-        topBar.add(tabs);
+        tabManager.getTabs().setOrientation(Tabs.Orientation.HORIZONTAL);
+        topBar.add(tabManager.getTabs());
     }
 
     public void beforeEnter(BeforeEnterEvent event) {

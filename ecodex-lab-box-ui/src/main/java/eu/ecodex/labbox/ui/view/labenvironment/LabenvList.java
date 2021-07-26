@@ -8,6 +8,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.service.WatchDirectoryService;
 import eu.ecodex.labbox.ui.service.WatchFilesystemService;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import java.io.IOException;
 @Component
 @UIScope
 @Route(value = LabenvList.ROUTE, layout = LabenvLayout.class)
+@Order(1)
 @TabMetadata(title = "Your Labs", tabGroup = LabenvLayout.TAB_GROUP_NAME)
 public class LabenvList extends VerticalLayout
 {
