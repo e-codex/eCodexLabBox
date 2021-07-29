@@ -4,9 +4,8 @@ import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.domain.Labenv;
 import eu.ecodex.labbox.ui.domain.events.CreatedLabboxInFilesystemEvent;
 import lombok.Getter;
-import org.apache.commons.lang3.NotImplementedException;
+import lombok.Setter;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +15,6 @@ import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Service
@@ -29,7 +27,8 @@ public class WatchFilesystemService {
     private int labCount = 0;
 
     @Getter
-    private Path containsLabenvDiretories;
+    @Setter
+    private Path labenvHomeDirectory;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -41,7 +40,7 @@ public class WatchFilesystemService {
     @PostConstruct
     void init() throws URISyntaxException {
         // TODO do not hardcode this
-        this.containsLabenvDiretories = new File(AppStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toPath();
+        this.labenvHomeDirectory = new File(AppStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toPath();
     }
 
     // run once on startup
@@ -50,7 +49,7 @@ public class WatchFilesystemService {
         labenvironments.clear();
         Set<Integer> ids = new HashSet<>();
 
-        final List<Path> labenvPaths = Files.list(containsLabenvDiretories)
+        final List<Path> labenvPaths = Files.list(labenvHomeDirectory)
                 .filter(d -> d.getFileName().toString().startsWith("labenv"))
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());

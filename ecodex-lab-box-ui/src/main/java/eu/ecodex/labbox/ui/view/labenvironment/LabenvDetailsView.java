@@ -21,10 +21,10 @@ import java.net.URISyntaxException;
 
 @Component
 @UIScope
-@Route(value = LabenvDetails.ROUTE, layout = LabenvLayout.class)
+@Route(value = LabenvDetailsView.ROUTE, layout = LabenvLayout.class)
 @Order(2)
 @TabMetadata(title = "Lab Details", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvDetails extends VerticalLayout implements HasUrlParameter<Integer> {
+public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<Integer> {
 
     public static final String ROUTE = "labdetails";
 
@@ -58,7 +58,7 @@ public class LabenvDetails extends VerticalLayout implements HasUrlParameter<Int
     }
 
     public void show(Labenv lab) {
-        UI.getCurrent().navigate(LabenvDetails.class, lab.getId());
+        UI.getCurrent().navigate(LabenvDetailsView.class, lab.getId());
     }
 
     @Override

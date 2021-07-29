@@ -4,18 +4,16 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.domain.Labenv;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
 public class LabenvGrid extends Grid<Labenv> {
 
-    private final LabenvDetails details;
+    private final LabenvDetailsView details;
 
-    public LabenvGrid(LabenvDetails details) {
+    public LabenvGrid(LabenvDetailsView details) {
         super();
         this.details = details;
 

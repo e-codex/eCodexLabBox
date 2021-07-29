@@ -12,7 +12,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
-import eu.ecodex.labbox.ui.view.labenvironment.LabenvDetails;
+import eu.ecodex.labbox.ui.view.labenvironment.LabenvDetailsView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
