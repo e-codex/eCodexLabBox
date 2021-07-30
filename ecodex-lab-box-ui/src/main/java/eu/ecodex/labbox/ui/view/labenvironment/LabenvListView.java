@@ -8,11 +8,9 @@ import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
-import eu.ecodex.labbox.ui.service.WatchFilesystemService;
+import eu.ecodex.labbox.ui.controller.DirectoryController;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 @UIScope
@@ -25,12 +23,12 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
 
     private final LabenvDetailsView details;
 
-    private final WatchFilesystemService fsService;
+    private final DirectoryController directoryController;
 
     private LabenvGrid grid;
 
-    public LabenvListView(WatchFilesystemService fsService, LabenvDetailsView details) {
-        this.fsService = fsService;
+    public LabenvListView(DirectoryController directoryController, LabenvDetailsView details) {
+        this.directoryController = directoryController;
         this.details = details;
 
         grid = new LabenvGrid(details);
@@ -38,13 +36,8 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
         Button scanForLabs = new Button();
         scanForLabs.setText("Reload from Disk");
         scanForLabs.addClickListener(e -> {
-            try {
-                fsService.scanForLabDirectories();
-//                grid.setItems(fsService.getLabenvironments());
-            } catch (IOException ioException) {
-                // TODO show error to user
-                ioException.printStackTrace();
-            }
+            directoryController.scanForLabDirectories();
+            grid.setItems(directoryController.getLabenvironments());
         });
 
         VerticalLayout main = new VerticalLayout(grid);
@@ -56,12 +49,7 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        try {
-            fsService.scanForLabDirectories();
-        } catch (IOException e) {
-            // TODO notify user
-            e.printStackTrace();
-        }
-        grid.setItems(fsService.getLabenvironments());
+        directoryController.scanForLabDirectories();
+        grid.setItems(directoryController.getLabenvironments());
     }
 }

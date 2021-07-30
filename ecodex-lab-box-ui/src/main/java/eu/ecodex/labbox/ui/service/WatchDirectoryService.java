@@ -1,70 +1,94 @@
-//package eu.ecodex.labbox.ui.service;
-//
-//import lombok.NoArgsConstructor;
-//import org.springframework.scheduling.annotation.Async;
-//import org.springframework.stereotype.Service;
-//
-//import java.io.IOException;
-//import java.nio.file.*;
-//import java.util.HashSet;
-//import java.util.Set;
-//
-//@Service
-//public class WatchDirectoryService {
-//
-//    public Set<Path> paths = new HashSet<>();
-//    private Path folder;
-//
-//    @Async
-//    public void watchFilesystem() {
-//        java.nio.file.WatchService watchService = null;
-//        try {
-//            watchService = FileSystems.getDefault().newWatchService();
-//        } catch (IOException e) {
-//            // TODO Logging
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            folder.register(
-//                    watchService,
-//                    StandardWatchEventKinds.ENTRY_CREATE,
-//                    StandardWatchEventKinds.ENTRY_DELETE,
-//                    StandardWatchEventKinds.ENTRY_MODIFY);
-//        } catch (IOException e) {
-//            // TODO Logging
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            WatchKey key;
-//            while ((key = watchService.take()) != null) {
-//                for (WatchEvent<?> event : key.pollEvents()) {
-//
-//                    System.out.println(
-//                            "Event kind:" + event.kind()
-//                                    + ". File affected: " + event.context() + ".");
-//
-//                    if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_CREATE.name())) {
-//
-////                        CreatedLabboxInFilesystemEvent testEvent = new CreatedLabboxInFilesystemEvent(this, "testtesttestes");
-////                        applicationEventPublisher.publishEvent(testEvent);
-//
-//                        paths.add(folder.resolveSibling(event.context().toString()));
-//                    }
-//                    if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_DELETE.name())) {
-//                        paths.remove(folder.resolveSibling(event.context().toString()));
-//                    }
-//                    if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_MODIFY.name())) {
-//
-//                    }
-//                }
-//                key.reset();
-//            }
-//
-//        } catch (InterruptedException e) {
-//            // TODO Logging
-//            e.printStackTrace();
-//        }
-//    }
-//}
+package eu.ecodex.labbox.ui.service;
+
+import eu.ecodex.labbox.ui.domain.Labenv;
+import eu.ecodex.labbox.ui.domain.events.CreatedLabboxInFilesystemEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PreDestroy;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Set;
+
+@Slf4j
+@Service
+public class WatchDirectoryService {
+
+    ApplicationEventPublisher applicationEventPublisher;
+
+    WatchDirectoryService(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
+
+    @Getter
+    @Setter
+    WatchService watchService;
+
+    @Async
+    public void launchMonitoring() {
+        log.info("START_MONITORING");
+        try {
+            WatchKey key;
+            while ((key = watchService.take()) != null) {
+                for (WatchEvent<?> event : key.pollEvents()) {
+
+                    System.out.println(
+                            "Event kind:" + event.kind()
+                                    + ". File affected: " + event.context() + ".");
+
+                    if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_CREATE.name())) {
+
+                        CreatedLabboxInFilesystemEvent testEvent = new CreatedLabboxInFilesystemEvent(this, "testtesttestes");
+                        applicationEventPublisher.publishEvent(testEvent);
+
+                        // TODO I think I need to handle this elsewhere and pass the relevant data in the event
+                        // otherwise I end in cyclic dependencies between this and the service that uses this
+                        // this component just creates the events and the service starts, stops the monitoring
+                        // and listens to the events
+
+//                        Labenv l = Labenv.builder().path(watchDirectoryConfig.getLabenvHomeDirectory().resolveSibling(event.context().toString())).build();
+//                        labenvironments.add(l);
+
+
+                    }
+                    if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_DELETE.name())) {
+//                        Labenv l = Labenv.builder().path(watchDirectoryConfig.getLabenvHomeDirectory().resolveSibling(event.context().toString())).build();
+//                        labenvironments.remove(l);
+                    }
+                    if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_MODIFY.name())) {
+                        // TODO delete this branch
+                        // I think this is only used when permissions are changed or so, renaming is just a delete and create
+                    }
+
+                }
+                key.reset();
+            }
+        } catch (ClosedWatchServiceException expected) {
+//            Throws:
+//            ClosedWatchServiceException – if this watch service is closed, or it is closed while waiting for the next key
+            log.debug("restarting watcher in different directory");
+        } catch (InterruptedException e) {
+            log.warn("interrupted exception for monitoring service");
+        }
+    }
+
+    @PreDestroy
+    public void stopMonitoring() {
+        log.info("STOP_MONITORING");
+
+        if (watchService != null) {
+            try {
+                watchService.close();
+            } catch (IOException e) {
+                log.error("exception while closing the monitoring service");
+            }
+        }
+    }
+}

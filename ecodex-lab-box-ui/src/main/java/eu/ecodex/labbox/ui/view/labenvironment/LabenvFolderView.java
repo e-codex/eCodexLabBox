@@ -1,7 +1,5 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -10,27 +8,27 @@ import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
-import eu.ecodex.labbox.ui.service.WatchFilesystemService;
+import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
 
 @org.springframework.stereotype.Component
 @UIScope
 @Route(value = LabenvFolderView.ROUTE, layout = LabenvLayout.class)
-@TabMetadata(title = "Lab Root Folder", tabGroup = LabenvLayout.TAB_GROUP_NAME)
+@TabMetadata(title = "Lab Home Directory", tabGroup = LabenvLayout.TAB_GROUP_NAME)
 public class LabenvFolderView extends VerticalLayout implements AfterNavigationObserver {
 
-    public static final String ROUTE = "rootfolder";
+    public static final String ROUTE = "labhomedir";
 
-    private WatchFilesystemService watchFilesystemService;
+    private DirectoryController directoryController;
 
     private TextField pathToLabHomeField;
 
-    public LabenvFolderView(WatchFilesystemService watchFilesystemService) {
-        this.watchFilesystemService = watchFilesystemService;
+    public LabenvFolderView(DirectoryController directoryController) {
+        this.directoryController = directoryController;
         this.pathToLabHomeField = new TextField();
         pathToLabHomeField.setWidth("100%");
 
-        Binder<WatchFilesystemService> binder = new Binder<>();
+        Binder<DirectoryController> binder = new Binder<>();
         binder.forField(pathToLabHomeField)
 //                .withValidator( path -> new File(path).exists(), "My Message")
 //                .withValidationStatusHandler( status -> {
@@ -39,15 +37,15 @@ public class LabenvFolderView extends VerticalLayout implements AfterNavigationO
 //                    pathStatus.setVisible(status.isError());
 //                })
                 .withConverter(new StringToPathConverter())
-                .bind(WatchFilesystemService::getLabenvHomeDirectory, WatchFilesystemService::setLabenvHomeDirectory);
+                .bind(DirectoryController::getLabenvHomeDirectory, DirectoryController::setLabenvHomeDirectory);
 
-        binder.setBean(watchFilesystemService);
+        binder.setBean(directoryController);
 
         add(pathToLabHomeField);
     }
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        pathToLabHomeField.setValue(watchFilesystemService.getLabenvHomeDirectory().toString());
+        pathToLabHomeField.setValue(directoryController.getLabenvHomeDirectory().toString());
     }
 }
