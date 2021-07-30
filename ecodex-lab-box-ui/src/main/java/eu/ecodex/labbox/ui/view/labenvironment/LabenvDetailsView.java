@@ -10,6 +10,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.domain.Labenv;
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -24,22 +25,43 @@ import java.net.URISyntaxException;
 @Route(value = LabenvDetailsView.ROUTE, layout = LabenvLayout.class)
 @Order(2)
 @TabMetadata(title = "Lab Details", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<Integer> {
+public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<Integer>, AfterNavigationObserver {
 
     public static final String ROUTE = "labdetails";
 
     @PostConstruct
     void init() {
-        Button button = new Button(new Icon(VaadinIcon.BOMB));
-        button.setText("Open Directory");
-        button.addClickListener(c -> {
+        Button launchAll = new Button(new Icon(VaadinIcon.BOMB));
+        launchAll.setText("Start Lab");
+        launchAll.addClickListener(c -> {
+            try {
+                startLab();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Button openDir = new Button(new Icon(VaadinIcon.FOLDER_OPEN));
+        openDir.setText("Open Directory");
+        openDir.addClickListener(c -> {
             try {
                 openLabboxDirectory();
             } catch (URISyntaxException | IOException e) {
                 e.printStackTrace();
             }
         });
-        add(button);
+        add(openDir);
+    }
+
+    void startLab() throws IOException {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            // TODO maybe better to use ProcessBuilder
+            Runtime.getRuntime().exec("explorer.exe /select, ");
+        } else if (SystemUtils.IS_OS_LINUX) {
+
+        } else if (SystemUtils.IS_OS_MAC) {
+
+        }
     }
 
     void openLabboxDirectory() throws URISyntaxException, IOException {
@@ -68,5 +90,10 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         }else {
             // TODO show maybe a CREATE View ???
         }
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+
     }
 }
