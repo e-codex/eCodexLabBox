@@ -10,7 +10,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.domain.Labenv;
-import org.apache.commons.lang3.SystemUtils;
+import eu.ecodex.labbox.ui.service.PlatformService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +28,12 @@ import java.net.URISyntaxException;
 public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<Integer>, AfterNavigationObserver {
 
     public static final String ROUTE = "labdetails";
+
+    final PlatformService platformService;
+
+    public LabenvDetailsView(PlatformService platformService) {
+        this.platformService = platformService;
+    }
 
     @PostConstruct
     void init() {
@@ -54,13 +60,16 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
     }
 
     void startLab() throws IOException {
-        if (SystemUtils.IS_OS_WINDOWS) {
+        if (platformService.isWindows()) {
             // TODO maybe better to use ProcessBuilder
             Runtime.getRuntime().exec("explorer.exe /select, ");
-        } else if (SystemUtils.IS_OS_LINUX) {
+        } else if (platformService.isLinux()) {
 
-        } else if (SystemUtils.IS_OS_MAC) {
+        } else if (platformService.isMacOS()) {
 
+        } else {
+            // TODO show error
+            // can't exectue command on unknown platform
         }
     }
 
