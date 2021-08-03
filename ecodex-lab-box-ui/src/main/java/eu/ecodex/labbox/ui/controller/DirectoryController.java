@@ -2,6 +2,7 @@ package eu.ecodex.labbox.ui.controller;
 
 import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
 import eu.ecodex.labbox.ui.domain.Labenv;
+import eu.ecodex.labbox.ui.service.DomainMapperService;
 import eu.ecodex.labbox.ui.service.WatchDirectoryService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,17 +18,19 @@ import java.util.stream.Collectors;
 @Controller
 public class DirectoryController {
 
-    WatchDirectoryConfig watchDirectoryConfig;
-    WatchDirectoryService watchDirectoryService;
+    private final WatchDirectoryConfig watchDirectoryConfig;
+    private final WatchDirectoryService watchDirectoryService;
+    private final DomainMapperService domainMapperService;
 
-    // TODO listen for events from
+    // TODO listen for events from directory watcher
 
     @Getter
-    private final Set<Labenv> labenvironments;
+    private Set<Labenv> labenvironments;
 
-    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService) {
+    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService, DomainMapperService domainMapperService) {
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.watchDirectoryService = watchDirectoryService;
+        this.domainMapperService = domainMapperService;
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
         this.labenvironments = new HashSet<>();
 //        new Thread(DirectoryService::launchMonitoring).start();
@@ -44,7 +47,7 @@ public class DirectoryController {
 //    }
 
     public void startMonitoring() {
-        watchDirectoryService.launchMonitoring();
+        watchDirectoryService.startMonitoring();
     }
 
     public void stopMonitoring() {
@@ -61,49 +64,17 @@ public class DirectoryController {
     // run once on startup
     public void scanForLabDirectories() {
 
-        // TODO this still has bugs
-
-        labenvironments.clear();
-
-        List<Path> labenvPaths = new ArrayList<>();
         try {
-            labenvPaths = Files.list(watchDirectoryConfig.getLabenvHomeDirectory())
+            labenvironments = Files.list(watchDirectoryConfig.getLabenvHomeDirectory())
+                    .filter(Files::isDirectory)
                     .filter(d -> d.getFileName().toString().startsWith("labenv"))
-                    .sorted(Comparator.naturalOrder())
-                    .collect(Collectors.toList());
+                    .map(domainMapperService::pathToLabenv)
+                    .collect(Collectors.toSet());
         } catch (IOException e) {
-            // TODO Logging and user notification
+            e.printStackTrace();
+            // TODO Logging
         }
 
-        for (Path labenvPath : labenvPaths) {
-            String[] nameAndNumberOfDirectory = labenvPath.getFileName().toString().split("labenv");
-
-            if (nameAndNumberOfDirectory.length > 0) {
-                //skip if
-//                final String s = nameAndNumberOfDirectory[1];
-//                int parse = 0;
-//                try {
-//                    parse = Integer.parseInt(s);
-//                } catch (NumberFormatException ignored) {}
-//                if (parse == i+1) {
-//                    continue;
-//                }
-
-                int labcount = 1;
-                boolean success = false;
-                while (!success) {
-                    try {
-                        Files.move(labenvPath, labenvPath.resolveSibling("labenv" + labcount++));
-                        success = true;
-                    } catch (FileAlreadyExistsException ignore) {
-                    } catch (IOException e) {
-                        // TODO logging and user notifications
-                    }
-                }
-                Labenv l = Labenv.builder().id(labcount).path(labenvPath).build();
-                labenvironments.add(l);
-            }
-        }
     }
 
 

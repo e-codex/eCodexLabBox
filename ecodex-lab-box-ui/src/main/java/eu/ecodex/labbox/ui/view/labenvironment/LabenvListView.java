@@ -9,6 +9,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
+import eu.ecodex.labbox.ui.domain.Labenv;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -36,8 +37,11 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
         Button scanForLabs = new Button();
         scanForLabs.setText("Reload from Disk");
         scanForLabs.addClickListener(e -> {
-            directoryController.scanForLabDirectories();
-            grid.setItems(directoryController.getLabenvironments());
+            // TODO BUG when pressing reload from disk for the first time
+            // then the grid contains the wrong paths
+            // after pressing again, it works again
+            this.directoryController.scanForLabDirectories();
+            this.grid.setItems(this.directoryController.getLabenvironments());
         });
 
         VerticalLayout main = new VerticalLayout(grid);

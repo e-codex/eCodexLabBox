@@ -13,10 +13,8 @@ public class PlatformService {
         if (OS == null) {
             if (SystemUtils.IS_OS_WINDOWS) {
                 OS = OSType.Windows;
-            } else if (SystemUtils.IS_OS_LINUX) {
-                OS = OSType.Linux;
-            } else if (SystemUtils.IS_OS_MAC) {
-                OS = OSType.MacOS;
+            } else if (SystemUtils.IS_OS_UNIX) {
+                OS = OSType.UNIX;
             } else {
                 OS = OSType.Other;
             }
@@ -28,11 +26,8 @@ public class PlatformService {
         return getOsName().equals(OSType.Windows);
     }
 
-    public boolean isLinux() {
-        return getOsName().equals(OSType.Linux);
+    public boolean isUnix() {
+        return getOsName().equals(OSType.UNIX);
     }
 
-    public boolean isMacOS() {
-        return getOsName().equals(OSType.MacOS);
-    }
 }

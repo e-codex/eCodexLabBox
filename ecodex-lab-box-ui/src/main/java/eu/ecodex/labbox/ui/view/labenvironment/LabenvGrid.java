@@ -21,7 +21,7 @@ public class LabenvGrid extends Grid<Labenv> {
         this.setHeightByRows(true);
 
         addComponentColumn(this::createShowDetailsButton).setHeader("Details").setWidth("15%");
-        addColumn(Labenv::getId).setHeader("Id").setWidth("10%");
+        addColumn(Labenv::getFolderName).setHeader("(Folder) Name").setWidth("10%");
         addColumn(Labenv::getPath).setHeader("Path").setWidth("60%");
         addComponentColumn(this::createOpenFileBrowserButton).setHeader("Open in File Manager").setWidth("15%");
     }

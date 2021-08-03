@@ -32,7 +32,7 @@ public class WatchDirectoryService {
     WatchService watchService;
 
     @Async
-    public void launchMonitoring() {
+    public void startMonitoring() {
         log.info("START_MONITORING");
         try {
             WatchKey key;

@@ -17,7 +17,7 @@ import eu.ecodex.labbox.ui.utils.StringToPathConverter;
 @TabMetadata(title = "Lab Home Directory", tabGroup = LabenvLayout.TAB_GROUP_NAME)
 public class LabenvFolderView extends VerticalLayout implements AfterNavigationObserver {
 
-    public static final String ROUTE = "labhomedir";
+    public static final String ROUTE = "homedir";
 
     private DirectoryController directoryController;
 
@@ -39,6 +39,7 @@ public class LabenvFolderView extends VerticalLayout implements AfterNavigationO
                 .withConverter(new StringToPathConverter())
                 .bind(DirectoryController::getLabenvHomeDirectory, DirectoryController::setLabenvHomeDirectory);
 
+        // it is not possible to call DirectoryController::setLabenvHomeDirectory without this
         binder.setBean(directoryController);
 
         add(pathToLabHomeField);

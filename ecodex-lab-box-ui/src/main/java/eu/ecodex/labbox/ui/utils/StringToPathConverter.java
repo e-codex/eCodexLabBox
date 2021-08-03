@@ -1,6 +1,7 @@
 package eu.ecodex.labbox.ui.utils;
 
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
