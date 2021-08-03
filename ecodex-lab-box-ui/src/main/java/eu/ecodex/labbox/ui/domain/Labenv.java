@@ -8,10 +8,14 @@ import lombok.Getter;
 
 import java.nio.file.Path;
 
-@Getter
 @Builder
 @EqualsAndHashCode
 public class Labenv {
-    private final int id;
+
+    @Getter
+    private final String folderName;
+
+    @Getter
     private final Path path;
+
 }

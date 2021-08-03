@@ -4,69 +4,212 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.labbox.ui.AppStarter;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
+import eu.ecodex.labbox.ui.controller.DirectoryController;
+import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.domain.Labenv;
+import eu.ecodex.labbox.ui.domain.UnsupportedPlatformException;
+import eu.ecodex.labbox.ui.service.DomainMapperService;
+import eu.ecodex.labbox.ui.service.PlatformService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 
 @Component
 @UIScope
 @Route(value = LabenvDetailsView.ROUTE, layout = LabenvLayout.class)
 @Order(2)
 @TabMetadata(title = "Lab Details", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<Integer> {
+public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<String>, AfterNavigationObserver {
 
     public static final String ROUTE = "labdetails";
 
-    @PostConstruct
-    void init() {
-        Button button = new Button(new Icon(VaadinIcon.BOMB));
-        button.setText("Open Directory");
-        button.addClickListener(c -> {
+    final PlatformService platformService;
+
+    // TODO remove
+    final DirectoryController directoryController;
+
+    final DomainMapperService domainMapperService;
+    final ProcessController processController;
+    Labenv labenv;
+    TextField labName;
+
+    public LabenvDetailsView(PlatformService platformService, DirectoryController directoryController,
+                             DomainMapperService domainMapperService, ProcessController processController)
+    {
+        this.platformService = platformService;
+        this.directoryController = directoryController;
+        this.domainMapperService = domainMapperService;
+        this.processController = processController;
+
+        // Labenv
+        this.labName = new TextField();
+        this.labName.setReadOnly(true);
+
+        HorizontalLayout labenvSection = new HorizontalLayout();
+
+        Button openDir = new Button(new Icon(VaadinIcon.FOLDER_OPEN));
+        openDir.setText("Open Directory");
+        openDir.addClickListener(c -> {
             try {
                 openLabboxDirectory();
             } catch (URISyntaxException | IOException e) {
+                // TODO show errors to user
                 e.printStackTrace();
             }
         });
-        add(button);
+
+        labenvSection.add(this.labName, openDir);
+
+        // Gateway
+        HorizontalLayout gatewaySection = new HorizontalLayout();
+
+        TextField gatewaySectionTitle = new TextField();
+        gatewaySectionTitle.setValue("Gateway");
+        gatewaySectionTitle.setReadOnly(true);
+
+        Button launchGateway = new Button(new Icon(VaadinIcon.BOMB));
+        launchGateway.setText("Start Gateway");
+        launchGateway.addClickListener(c -> {
+            try {
+                this.processController.startGateway(labenv);
+            } catch (IOException | UnsupportedPlatformException e) {
+                // TODO show errors to user
+                e.printStackTrace();
+            }
+        });
+
+        Button stopGateway = new Button(new Icon(VaadinIcon.STOP));
+        stopGateway.setText("Stop Gateway");
+        stopGateway.addClickListener(c -> {
+            if (this.processController.stopGateway(labenv)) {
+                // TODO notify succes
+            } else {
+                // TODO notify error
+            }
+        });
+
+        Button openGatewayUI = new Button(new Icon(VaadinIcon.DASHBOARD));
+        openGatewayUI.setText("Open Gateway UI");
+        openGatewayUI.addClickListener(c -> {
+            // TODO implement this
+        });
+
+        gatewaySection.add(gatewaySectionTitle, launchGateway, stopGateway, openGatewayUI);
+
+        // Connector
+        HorizontalLayout connectorSection = new HorizontalLayout();
+
+        TextField connectorSectionTitle = new TextField();
+        connectorSectionTitle.setValue("Connector");
+        connectorSectionTitle.setReadOnly(true);
+
+        Button launchConnector = new Button(new Icon(VaadinIcon.ROCKET));
+        launchConnector.setText("Start Connector");
+        launchConnector.addClickListener(c -> {
+            try {
+                this.processController.startConnector(labenv);
+            } catch (IOException | UnsupportedPlatformException e) {
+                // TODO show errors to user
+                e.printStackTrace();
+            }
+        });
+
+
+        Button stopConnector = new Button(new Icon(VaadinIcon.STOP));
+        stopConnector.setText("Stop Connector");
+        stopConnector.addClickListener(c -> {
+            if (this.processController.stopConnector(labenv)) {
+                // TODO notify success
+            } else {
+                // TODO notify error
+            }
+        });
+
+        Button openConnectorUI = new Button(new Icon(VaadinIcon.DASHBOARD));
+        openConnectorUI.setText("Open Connector UI");
+        openConnectorUI.addClickListener(c -> {
+            // TODO implement this
+        });
+
+        connectorSection.add(connectorSectionTitle, launchConnector, stopConnector, openConnectorUI);
+
+        // Connector Client
+        HorizontalLayout clientSection = new HorizontalLayout();
+
+        TextField clientSectionTitle = new TextField();
+        clientSectionTitle.setValue("Connector Client");
+        clientSectionTitle.setReadOnly(true);
+
+        Button launchClient = new Button(new Icon(VaadinIcon.STAR));
+        launchClient.setText("Start Client");
+        launchClient.addClickListener(c -> {
+            try {
+                this.processController.startClient(labenv);
+            } catch (IOException | UnsupportedPlatformException e) {
+                // TODO show errors to user
+                e.printStackTrace();
+            }
+        });
+
+        Button stopClient = new Button(new Icon(VaadinIcon.STOP));
+        stopClient.setText("Stop Connector Client");
+        stopClient.addClickListener(c -> {
+            // TODO implement this
+        });
+
+        Button openClientUI = new Button(new Icon(VaadinIcon.DASHBOARD));
+        openClientUI.setText("Open Connector Client UI");
+        openClientUI.addClickListener(c -> {
+            // TODO implement this
+        });
+        clientSection.add(clientSectionTitle, launchClient, stopClient, openClientUI);
+
+        add(labenvSection, gatewaySection, connectorSection, clientSection);
     }
 
     void openLabboxDirectory() throws URISyntaxException, IOException {
-        File file = new File(AppStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-
-//        Debug
-//        System.out.println(file.getAbsolutePath());
-//        System.out.println(Desktop.isDesktopSupported()); // true
-
 //        Platform independent
         Desktop desktop = Desktop.getDesktop();
-        desktop.open(file);
-
-//        Platform dependent
-//        Runtime.getRuntime().exec("explorer.exe /select, " + workingDirectory);
+        desktop.open(labenv.getPath().toFile());
     }
 
     public void show(Labenv lab) {
-        UI.getCurrent().navigate(LabenvDetailsView.class, lab.getId());
+        UI.getCurrent().navigate(LabenvDetailsView.class, lab.getPath().getFileName().toString());
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Integer parameter) {
-        if(parameter!=null) {
-            // TODO load labenv
-        }else {
-            // TODO show maybe a CREATE View ???
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String folderName) {
+        if (folderName != null
+            && directoryController.getLabenvironments()
+                .contains(domainMapperService.folderToLabenv(folderName)))
+        {
+            this.labenv = domainMapperService.folderToLabenv(folderName);
+        } else {
+            // TODO show maybe a CREATE View instead of redirecting to list???
+
+            // Todo show info
+            Notification.show("Labbox not found", 5_000, Notification.Position.TOP_CENTER);
+            beforeEvent.forwardTo(LabenvListView.class);
+        }
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+        if (labenv != null) {
+            labName.setValue(labenv.getFolderName());
+        } else {
+            labName.setValue("");
         }
     }
 }
