@@ -1,8 +1,7 @@
 package eu.ecodex.labbox.ui.controller;
 
 import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
-import eu.ecodex.labbox.ui.domain.Labenv;
-import eu.ecodex.labbox.ui.service.DomainMapperService;
+import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.service.WatchDirectoryService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 
 @Slf4j
@@ -20,20 +22,17 @@ public class DirectoryController {
 
     private final WatchDirectoryConfig watchDirectoryConfig;
     private final WatchDirectoryService watchDirectoryService;
-    private final DomainMapperService domainMapperService;
 
     // TODO listen for events from directory watcher
 
     @Getter
-    private Set<Labenv> labenvironments;
+    private Map<Path, Labenv> labenvironments;
 
-    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService, DomainMapperService domainMapperService) {
+    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService) {
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.watchDirectoryService = watchDirectoryService;
-        this.domainMapperService = domainMapperService;
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
-        this.labenvironments = new HashSet<>();
-//        new Thread(DirectoryService::launchMonitoring).start();
+        this.labenvironments = new HashMap<>();
     }
 
     public Path getLabenvHomeDirectory() {
@@ -68,12 +67,13 @@ public class DirectoryController {
             labenvironments = Files.list(watchDirectoryConfig.getLabenvHomeDirectory())
                     .filter(Files::isDirectory)
                     .filter(d -> d.getFileName().toString().startsWith("labenv"))
-                    .map(domainMapperService::pathToLabenv)
-                    .collect(Collectors.toSet());
+                    .collect(toMap(path -> path, Labenv::new));
         } catch (IOException e) {
             e.printStackTrace();
             // TODO Logging
         }
+
+        // TODO warn if a folder does not contain step I) anything II) important files
 
     }
 

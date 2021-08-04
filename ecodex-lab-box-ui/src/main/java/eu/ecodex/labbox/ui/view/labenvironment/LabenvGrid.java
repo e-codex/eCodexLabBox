@@ -4,7 +4,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import eu.ecodex.labbox.ui.domain.Labenv;
+import eu.ecodex.labbox.ui.domain.entities.Labenv;
 
 import java.awt.*;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class LabenvGrid extends Grid<Labenv> {
         this.setHeightByRows(true);
 
         addComponentColumn(this::createShowDetailsButton).setHeader("Details").setWidth("15%");
-        addColumn(Labenv::getFolderName).setHeader("(Folder) Name").setWidth("10%");
+        addColumn(l -> l.getPath().getFileName().toString()).setHeader("(Folder) Name").setWidth("10%");
         addColumn(Labenv::getPath).setHeader("Path").setWidth("60%");
         addComponentColumn(this::createOpenFileBrowserButton).setHeader("Open in File Manager").setWidth("15%");
     }
