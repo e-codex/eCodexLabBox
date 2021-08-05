@@ -20,7 +20,6 @@ import java.awt.*;
 
 @UIScope
 @Component
-// TODO Check if really needed
 @Push
 public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
 

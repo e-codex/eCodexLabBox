@@ -66,7 +66,6 @@ public class WatchDirectoryConfig {
             labenvHomeDirectory.register(
                     watchService,
                     StandardWatchEventKinds.ENTRY_DELETE,
-                    StandardWatchEventKinds.ENTRY_MODIFY,
                     StandardWatchEventKinds.ENTRY_CREATE
             );
         } catch (IOException e) {

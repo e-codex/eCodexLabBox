@@ -1,17 +1,21 @@
 package eu.ecodex.labbox.ui.controller;
 
+import com.vaadin.flow.component.Component;
 import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
+import eu.ecodex.labbox.ui.domain.events.CreatedLabenvFolderEvent;
+import eu.ecodex.labbox.ui.domain.events.DeletedLabenvFolderEvent;
+import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.WatchDirectoryService;
+import eu.ecodex.labbox.ui.view.labenvironment.LabenvListView;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -22,28 +26,51 @@ public class DirectoryController {
 
     private final WatchDirectoryConfig watchDirectoryConfig;
     private final WatchDirectoryService watchDirectoryService;
+    private final PathMapperService pathMapperService;
 
-    // TODO listen for events from directory watcher
+    @Getter
+    private final Map<String, Component> reactiveUiComponents;
 
     @Getter
     private Map<Path, Labenv> labenvironments;
 
-    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService) {
+    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService) {
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.watchDirectoryService = watchDirectoryService;
+        this.pathMapperService = pathMapperService;
+        this.reactiveUiComponents = new HashMap<>();
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
         this.labenvironments = new HashMap<>();
+    }
+
+    @EventListener
+    public void handleNewLabenvFolder(CreatedLabenvFolderEvent e) {
+        Path full = pathMapperService.getFullPath(e.getNameOfNewDirectory());
+
+        Labenv newLabenv = new Labenv(full);
+        labenvironments.put(full, newLabenv);
+
+        // Adding a spring event listener to a vaadin view causes threading problems
+        //toUIPublisher.publishEvent(event);
+
+        // if user has not visited LabenvListView then this will be null
+        LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
+        listlabs.updateList();
+    }
+
+    @EventListener
+    public void handleDeletedLabenvFolder(DeletedLabenvFolderEvent e) {
+        Path full = pathMapperService.getFullPath(e.getNameOfDeletedDirectory());
+
+        labenvironments.remove(full);
+
+        LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
+        listlabs.updateList();
     }
 
     public Path getLabenvHomeDirectory() {
         return watchDirectoryConfig.getLabenvHomeDirectory();
     }
-//    public void setLabenvHomeDirectory(String path) {
-//        stopMonitoring();
-//        watchDirectoryConfig.setLabenvHomeDirectory(path);
-//        watchService = watchDirectoryConfig.watchService();
-//        launchMonitoring();
-//    }
 
     public void startMonitoring() {
         watchDirectoryService.startMonitoring();
@@ -72,10 +99,6 @@ public class DirectoryController {
             e.printStackTrace();
             // TODO Logging
         }
-
-        // TODO warn if a folder does not contain step I) anything II) important files
-
+        // TODO warn user if a folder does not contain step I) anything II) important files
     }
-
-
 }
