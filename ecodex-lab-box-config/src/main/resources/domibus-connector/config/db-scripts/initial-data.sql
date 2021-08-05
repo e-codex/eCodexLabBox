@@ -14,101 +14,49 @@ VALUES (2, 'cn=alice', 'alice', '', '', 'a alice backend with push', 'http://loc
 INSERT INTO DOMIBUS_CONNECTOR_BACKEND_INFO (ID, BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_KEY_PASS, BACKEND_SERVICE_TYPE, BACKEND_DESCRIPTION, BACKEND_PUSH_ADDRESS, BACKEND_ENABLED, BACKEND_DEFAULT)
 VALUES (3, 'cn=exec_ri', 'exec_ri', '', '', 'a alice backend with push', 'http://localhost:8${lab.id}3/case-service/services/connectorClientBackendDelivery', true, false);
 
+
+
 DELETE FROM DOMIBUS_CONNECTOR_PARTY;
 
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw01', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1001, 1, 'gw01', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1002, 1, 'gw02', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1003, 1, 'gw03', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1004, 1, 'gw04', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1005, 1, 'gw05', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1006, 1, 'gw06', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1007, 1, 'gw07', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1008, 1, 'gw08', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1009, 1, 'gw09', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1010, 1, 'gw10', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'initiator');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1011, 1, 'gw01', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1012, 1, 'gw02', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1013, 1, 'gw03', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1014, 1, 'gw04', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1015, 1, 'gw05', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1016, 1, 'gw06', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1017, 1, 'gw07', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1018, 1, 'gw08', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1019, 1, 'gw09', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
+INSERT INTO DOMIBUS_CONNECTOR_PARTY (ID, FK_PMODE_SET, PARTY_ID, ROLE, PARTY_ID_TYPE, IDENTIFIER) VALUES (1020, 1, 'gw10', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered', 'responder');
 
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw02', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw03', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw04', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw05', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw06', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw07', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw08', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw09', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw10', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
+-- UPDATE DOMIBUS_CONNECTOR_SEQ_STORE SET SEQ_VALUE=1021 WHERE SEQ_NAME='';
 
 
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('at', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gw-at', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('bg', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('cz', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('de', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('ee', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('es', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
-
-INSERT INTO DOMIBUS_CONNECTOR_PARTY (PARTY_ID, ROLE, PARTY_ID_TYPE) VALUES
-  ('gr', 'GW', 'urn:oasis:names:tc:ebcore:partyid-type:unregistered');
 
 DELETE FROM DOMIBUS_CONNECTOR_SERVICE;
 
-INSERT INTO DOMIBUS_CONNECTOR_SERVICE (SERVICE, SERVICE_TYPE) VALUES ('Connector-TEST', 'urn:e-codex:services:');
-INSERT INTO DOMIBUS_CONNECTOR_SERVICE (SERVICE, SERVICE_TYPE) VALUES ('System-TEST', 'urn:e-codex:services:');
-INSERT INTO DOMIBUS_CONNECTOR_SERVICE (SERVICE, SERVICE_TYPE) VALUES ('Service1', 'urn:e-codex:services:');
+INSERT INTO DOMIBUS_CONNECTOR_SERVICE (ID, FK_PMODE_SET, SERVICE, SERVICE_TYPE) VALUES (1001, 1, 'Connector-TEST', 'urn:e-codex:services:');
+INSERT INTO DOMIBUS_CONNECTOR_SERVICE (ID, FK_PMODE_SET, SERVICE, SERVICE_TYPE) VALUES (1002, 1, 'System-TEST', 'urn:e-codex:services:');
+INSERT INTO DOMIBUS_CONNECTOR_SERVICE (ID, FK_PMODE_SET, SERVICE, SERVICE_TYPE) VALUES (1003, 1, 'Service1', 'urn:e-codex:services:');
 
 DELETE FROM DOMIBUS_CONNECTOR_ACTION;
 
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('Eio_AnnexA_Submission', false);
 
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('Eio_AnnexB_Submission', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('Eio_Outcome_Submission', false);
-
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('SubmissionAcceptanceRejection', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('RelayREMMDAcceptanceRejection', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('DeliveryNonDeliveryToRecipient', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('RetrievalNonRetrievalToRecipient', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('System-TEST', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('Connector-TEST', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('Action1', false);
-
-INSERT INTO DOMIBUS_CONNECTOR_ACTION ("ACTION", PDF_REQUIRED)
-VALUES ('Action2', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1001, 1, 'SubmissionAcceptanceRejection', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1002, 1, 'RelayREMMDAcceptanceRejection', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1003, 1, 'DeliveryNonDeliveryToRecipient', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1004, 1, 'RetrievalNonRetrievalToRecipient', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1005, 1, 'System-TEST', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1006, 1, 'Connector-TEST', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1007, 1, 'Action1', false);
+INSERT INTO DOMIBUS_CONNECTOR_ACTION (ID, FK_PMODE_SET, "ACTION", PDF_REQUIRED) VALUES (1008, 1, 'Action2', false);

@@ -44,7 +44,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <domibus-gw.version>4.2</domibus-gw.version>
     <domibus-connector-plugin.version>4.2.0</domibus-connector-plugin.version>
-    <domibus-connector.version>4.3.0</domibus-connector.version>
+    <domibus-connector.version>4.3.3</domibus-connector.version>
     <domibus-connector-client-application.version>4.3.0</domibus-connector-client-application.version>
     <h2database.version>1.4.200</h2database.version>
   </properties>
