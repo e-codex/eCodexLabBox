@@ -13,9 +13,9 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
-import eu.ecodex.labbox.ui.domain.Labenv;
+import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.domain.UnsupportedPlatformException;
-import eu.ecodex.labbox.ui.service.DomainMapperService;
+import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.PlatformService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
 
 @Component
 @UIScope
@@ -39,17 +38,17 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
     // TODO remove
     final DirectoryController directoryController;
 
-    final DomainMapperService domainMapperService;
+    final PathMapperService pathMapperService;
     final ProcessController processController;
     Labenv labenv;
     TextField labName;
 
     public LabenvDetailsView(PlatformService platformService, DirectoryController directoryController,
-                             DomainMapperService domainMapperService, ProcessController processController)
+                             PathMapperService pathMapperService, ProcessController processController)
     {
         this.platformService = platformService;
         this.directoryController = directoryController;
-        this.domainMapperService = domainMapperService;
+        this.pathMapperService = pathMapperService;
         this.processController = processController;
 
         // Labenv
@@ -102,7 +101,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button openGatewayUI = new Button(new Icon(VaadinIcon.DASHBOARD));
         openGatewayUI.setText("Open Gateway UI");
         openGatewayUI.addClickListener(c -> {
-            // TODO implement this
+            UI.getCurrent().getPage().open("http://localhost:"+labenv.getGatewayPort());
         });
 
         gatewaySection.add(gatewaySectionTitle, launchGateway, stopGateway, openGatewayUI);
@@ -139,7 +138,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button openConnectorUI = new Button(new Icon(VaadinIcon.DASHBOARD));
         openConnectorUI.setText("Open Connector UI");
         openConnectorUI.addClickListener(c -> {
-            // TODO implement this
+            UI.getCurrent().getPage().open("http://localhost:"+labenv.getConnectorPort());
         });
 
         connectorSection.add(connectorSectionTitle, launchConnector, stopConnector, openConnectorUI);
@@ -148,7 +147,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         HorizontalLayout clientSection = new HorizontalLayout();
 
         TextField clientSectionTitle = new TextField();
-        clientSectionTitle.setValue("Connector Client");
+        clientSectionTitle.setValue("Client");
         clientSectionTitle.setReadOnly(true);
 
         Button launchClient = new Button(new Icon(VaadinIcon.STAR));
@@ -171,7 +170,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button openClientUI = new Button(new Icon(VaadinIcon.DASHBOARD));
         openClientUI.setText("Open Connector Client UI");
         openClientUI.addClickListener(c -> {
-            // TODO implement this
+            UI.getCurrent().getPage().open("http://localhost:"+labenv.getClientPort());
         });
         clientSection.add(clientSectionTitle, launchClient, stopClient, openClientUI);
 
@@ -191,10 +190,10 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
     @Override
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String folderName) {
         if (folderName != null
-            && directoryController.getLabenvironments()
-                .contains(domainMapperService.folderToLabenv(folderName)))
+            && directoryController.getLabenvironments().containsKey(pathMapperService.getFullPath(folderName)))
         {
-            this.labenv = domainMapperService.folderToLabenv(folderName);
+            this.labenv = directoryController.getLabenvironments()
+                    .get(pathMapperService.getFullPath(folderName));
         } else {
             // TODO show maybe a CREATE View instead of redirecting to list???
 
@@ -207,7 +206,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         if (labenv != null) {
-            labName.setValue(labenv.getFolderName());
+            labName.setValue(labenv.getPath().getFileName().toString());
         } else {
             labName.setValue("");
         }

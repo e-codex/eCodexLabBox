@@ -1,13 +1,11 @@
 package eu.ecodex.labbox.ui.controller;
 
-import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
-import eu.ecodex.labbox.ui.domain.Labenv;
 import eu.ecodex.labbox.ui.domain.UnsupportedPlatformException;
+import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.service.PlatformService;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -22,19 +20,14 @@ public class ProcessController {
     Map<String, Process> runningProc;
 
     final PlatformService platformService;
-    final WatchDirectoryConfig directoryConfig;
 
-    public ProcessController(PlatformService platformService, WatchDirectoryConfig directoryConfig) {
+    public ProcessController(PlatformService platformService) {
         this.platformService = platformService;
-        this.directoryConfig = directoryConfig;
         this.runningProc = new HashMap<>();
     }
 
     public void startConnector(Labenv lab) throws IOException, UnsupportedPlatformException {
-        // File.seperator is either \ or / depending on platform
-        // File.pathSeperator is used to seperate Paths in a String of Paths, on windows it is a ;
-        // -> pathSeperator means to seperate paths e.g.: C:\dev;D:\elsewhere
-        final String relPathToExecutable = lab.getFolderName() + File.separator + "domibus-connector";
+        final Path pathToExecutable = lab.getPath().resolve("domibus-connector");
         final List<String> commands = new ArrayList<>();
 
         if (platformService.isWindows()) {
@@ -44,8 +37,8 @@ public class ProcessController {
             commands.add("start");
             commands.add("start.bat");
 
-            runningProc.put("connector-" + lab.getFolderName(),
-                    startProc(commands, relPathToExecutable));
+            runningProc.put("connector-" + lab.getPath().getFileName().toString(),
+                    startProc(commands, pathToExecutable));
 
         } else if (platformService.isUnix()) {
             commands.add("bash");
@@ -53,19 +46,19 @@ public class ProcessController {
             // TODO test if this is necessary to open windows on unix systems
             commands.add("start");
             commands.add("start.sh");
-            runningProc.put("connector-" + lab.getFolderName(),
-                    startProc(commands, relPathToExecutable));
+            runningProc.put("connector-" + lab.getPath().getFileName().toString(),
+                    startProc(commands, pathToExecutable));
         } else {
             throw new UnsupportedPlatformException();
         }
     }
 
     public boolean stopConnector(Labenv labenv) {
-        return stopProc("connector-" + labenv.getFolderName());
+        return stopProc("connector-" + labenv.getPath().getFileName().toString());
     }
 
     public void startGateway(Labenv lab) throws IOException, UnsupportedPlatformException {
-        final String relPathToExecutable = lab.getFolderName() + File.separator + "domibus-gateway" + File.separator + "bin";
+        final Path pathToExecutable = lab.getPath().resolve("domibus-gateway").resolve("bin");
         final List<String> commands = new ArrayList<>();
 
         if (platformService.isWindows()) {
@@ -74,26 +67,26 @@ public class ProcessController {
             // "start" is not necessary because startup.bat launches its own java window anyway
             commands.add("startup.bat");
 
-            runningProc.put("gateway-" + lab.getFolderName(),
-                    startProc(commands, relPathToExecutable));
+            runningProc.put("gateway-" + lab.getPath().getFileName().toString(),
+                    startProc(commands, pathToExecutable));
 
         } else if (platformService.isUnix()) {
             commands.add("bash");
             commands.add("-c");
             commands.add("startup.sh");
-            runningProc.put("gateway-" + lab.getFolderName(),
-                    startProc(commands, relPathToExecutable));
+            runningProc.put("gateway-" + lab.getPath().getFileName().toString(),
+                    startProc(commands, pathToExecutable));
         } else {
             throw new UnsupportedPlatformException();
         }
     }
 
     public boolean stopGateway(Labenv labenv) {
-        return stopProc("gateway-"+labenv.getFolderName());
+        return stopProc("gateway-"+labenv.getPath().getFileName().toString());
     }
 
     public void startClient(Labenv lab) throws IOException, UnsupportedPlatformException {
-        final String relPathToExecutable = lab.getFolderName() + File.separator + "domibus-connector-client-application";
+        final Path pathToExecutable = lab.getPath().resolve("domibus-connector-client-application");
         final List<String> commands = new ArrayList<>();
 
         if (platformService.isWindows()) {
@@ -102,30 +95,29 @@ public class ProcessController {
             commands.add("start");
             commands.add("startConnectorClient.bat");
 
-            runningProc.put("client-" + lab.getFolderName(),
-                    startProc(commands, relPathToExecutable));
+            runningProc.put("client-" + lab.getPath().getFileName().toString(),
+                    startProc(commands, pathToExecutable));
 
         } else if (platformService.isUnix()) {
             commands.add("bash");
             commands.add("-c");
             commands.add("start");
             commands.add("startConnectorClient.sh");
-            runningProc.put("client-" + lab.getFolderName(),
-                    startProc(commands, relPathToExecutable));
+            runningProc.put("client-" + lab.getPath().getFileName().toString(),
+                    startProc(commands, pathToExecutable));
         } else {
             throw new UnsupportedPlatformException();
         }
     }
 
-    private Process startProc(List<String> commands, String relPathToExectutable) throws IOException, UnsupportedPlatformException {
-        Path labhome = directoryConfig.getLabenvHomeDirectory();
-        Path pathToEcectuable = labhome.resolve(relPathToExectutable);
+    private Process startProc(List<String> commands, Path pathToExecutable) throws IOException {
         ProcessBuilder pb = new ProcessBuilder(commands);
-        pb.directory(pathToEcectuable.toFile());
+        pb.directory(pathToExecutable.toFile());
         return pb.start();
     }
 
     private boolean stopProc(String id) {
+        // TODO this does not work
         Process process = this.runningProc.get(id);
         boolean result = false;
         if (process != null) {
