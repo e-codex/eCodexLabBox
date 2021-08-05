@@ -8,6 +8,30 @@
   </parent>
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-box-gw-db-setup</artifactId>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>cefdigital-releases</id>
+      <url>https://ec.europa.eu/cefdigital/artifact/content/groups/public/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>e-codex</id>
+      <url>https://secure.e-codex.eu/nexus/content/groups/public/</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

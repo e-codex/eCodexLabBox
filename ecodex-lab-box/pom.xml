@@ -70,7 +70,7 @@
       </snapshots>
       <id>e-codex</id>
       <url>https://secure.e-codex.eu/nexus/content/groups/public/</url>
-    </repository>
+	</repository>
   </repositories>
   <build>
     <plugins>
@@ -194,30 +194,7 @@
               </artifactItems>
             </configuration>
           </execution>
-          <execution>
-            <id>copy-domibus-connector-distribution</id>
-            <phase>package</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <overWriteReleases>true</overWriteReleases>
-              <outputDirectory>${project.basedir}/lab/domibus-connector-distribution</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <overWrite>true</overWrite>
-                  <groupId>eu.domibus.connector</groupId>
-                  <artifactId>domibusConnectorDistribution</artifactId>
-                  <!--<classifier>tomcat-full</classifier>-->
-                  <version>${domibus-connector.version}</version>
-                  <type>zip</type>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <!-- download domibus client application -->
-          <execution>
+		<execution>
             <id>copy-domibus-connector-client-application</id>
             <phase>package</phase>
             <goals>
@@ -239,29 +216,6 @@
               </artifactItems>
             </configuration>
           </execution>
-          <!-- download domibus client UI -->
-          <!-- <execution>
-            <id>copy-domibus-connector-client-ui</id>
-            <phase>package</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <overWriteReleases>true</overWriteReleases>
-              <outputDirectory>${project.basedir}/lab/domibus-connector-client-ui</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <overWrite>true</overWrite>
-                  <groupId>eu.domibus.connector-client</groupId>
-                  <artifactId>domibusConnectorClientUI</artifactId>
-                  <classifier>UI</classifier>
-                  <version>${domibus-connector-client-ui.version}</version>
-                  <type>zip</type>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution> -->
           <execution>
             <id>download-pmode-uploader</id>
             <phase>package</phase>
@@ -306,28 +260,6 @@
               </artifactItems>
             </configuration>
           </execution>
-          <!--<execution>-->
-          <!--<id>download-gw-config</id>-->
-          <!--<phase>package</phase>-->
-          <!--<goals>-->
-          <!--<goal>unpack</goal>-->
-          <!--</goals>-->
-          <!--<configuration>-->
-          <!--<overWriteSnapshots>true</overWriteSnapshots>-->
-          <!--<overWriteReleases>true</overWriteReleases>-->
-          <!--<outputDirectory>${project.basedir}/lab/config/domibus-gateway</outputDirectory>-->
-          <!--<artifactItems>-->
-          <!--<artifactItem>-->
-          <!--<overWrite>true</overWrite>-->
-          <!--<groupId>${project.groupId}</groupId>-->
-          <!--<artifactId>ecodex-lab-box-config</artifactId>-->
-          <!--<classifier>gwtestconfig</classifier>-->
-          <!--<version>${project.version}</version>-->
-          <!--<type>zip</type>-->
-          <!--</artifactItem>-->
-          <!--</artifactItems>-->
-          <!--</configuration>-->
-          <!--</execution>-->
           <execution>
             <id>download-configs</id>
             <phase>package</phase>
@@ -363,14 +295,6 @@
                   <version>${project.version}</version>
                   <type>zip</type>
                 </artifactItem>
-                <!--<artifactItem>
-                  <overWrite>true</overWrite>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>ecodex-lab-box-config</artifactId>
-                  <classifier>connectorclientuitestconfig</classifier>
-                  <version>${project.version}</version>
-                  <type>zip</type>
-                </artifactItem>-->
                 <artifactItem>
                   <overWrite>true</overWrite>
                   <groupId>${project.groupId}</groupId>
@@ -400,35 +324,9 @@
           </execution>
         </executions>
       </plugin>
-      <!--<plugin>-->
-      <!--<groupId>io.takari</groupId>-->
-      <!--<artifactId>maven-wrapper</artifactId>-->
-      <!--<version>0.4.2</version>-->
-      <!--<executions>-->
-      <!--<execution>-->
-      <!--<id>install-maven-wrapper</id>-->
-      <!--<goals>-->
-      <!--<goal>wrapper</goal>-->
-      <!--</goals>-->
-      <!--<phase>prepare-package</phase>-->
-      <!--</execution>-->
-      <!--</executions>-->
-      <!--</plugin>-->
     </plugins>
   </build>
   <profiles>
-    <!--<profile>-->
-    <!--<id>env04</id>-->
-    <!--<properties>-->
-    <!--<lab.id>04</lab.id>-->
-    <!--</properties>-->
-    <!--</profile>-->
-    <!--<profile>-->
-    <!--<id>env05</id>-->
-    <!--<properties>-->
-    <!--<lab.id>05</lab.id>-->
-    <!--</properties>-->
-    <!--</profile>-->
     <profile>
       <id>environment</id>
       <activation>
@@ -491,7 +389,7 @@
                   <overwrite>true</overwrite>
                   <resources>
                     <resource>
-                      <directory>${project.basedir}/lab/domibus-gateway-plugin/domibus-v4_1/conf/plugins</directory>
+                      <directory>${project.basedir}/lab/domibus-gateway-plugin/conf/plugins</directory>
                       <filtering>false</filtering>
                     </resource>
                   </resources>
