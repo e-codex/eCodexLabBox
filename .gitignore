@@ -4,7 +4,6 @@ ecodex-lab-box/lab*
 
 
 target/
-/ecodex-lab-box-builder*
 /*.project
 */*.project
 /*.settings*
