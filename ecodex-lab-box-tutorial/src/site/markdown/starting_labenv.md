@@ -26,7 +26,7 @@ it points to your java runtime environment.
 
 This folder contains a maven project which downloads the labbox. Just type
 
-mvn -De-codex.repo.username=<username> -De-codex.repo.password=<password> -Dlab.id=${labid} install
+mvn -De-codex.repo.username='username' -De-codex.repo.password='password' -Dlab.id=${labid} install
 
 install to download all the e-codex components and create a preconfigured labbox-environment with the
 corresponding id.
