@@ -23,7 +23,8 @@ GOTO ParseParams
 :SetMavenHome
 set "MAVEN_HOME=%cd%\apache-maven-3.8.1\bin\"
 
-If "%LAB_ID"=="" goto usage
+:CheckLabId
+	If "%LAB_ID%"=="" GOTO :usage
 
 echo.
 echo LAB_ID is %LAB_ID%
@@ -69,7 +70,7 @@ echo Parameters:
 echo.
 echo lab.id			specifies the numeric value of the lab environment to be created. Must be a value between 01 and 10
 echo.
-echo Example: build_lab_env.bat lab.id=01
+echo Example: build_lab_env.bat lab.id:01
 echo.
 echo ########################################################################
 
