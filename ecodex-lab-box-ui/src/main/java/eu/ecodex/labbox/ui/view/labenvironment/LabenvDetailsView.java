@@ -14,7 +14,6 @@ import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
-import eu.ecodex.labbox.ui.domain.UnsupportedPlatformException;
 import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.PlatformService;
 import org.springframework.core.annotation.Order;
@@ -82,7 +81,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         launchGateway.addClickListener(c -> {
             try {
                 this.processController.startGateway(labenv);
-            } catch (IOException | UnsupportedPlatformException e) {
+            } catch (IOException e) {
                 // TODO show errors to user
                 e.printStackTrace();
             }
@@ -91,10 +90,10 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button stopGateway = new Button(new Icon(VaadinIcon.STOP));
         stopGateway.setText("Stop Gateway");
         stopGateway.addClickListener(c -> {
-            if (this.processController.stopGateway(labenv)) {
-                // TODO notify succes
-            } else {
-                // TODO notify error
+            try {
+                this.processController.stopGateway(labenv);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -118,8 +117,8 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         launchConnector.addClickListener(c -> {
             try {
                 this.processController.startConnector(labenv);
-            } catch (IOException | UnsupportedPlatformException e) {
-                // TODO show errors to user
+            } catch (IOException e) {
+                // TODO notify user
                 e.printStackTrace();
             }
         });
@@ -128,11 +127,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button stopConnector = new Button(new Icon(VaadinIcon.STOP));
         stopConnector.setText("Stop Connector");
         stopConnector.addClickListener(c -> {
-            if (this.processController.stopConnector(labenv)) {
-                // TODO notify success
-            } else {
-                // TODO notify error
-            }
+            this.processController.stopConnector(labenv);
         });
 
         Button openConnectorUI = new Button(new Icon(VaadinIcon.DASHBOARD));
@@ -155,7 +150,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         launchClient.addClickListener(c -> {
             try {
                 this.processController.startClient(labenv);
-            } catch (IOException | UnsupportedPlatformException e) {
+            } catch (IOException e) {
                 // TODO show errors to user
                 e.printStackTrace();
             }

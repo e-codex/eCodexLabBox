@@ -26,104 +26,80 @@ public class ProcessController {
         this.runningProc = new HashMap<>();
     }
 
-    public void startConnector(Labenv lab) throws IOException, UnsupportedPlatformException {
+    public void startConnector(Labenv lab) throws IOException {
         final Path pathToExecutable = lab.getPath().resolve("domibus-connector");
         final List<String> commands = new ArrayList<>();
 
-        if (platformService.isWindows()) {
-            commands.add("cmd");
-            commands.add("/c");
-            // "start" opens a window, if omitted the process will only show up in task manager
-            commands.add("start");
-            commands.add("start.bat");
+        commands.add(platformService.getScriptExtension());
+        commands.add(platformService.getShellOption());
+        // "start" opens a window, if omitted the process will only show up in task manager
+        commands.add("start"); // TODO maybe unecessary / not working on unix platforms, needs to be tested
+        commands.add("start." + platformService.getScriptExtension());
 
-            runningProc.put("connector-" + lab.getPath().getFileName().toString(),
-                    startProc(commands, pathToExecutable));
+        runningProc.put("connector-" + lab.getPath().getFileName().toString(),
+                run(commands, pathToExecutable));
 
-        } else if (platformService.isUnix()) {
-            commands.add("bash");
-            commands.add("-c");
-            // TODO test if this is necessary to open windows on unix systems
-            commands.add("start");
-            commands.add("start.sh");
-            runningProc.put("connector-" + lab.getPath().getFileName().toString(),
-                    startProc(commands, pathToExecutable));
-        } else {
-            throw new UnsupportedPlatformException();
-        }
     }
 
-    public boolean stopConnector(Labenv labenv) {
-        return stopProc("connector-" + labenv.getPath().getFileName().toString());
+    public void stopConnector(Labenv labenv) {
+        stopProc("connector-" + labenv.getPath().getFileName().toString());
     }
 
-    public void startGateway(Labenv lab) throws IOException, UnsupportedPlatformException {
+    public void startGateway(Labenv lab) throws IOException {
+        controlGateway(lab, true);
+    }
+
+    private void controlGateway(Labenv lab, boolean startStop) throws IOException {
         final Path pathToExecutable = lab.getPath().resolve("domibus-gateway").resolve("bin");
         final List<String> commands = new ArrayList<>();
 
-        if (platformService.isWindows()) {
-            commands.add("cmd");
-            commands.add("/c");
-            // "start" is not necessary because startup.bat launches its own java window anyway
-            commands.add("startup.bat");
-
+        commands.add(platformService.getShell());
+        commands.add(platformService.getShellOption());
+        // "start" is not necessary because startup.bat launches its own java window anyway
+        if (startStop) {
+            commands.add("startup." + platformService.getScriptExtension());
             runningProc.put("gateway-" + lab.getPath().getFileName().toString(),
-                    startProc(commands, pathToExecutable));
-
-        } else if (platformService.isUnix()) {
-            commands.add("bash");
-            commands.add("-c");
-            commands.add("startup.sh");
-            runningProc.put("gateway-" + lab.getPath().getFileName().toString(),
-                    startProc(commands, pathToExecutable));
+                    run(commands, pathToExecutable));
         } else {
-            throw new UnsupportedPlatformException();
+            commands.add("shutdown." + platformService.getScriptExtension());
+            run(commands, pathToExecutable);
+            runningProc.remove("gateway-" + lab.getPath().getFileName().toString());
         }
     }
 
-    public boolean stopGateway(Labenv labenv) {
-        return stopProc("gateway-"+labenv.getPath().getFileName().toString());
+    public void stopGateway(Labenv labenv) throws IOException {
+        controlGateway(labenv, false);
     }
 
-    public void startClient(Labenv lab) throws IOException, UnsupportedPlatformException {
+    public void startClient(Labenv lab) throws IOException {
         final Path pathToExecutable = lab.getPath().resolve("domibus-connector-client-application");
         final List<String> commands = new ArrayList<>();
 
-        if (platformService.isWindows()) {
-            commands.add("cmd");
-            commands.add("/c");
-            commands.add("start");
-            commands.add("startConnectorClient.bat");
+        commands.add(platformService.getShell());
+        commands.add(platformService.getShellOption());
+        commands.add("start");
+        commands.add("startConnectorClient." + platformService.getScriptExtension());
 
-            runningProc.put("client-" + lab.getPath().getFileName().toString(),
-                    startProc(commands, pathToExecutable));
-
-        } else if (platformService.isUnix()) {
-            commands.add("bash");
-            commands.add("-c");
-            commands.add("start");
-            commands.add("startConnectorClient.sh");
-            runningProc.put("client-" + lab.getPath().getFileName().toString(),
-                    startProc(commands, pathToExecutable));
-        } else {
-            throw new UnsupportedPlatformException();
-        }
+        runningProc.put("client-" + lab.getPath().getFileName().toString(),
+                run(commands, pathToExecutable));
     }
 
-    private Process startProc(List<String> commands, Path pathToExecutable) throws IOException {
+    public void stopClient(Labenv labenv) {
+        stopProc("client-" + labenv.getPath().getFileName().toString());
+    }
+
+    private Process run(List<String> commands, Path pathToExecutable) throws IOException {
         ProcessBuilder pb = new ProcessBuilder(commands);
         pb.directory(pathToExecutable.toFile());
         return pb.start();
     }
 
-    private boolean stopProc(String id) {
-        // TODO this does not work
+    private void stopProc(String id) {
         Process process = this.runningProc.get(id);
         boolean result = false;
         if (process != null) {
-            process.destroy();
-            result = true;
+            // process.destroy(); // this does not work
+            process.destroyForcibly();
         }
-        return result;
     }
 }
