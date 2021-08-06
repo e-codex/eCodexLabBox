@@ -2,11 +2,9 @@ package eu.ecodex.labbox.ui.domain.entities;
 
 
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -41,8 +39,7 @@ public class Labenv {
 
         String result = "missing:server.xml";
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream(property.toFile());
+        try (FileInputStream fileInputStream = new FileInputStream(property.toFile())) {
             XMLInputFactory xmlInFact = XMLInputFactory.newInstance();
             XMLStreamReader reader = xmlInFact.createXMLStreamReader(fileInputStream);
 
@@ -68,19 +65,7 @@ public class Labenv {
                 .resolve("connector.properties");
 
         String result = "missing:connector.properties";
-        try {
-            result = Files.lines(property)
-                    .filter(l -> l.startsWith("server.port"))
-                    .map(l -> l.split("=", 2))
-                    .filter(a -> a.length == 2)
-                    .map(a -> a[1])
-                    .findFirst()
-                    .orElse("missing-property:server.port");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return getServerPortProperty(property, result);
     }
 
     private String parseClientProperties() {
@@ -90,6 +75,10 @@ public class Labenv {
                 .resolve("connector-client.properties");
 
         String result = "missing:client.properties";
+        return getServerPortProperty(property, result);
+    }
+
+    private String getServerPortProperty(Path property, String result) {
         try {
             result = Files.lines(property)
                     .filter(l -> l.startsWith("server.port"))
