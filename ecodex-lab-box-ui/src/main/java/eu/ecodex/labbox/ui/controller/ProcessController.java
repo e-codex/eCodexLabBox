@@ -97,6 +97,7 @@ public class ProcessController {
     private void stopProc(String id) {
 
         // TODO this worked once, now it does note ???
+        // TODO this is unreliable
         Process process = this.runningProc.get(id);
         boolean result = false;
         if (process != null) {
@@ -110,6 +111,8 @@ public class ProcessController {
 
         // TODO this works but closes all Connector windows
         try {
+            // TODO CONTINUE HERE
+            // TODO find a way to start the process with a particular name/id and terminate that
             Runtime.getRuntime().exec("taskkill /fi \"WINDOWTITLE eq \\\"DomibusConn*\"");
         } catch (IOException e) {
             e.printStackTrace();
