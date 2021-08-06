@@ -30,7 +30,7 @@ public class ProcessController {
         final Path pathToExecutable = lab.getPath().resolve("domibus-connector");
         final List<String> commands = new ArrayList<>();
 
-        commands.add(platformService.getScriptExtension());
+        commands.add(platformService.getShell());
         commands.add(platformService.getShellOption());
         // "start" opens a window, if omitted the process will only show up in task manager
         commands.add("start"); // TODO maybe unecessary / not working on unix platforms, needs to be tested
@@ -95,11 +95,24 @@ public class ProcessController {
     }
 
     private void stopProc(String id) {
+
+        // TODO this worked once, now it does note ???
         Process process = this.runningProc.get(id);
         boolean result = false;
         if (process != null) {
             // process.destroy(); // this does not work
-            process.destroyForcibly();
+            try {
+                process.destroyForcibly().waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // TODO this works but closes all Connector windows
+        try {
+            Runtime.getRuntime().exec("taskkill /fi \"WINDOWTITLE eq \\\"DomibusConn*\"");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
