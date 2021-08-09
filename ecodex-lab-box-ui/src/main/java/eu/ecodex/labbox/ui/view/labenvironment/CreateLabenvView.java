@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 @Route(value = CreateLabenvView.ROUTE, layout = LabenvLayout.class)
-@Order(3)
+@Order(2)
 @TabMetadata(title = "Create Lab", tabGroup = LabenvLayout.TAB_GROUP_NAME)
 public class CreateLabenvView extends VerticalLayout {
     public static final String ROUTE = "create";

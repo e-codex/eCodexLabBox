@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 @UIScope
 @Route(value = LabenvDetailsView.ROUTE, layout = LabenvLayout.class)
-@Order(2)
+@Order(4)
 @TabMetadata(title = "Lab Details", tabGroup = LabenvLayout.TAB_GROUP_NAME)
 public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter<String>, AfterNavigationObserver {
 

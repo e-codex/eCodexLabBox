@@ -39,6 +39,10 @@ public class ProcessController {
         this.runningProc = new HashMap<>();
     }
 
+    private void createLab() {
+        // TODO if there is no lab directory, run build_lab.bat first
+    }
+
     public void createLabenv() {
         final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
 

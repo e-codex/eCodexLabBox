@@ -18,7 +18,6 @@ import java.nio.file.*;
 @Configuration
 public class WatchDirectoryConfig {
 
-    private final ApplicationEventPublisher publisher;
 
     @Getter
     private Path labenvHomeDirectory;
@@ -26,8 +25,6 @@ public class WatchDirectoryConfig {
     public WatchDirectoryConfig(ApplicationEventPublisher publisher,
                                 @Value("${labenvironments.homedir}") String path)
     {
-        this.publisher = publisher;
-
         // if the app can't set the labhome based on the property string it
         // sets the working directory to wherever the app was started from
         if (!(path != null && setLabenvHomeDirectory(path)))

@@ -10,12 +10,14 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
+import org.springframework.core.annotation.Order;
 
 @org.springframework.stereotype.Component
 @UIScope
-@Route(value = LabenvFolderView.ROUTE, layout = LabenvLayout.class)
+@Route(value = LabenvHomeDirectoryView.ROUTE, layout = LabenvLayout.class)
+@Order(3)
 @TabMetadata(title = "Lab Home Directory", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvFolderView extends VerticalLayout implements AfterNavigationObserver {
+public class LabenvHomeDirectoryView extends VerticalLayout implements AfterNavigationObserver {
 
     public static final String ROUTE = "homedir";
 
@@ -23,7 +25,7 @@ public class LabenvFolderView extends VerticalLayout implements AfterNavigationO
 
     private TextField pathToLabHomeField;
 
-    public LabenvFolderView(DirectoryController directoryController) {
+    public LabenvHomeDirectoryView(DirectoryController directoryController) {
         this.directoryController = directoryController;
         this.pathToLabHomeField = new TextField();
         pathToLabHomeField.setWidth("100%");
