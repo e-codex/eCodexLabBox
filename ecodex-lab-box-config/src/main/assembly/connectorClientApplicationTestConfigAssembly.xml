@@ -20,6 +20,7 @@
         <fileSet>
             <includes>
                 <include>*.sh</include>
+				<include>*.bat</include>
             </includes>
             <fileMode>0755</fileMode>
             <directory>${project.basedir}/src/main/resources/domibus-connector-client-application</directory>
