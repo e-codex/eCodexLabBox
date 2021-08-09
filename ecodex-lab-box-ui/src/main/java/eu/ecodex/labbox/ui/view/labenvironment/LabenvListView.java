@@ -9,6 +9,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
+import eu.ecodex.labbox.ui.service.LabenvService;
 import lombok.Getter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -22,13 +23,15 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
     public static final String ROUTE = "labs";
     private final LabenvDetailsView details;
     private final DirectoryController directoryController;
+    private final LabenvService labenvService;
 
     @Getter
     private final LabenvGrid grid;
 
-    public LabenvListView(DirectoryController directoryController, LabenvDetailsView details) {
+    public LabenvListView(DirectoryController directoryController, LabenvDetailsView details, LabenvService labenvService) {
         this.directoryController = directoryController;
         this.details = details;
+        this.labenvService = labenvService;
         directoryController.getReactiveUiComponents().put("listlabs", this);
         grid = new LabenvGrid(details);
 
@@ -39,7 +42,7 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
             // then the grid contains the wrong paths
             // after pressing again, it works again
             this.directoryController.scanForLabDirectories();
-            this.grid.setItems(directoryController.getLabenvironments().values());
+            this.grid.setItems(labenvService.getLabenvironments().values());
         });
 
         VerticalLayout main = new VerticalLayout(grid);
@@ -55,14 +58,14 @@ public class LabenvListView extends VerticalLayout implements AfterNavigationObs
 
     public void updateList() {
         getUI().map(ui -> ui.access(() -> {
-            grid.setItems(directoryController.getLabenvironments().values());
+            grid.setItems(labenvService.getLabenvironments().values());
         }));
     }
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         directoryController.scanForLabDirectories();
-        grid.setItems(directoryController.getLabenvironments().values());
+        grid.setItems(labenvService.getLabenvironments().values());
     }
 
 }

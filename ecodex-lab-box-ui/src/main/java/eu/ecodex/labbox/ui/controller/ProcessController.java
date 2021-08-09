@@ -1,11 +1,14 @@
 package eu.ecodex.labbox.ui.controller;
 
-import eu.ecodex.labbox.ui.domain.UnsupportedPlatformException;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
+import eu.ecodex.labbox.ui.service.CreateLabenvService;
+import eu.ecodex.labbox.ui.service.LabenvService;
+import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.PlatformService;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,15 +22,41 @@ public class ProcessController {
     @Getter
     Map<String, Process> runningProc;
 
-    final PlatformService platformService;
+    private final PlatformService platformService;
+    private final CreateLabenvService createLabenvService;
+    private final LabenvService labenvService;
+    private final PathMapperService pathMapperService;
 
     private final String GATEWAY = "gateway";
     private final String CONNECTOR = "domibusConnector";
     private final String CLIENT = "domibusConnectorClient";
 
-    public ProcessController(PlatformService platformService) {
+    public ProcessController(PlatformService platformService, CreateLabenvService createLabenvService, LabenvService labenvService, PathMapperService pathMapperService) {
         this.platformService = platformService;
+        this.createLabenvService = createLabenvService;
+        this.labenvService = labenvService;
+        this.pathMapperService = pathMapperService;
         this.runningProc = new HashMap<>();
+    }
+
+    public void createLabenv() {
+        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
+
+        final List<String> commands = new ArrayList<>();
+        commands.add(platformService.getShell());
+        commands.add(platformService.getShellOption());
+        commands.add("start");
+        commands.add("/wait");
+        commands.add("build_lab_env." + platformService.getScriptExtension());
+        commands.add("lab.id:" + nextLabId);
+//        commands.add("&&");
+//        commands.add("exit");
+
+        ProcessBuilder pb = new ProcessBuilder(commands);
+        // TODO do not hardcode!
+        pb.directory(new File("C:\\Entwicklung\\bitbucket\\ecodex-lab-box\\ecodex-lab-box"));
+
+        createLabenvService.createNextLabenv(pb, pathMapperService.getFullPath("labenv"+nextLabId));
     }
 
     public void startConnector(Labenv lab) throws IOException {

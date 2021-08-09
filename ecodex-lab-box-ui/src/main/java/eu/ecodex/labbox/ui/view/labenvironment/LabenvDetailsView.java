@@ -2,6 +2,7 @@ package eu.ecodex.labbox.ui.view.labenvironment;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -9,19 +10,24 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.StreamRegistration;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
-import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
+import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.PlatformService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 @Component
 @UIScope
@@ -32,23 +38,44 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
 
     public static final String ROUTE = "labdetails";
 
-    final PlatformService platformService;
-
-    // TODO remove
-    final DirectoryController directoryController;
-
-    final PathMapperService pathMapperService;
     final ProcessController processController;
+
+    final PlatformService platformService;
+    final LabenvService labenvService;
+    final PathMapperService pathMapperService;
+
     Labenv labenv;
     TextField labName;
+    Notification notFoundOrStillLoading;
 
-    public LabenvDetailsView(PlatformService platformService, DirectoryController directoryController,
+    public LabenvDetailsView(PlatformService platformService, LabenvService labenvService,
                              PathMapperService pathMapperService, ProcessController processController)
     {
         this.platformService = platformService;
-        this.directoryController = directoryController;
+        this.labenvService = labenvService;
         this.pathMapperService = pathMapperService;
         this.processController = processController;
+
+
+        Div content = new Div();
+        content.addClassName("notification-error");
+        content.setText("What port? Maybe the lab is still building or there is no configuration file ...");
+        notFoundOrStillLoading = new Notification(content);
+        notFoundOrStillLoading.setDuration(3000);
+        notFoundOrStillLoading.setPosition(Notification.Position.MIDDLE);
+
+        // TODO hack, use css instead
+        String styles = ".notification-error { "
+                + "  color: red;"
+                + " }";
+        StreamRegistration resource = UI.getCurrent().getSession()
+                .getResourceRegistry()
+                .registerResource(new StreamResource("styles.css", () -> {
+                    byte[] bytes = styles.getBytes(StandardCharsets.UTF_8);
+                    return new ByteArrayInputStream(bytes);
+                }));
+        UI.getCurrent().getPage().addStyleSheet(
+                "base://" + resource.getResourceUri().toString());
 
         // Labenv
         this.labName = new TextField();
@@ -100,7 +127,11 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button openGatewayUI = new Button(new Icon(VaadinIcon.DASHBOARD));
         openGatewayUI.setText("Open Gateway UI");
         openGatewayUI.addClickListener(c -> {
-            UI.getCurrent().getPage().open("http://localhost:"+labenv.getGatewayPort());
+            if (labenv.getGatewayPort() == null) {
+                notFoundOrStillLoading.open();
+            } else {
+                UI.getCurrent().getPage().open("http://localhost:"+labenv.getGatewayPort());
+            }
         });
 
         gatewaySection.add(gatewaySectionTitle, launchGateway, stopGateway, openGatewayUI);
@@ -133,7 +164,11 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button openConnectorUI = new Button(new Icon(VaadinIcon.DASHBOARD));
         openConnectorUI.setText("Open Connector UI");
         openConnectorUI.addClickListener(c -> {
-            UI.getCurrent().getPage().open("http://localhost:"+labenv.getConnectorPort());
+            if (labenv.getConnectorPort() == null) {
+                notFoundOrStillLoading.open();
+            } else {
+                UI.getCurrent().getPage().open("http://localhost:" + labenv.getConnectorPort());
+            }
         });
 
         connectorSection.add(connectorSectionTitle, launchConnector, stopConnector, openConnectorUI);
@@ -165,7 +200,11 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button openClientUI = new Button(new Icon(VaadinIcon.DASHBOARD));
         openClientUI.setText("Open Connector Client UI");
         openClientUI.addClickListener(c -> {
-            UI.getCurrent().getPage().open("http://localhost:"+labenv.getClientPort());
+            if (labenv.getClientPort() == null) {
+                notFoundOrStillLoading.open();
+            } else {
+                UI.getCurrent().getPage().open("http://localhost:" + labenv.getClientPort());
+            }
         });
         clientSection.add(clientSectionTitle, launchClient, stopClient, openClientUI);
 
@@ -185,9 +224,9 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
     @Override
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String folderName) {
         if (folderName != null
-            && directoryController.getLabenvironments().containsKey(pathMapperService.getFullPath(folderName)))
+            && labenvService.getLabenvironments().containsKey(pathMapperService.getFullPath(folderName)))
         {
-            this.labenv = directoryController.getLabenvironments()
+            this.labenv = labenvService.getLabenvironments()
                     .get(pathMapperService.getFullPath(folderName));
         } else {
             // TODO show maybe a CREATE View instead of redirecting to list???

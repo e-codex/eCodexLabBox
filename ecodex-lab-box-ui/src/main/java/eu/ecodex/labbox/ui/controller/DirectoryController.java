@@ -5,6 +5,8 @@ import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.domain.events.CreatedLabenvFolderEvent;
 import eu.ecodex.labbox.ui.domain.events.DeletedLabenvFolderEvent;
+import eu.ecodex.labbox.ui.domain.events.LabenvBuildSucceeded;
+import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.WatchDirectoryService;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvListView;
@@ -27,28 +29,36 @@ public class DirectoryController {
     private final WatchDirectoryConfig watchDirectoryConfig;
     private final WatchDirectoryService watchDirectoryService;
     private final PathMapperService pathMapperService;
+    private final LabenvService labenvService;
 
     @Getter
     private final Map<String, Component> reactiveUiComponents;
 
-    @Getter
-    private Map<Path, Labenv> labenvironments;
 
-    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService) {
+    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService, LabenvService labenvService) {
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.watchDirectoryService = watchDirectoryService;
         this.pathMapperService = pathMapperService;
+        this.labenvService = labenvService;
         this.reactiveUiComponents = new HashMap<>();
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
-        this.labenvironments = new HashMap<>();
+    }
+
+    @EventListener
+    public void handleLabenvBuildSucceeded(LabenvBuildSucceeded e) {
+        final Labenv labenv = labenvService.getLabenvironments().get(e.getFullPathToLabenv());
+        labenv.parseGatewayServerXml();
+        labenv.parseConnectorProperties();
+        labenv.parseGatewayServerXml();
     }
 
     @EventListener
     public void handleNewLabenvFolder(CreatedLabenvFolderEvent e) {
         Path full = pathMapperService.getFullPath(e.getNameOfNewDirectory());
 
-        Labenv newLabenv = new Labenv(full);
-        labenvironments.put(full, newLabenv);
+        // TODO how to handle the case, that later on properties are added???
+        Labenv newLabenv = Labenv.buildOnly(full);
+        labenvService.getLabenvironments().put(full, newLabenv);
 
         // Adding a spring event listener to a vaadin view causes threading problems
         //toUIPublisher.publishEvent(event);
@@ -62,7 +72,7 @@ public class DirectoryController {
     public void handleDeletedLabenvFolder(DeletedLabenvFolderEvent e) {
         Path full = pathMapperService.getFullPath(e.getNameOfDeletedDirectory());
 
-        labenvironments.remove(full);
+        labenvService.getLabenvironments().remove(full);
 
         LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
         listlabs.updateList();
@@ -87,14 +97,16 @@ public class DirectoryController {
         startMonitoring();
     }
 
-    // run once on startup
+    // note: this runs once on startup
     public void scanForLabDirectories() {
 
         try {
-            labenvironments = Files.list(watchDirectoryConfig.getLabenvHomeDirectory())
-                    .filter(Files::isDirectory)
-                    .filter(d -> d.getFileName().toString().startsWith("labenv"))
-                    .collect(toMap(path -> path, Labenv::new));
+            labenvService.setLabenvironments(
+                    Files.list(watchDirectoryConfig.getLabenvHomeDirectory())
+                        .filter(Files::isDirectory)
+                        .filter(d -> d.getFileName().toString().startsWith("labenv"))
+                        .collect(toMap(path -> path, Labenv::buildAndParse))
+            );
         } catch (IOException e) {
             e.printStackTrace();
             // TODO Logging
