@@ -21,6 +21,10 @@ public class ProcessController {
 
     final PlatformService platformService;
 
+    private final String GATEWAY = "gateway";
+    private final String CONNECTOR = "domibusConnector";
+    private final String CLIENT = "domibusConnectorClient";
+
     public ProcessController(PlatformService platformService) {
         this.platformService = platformService;
         this.runningProc = new HashMap<>();
@@ -36,13 +40,13 @@ public class ProcessController {
         commands.add("start"); // TODO maybe unecessary / not working on unix platforms, needs to be tested
         commands.add("start." + platformService.getScriptExtension());
 
-        runningProc.put("connector-" + lab.getPath().getFileName().toString(),
+        runningProc.put(lab.getPath().getFileName().toString() + " " + CONNECTOR,
                 run(commands, pathToExecutable));
 
     }
 
-    public void stopConnector(Labenv labenv) {
-        stopProc("connector-" + labenv.getPath().getFileName().toString());
+    public void stopConnector(Labenv lab) {
+        stopProc(lab.getPath().getFileName().toString() + " " + CONNECTOR);
     }
 
     public void startGateway(Labenv lab) throws IOException {
@@ -58,7 +62,7 @@ public class ProcessController {
         // "start" is not necessary because startup.bat launches its own java window anyway
         if (startStop) {
             commands.add("startup." + platformService.getScriptExtension());
-            runningProc.put("gateway-" + lab.getPath().getFileName().toString(),
+            runningProc.put(lab.getPath().getFileName().toString() + " " + GATEWAY,
                     run(commands, pathToExecutable));
         } else {
             commands.add("shutdown." + platformService.getScriptExtension());
@@ -80,12 +84,12 @@ public class ProcessController {
         commands.add("start");
         commands.add("startConnectorClient." + platformService.getScriptExtension());
 
-        runningProc.put("client-" + lab.getPath().getFileName().toString(),
+        runningProc.put(lab.getPath().getFileName().toString() + " " + CLIENT,
                 run(commands, pathToExecutable));
     }
 
-    public void stopClient(Labenv labenv) {
-        stopProc("client-" + labenv.getPath().getFileName().toString());
+    public void stopClient(Labenv lab) {
+        stopProc(lab.getPath().getFileName().toString() + " " + CLIENT);
     }
 
     private Process run(List<String> commands, Path pathToExecutable) throws IOException {
@@ -96,24 +100,21 @@ public class ProcessController {
 
     private void stopProc(String id) {
 
-        // TODO this worked once, now it does note ???
-        // TODO this is unreliable
-        Process process = this.runningProc.get(id);
-        boolean result = false;
-        if (process != null) {
-            // process.destroy(); // this does not work
-            try {
-                process.destroyForcibly().waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        // this worked once, now it does note ???
+        // this is unreliable
+//        Process process = this.runningProc.get(id);
+//        boolean result = false;
+//        if (process != null) {
+//            // process.destroy(); // this does not work
+//            try {
+//                process.destroyForcibly().waitFor();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-        // TODO this works but closes all Connector windows
         try {
-            // TODO CONTINUE HERE
-            // TODO find a way to start the process with a particular name/id and terminate that
-            Runtime.getRuntime().exec("taskkill /fi \"WINDOWTITLE eq \\\"DomibusConn*\"");
+            Runtime.getRuntime().exec("taskkill /fi \"WINDOWTITLE eq " + id + "\"");
         } catch (IOException e) {
             e.printStackTrace();
         }

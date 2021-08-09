@@ -159,7 +159,7 @@ public class LabenvDetailsView extends VerticalLayout implements HasUrlParameter
         Button stopClient = new Button(new Icon(VaadinIcon.STOP));
         stopClient.setText("Stop Connector Client");
         stopClient.addClickListener(c -> {
-            // TODO implement this
+            this.processController.stopClient(labenv);
         });
 
         Button openClientUI = new Button(new Icon(VaadinIcon.DASHBOARD));
