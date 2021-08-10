@@ -40,6 +40,7 @@ public class ProcessController {
     }
 
     private void createLab() {
+        // TODO FRIDAY
         // TODO if there is no lab directory, run build_lab.bat first
     }
 
@@ -50,9 +51,11 @@ public class ProcessController {
         commands.add(platformService.getShell());
         commands.add(platformService.getShellOption());
         commands.add("start");
-        commands.add("/wait");
+        commands.add("/wait"); // this is very important
         commands.add("build_lab_env." + platformService.getScriptExtension());
         commands.add("lab.id:" + nextLabId);
+
+        // does not work, "exit" needs to be in the script for the window to close after execution
 //        commands.add("&&");
 //        commands.add("exit");
 

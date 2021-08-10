@@ -17,7 +17,7 @@ public class StringToPathConverter implements Converter<String, Path> {
         if (file.exists()) {
             return Result.ok(file.toPath());
         } else {
-            return Result.error("MY OTHER MESSAGE");
+            return Result.error("This directory does not exist!");
         }
     }
 

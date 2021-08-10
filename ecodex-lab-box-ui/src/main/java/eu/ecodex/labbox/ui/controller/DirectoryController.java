@@ -9,7 +9,7 @@ import eu.ecodex.labbox.ui.domain.events.LabenvBuildSucceeded;
 import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.WatchDirectoryService;
-import eu.ecodex.labbox.ui.view.labenvironment.LabenvListView;
+import eu.ecodex.labbox.ui.view.labenvironment.LabenvSetupView;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -64,7 +64,7 @@ public class DirectoryController {
         //toUIPublisher.publishEvent(event);
 
         // if user has not visited LabenvListView then this will be null
-        LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
+        LabenvSetupView listlabs = (LabenvSetupView) reactiveUiComponents.get("listlabs");
         listlabs.updateList();
     }
 
@@ -74,11 +74,11 @@ public class DirectoryController {
 
         labenvService.getLabenvironments().remove(full);
 
-        LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
+        LabenvSetupView listlabs = (LabenvSetupView) reactiveUiComponents.get("listlabs");
         listlabs.updateList();
     }
 
-    public Path getLabenvHomeDirectory() {
+    public synchronized Path getLabenvHomeDirectory() {
         return watchDirectoryConfig.getLabenvHomeDirectory();
     }
 
@@ -90,11 +90,14 @@ public class DirectoryController {
         watchDirectoryService.stopMonitoring();
     }
 
-    public void setLabenvHomeDirectory(Path path) {
+    public synchronized void setLabenvHomeDirectory(Path path) {
         stopMonitoring();
         watchDirectoryConfig.setLabenvHomeDirectory(path);
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
         startMonitoring();
+        scanForLabDirectories();
+        LabenvSetupView listlabs = (LabenvSetupView) reactiveUiComponents.get("listlabs");
+        listlabs.updateList();
     }
 
     // note: this runs once on startup

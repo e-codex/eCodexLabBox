@@ -18,6 +18,6 @@ public class LabenvOverview extends VerticalLayout implements BeforeEnterObserve
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-//        event.forwardTo(Some.class);
+        event.forwardTo(LabenvSetupView.class);
     }
 }

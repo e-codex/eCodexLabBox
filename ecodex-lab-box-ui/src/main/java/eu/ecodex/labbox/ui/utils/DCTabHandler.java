@@ -8,18 +8,17 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
-import eu.ecodex.labbox.ui.view.labenvironment.LabenvDetailsView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -109,8 +108,14 @@ public class DCTabHandler implements BeforeEnterObserver {
         private String tabLabel = "";
         private Component component;
         private Class<? extends Component> clz;
+        private TabVariant tabVariant;
 
         private TabBuilder() {
+        }
+
+        public TabBuilder withThemeVariant(TabVariant tv) {
+            this.tabVariant = tv;
+            return this;
         }
 
         public TabBuilder withIcon(Icon icon) {
@@ -144,9 +149,14 @@ public class DCTabHandler implements BeforeEnterObserver {
             Tab tab = new Tab(tabText);
             if (tabIcon != null) {
                 tabIcon.setSize(tabFontSize);
-                HorizontalLayout tabLayout = new HorizontalLayout(tabIcon, tabText);
-                tabLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-                tab = new Tab(tabLayout);
+//                HorizontalLayout tabLayout = new HorizontalLayout(tabIcon, tabText);
+//                tabLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+//                tab = new Tab(tabLayout);
+                tab = new Tab(tabIcon, tabText);
+            }
+
+            if (tabVariant != null) {
+                tab.addThemeVariants(tabVariant);
             }
 
             tabsToPages.put(tab, clz);
@@ -165,9 +175,28 @@ public class DCTabHandler implements BeforeEnterObserver {
                 .forEach(c -> {
                     TabMetadata annotation = c.getClass().getAnnotation(TabMetadata.class);
                     LOGGER.debug("Adding configuration tab [{}] with title [{}]", c, annotation.title());
-                    this.createTab()
-                            .withLabel(annotation.title())
-                            .addForComponent(c.getClass());
+
+                    // TODO refactor Icon into TabMetadata
+                    if (annotation.title().equals("Setup")){
+                        this.createTab()
+                                .withIcon(new Icon(VaadinIcon.COGS))
+                                .withThemeVariant(TabVariant.LUMO_ICON_ON_TOP)
+                                .withLabel(annotation.title())
+                                .addForComponent(c.getClass());
+                    } else if (annotation.title().equals("Launch")) {
+                        this.createTab()
+                                .withIcon(new Icon(VaadinIcon.ROCKET))
+                                .withThemeVariant(TabVariant.LUMO_ICON_ON_TOP)
+                                .withLabel(annotation.title())
+                                .addForComponent(c.getClass());
+                    } else {
+                        this.createTab()
+                                .withLabel(annotation.title())
+                                .withThemeVariant(TabVariant.LUMO_ICON_ON_TOP)
+                                .addForComponent(c.getClass());
+                    }
+
+
                 });
     }
 }

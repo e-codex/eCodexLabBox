@@ -25,19 +25,12 @@ public class LabenvLayout extends VerticalLayout implements BeforeEnterObserver,
     public LabenvLayout(ApplicationContext applicationContext)
     {
         this.applicationContext = applicationContext;
-//        this.labenvManager = labenvManager;
-//        for (int i = 1; i < labenvManager.getLabenvironments().size(); ++i) {
-//            RouteConfiguration.forApplicationScope().setRoute("labenv"+i, LabenvDetails.class, MainLayout.class);
-//        }
     }
 
     @PostConstruct
     void init() {
         DCTabHandler.createTabs(applicationContext, TAB_GROUP_NAME);
         add(DCTabHandler.getTabs());
-
-//        DCTabHandler.createTabReplicas(labenvManager.getLabenvironments());
-//        add(DCTabHandler.getTabs());
     }
 
     @Override

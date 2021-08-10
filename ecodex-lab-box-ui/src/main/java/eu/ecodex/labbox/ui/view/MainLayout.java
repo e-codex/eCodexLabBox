@@ -35,6 +35,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         } else {
             // won't be seen anyway, because there is no display in headless mode
             Notification notification = Notification.show("App is running headless! No Desktop support!");
+            // TODO match with other notifications
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
             notification.setPosition(Notification.Position.TOP_END);
         }
@@ -45,7 +46,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         topBar.add(new DomibusConnectorAdminHeader());
         addToNavbar(topBar);
 
-        tabManager.setTabFontSize("bigger");
+        tabManager.setTabFontSize("large");
         tabManager
                 .createTab()
                 .withLabel("Lab Environments")
