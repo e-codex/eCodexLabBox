@@ -1,6 +1,8 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
@@ -29,6 +31,10 @@ public class LabenvLayout extends VerticalLayout implements BeforeEnterObserver,
 
     @PostConstruct
     void init() {
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setWidth("95%");
+
         DCTabHandler.createTabs(applicationContext, TAB_GROUP_NAME);
         add(DCTabHandler.getTabs());
     }

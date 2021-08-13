@@ -17,7 +17,8 @@ public class RunAfterStartupService {
     // ContextRefreshedEvent event -> when context is completely initialized
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        directoryController.scanForLabDirectories();
+        directoryController.searchForLabenvDirectories();
         directoryController.startMonitoring();
+        directoryController.searchForMaven();
     }
 }

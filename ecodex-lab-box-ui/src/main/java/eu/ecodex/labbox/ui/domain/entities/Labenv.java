@@ -2,6 +2,7 @@ package eu.ecodex.labbox.ui.domain.entities;
 
 
 
+import eu.ecodex.labbox.ui.domain.LaunchComponentState;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -24,8 +25,15 @@ public class Labenv {
     private String connectorPort;
     private String clientPort;
 
+    private LaunchComponentState gatewayState;
+    private LaunchComponentState connectorState;
+    private LaunchComponentState clientState;
+
     private Labenv(Path path) {
         this.path = path;
+        this.gatewayState = LaunchComponentState.NOT_RUNNING;
+        this.connectorState = LaunchComponentState.NOT_RUNNING;
+        this.clientState = LaunchComponentState.NOT_RUNNING;
     }
 
     public static Labenv buildAndParse(Path path) {

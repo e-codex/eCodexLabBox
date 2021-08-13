@@ -3,7 +3,6 @@ package eu.ecodex.labbox.ui.view.labenvironment;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.component.grid.GridSortOrderBuilder;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -16,13 +15,13 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ListLabenvsGrid extends Grid<Labenv> {
+public class LabenvGrid extends Grid<Labenv> {
 
-    private final LabenvLaunchView details;
+    private final LaunchLabenvComponentListView details;
 
     private final Notification todoDetails;
 
-    public ListLabenvsGrid(LabenvLaunchView details) {
+    public LabenvGrid(LaunchLabenvComponentListView details) {
         super();
         this.details = details;
         this.todoDetails = new Notification("Currently dropped, because the details section is now a list!");
@@ -34,7 +33,7 @@ public class ListLabenvsGrid extends Grid<Labenv> {
         this.setHeightByRows(true);
 
         addComponentColumn(this::createShowDetailsButton).setHeader("Details").setWidth("15%");
-        addColumn(l -> l.getPath().getFileName().toString()).setHeader("(Folder) Name").setWidth("10%")
+        addColumn(l -> l.getPath().getFileName().toString()).setHeader("Name").setWidth("10%")
                 .setComparator(new LabenvComparator());
         addColumn(Labenv::getPath).setHeader("Path").setWidth("60%");
         addComponentColumn(this::createOpenFileBrowserButton).setHeader("Open in File Manager").setWidth("15%");

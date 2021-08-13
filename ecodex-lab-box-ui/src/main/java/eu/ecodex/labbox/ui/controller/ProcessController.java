@@ -1,14 +1,12 @@
 package eu.ecodex.labbox.ui.controller;
 
+import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
-import eu.ecodex.labbox.ui.service.CreateLabenvService;
-import eu.ecodex.labbox.ui.service.LabenvService;
-import eu.ecodex.labbox.ui.service.PathMapperService;
-import eu.ecodex.labbox.ui.service.PlatformService;
+import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
+import eu.ecodex.labbox.ui.service.*;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,16 +24,20 @@ public class ProcessController {
     private final CreateLabenvService createLabenvService;
     private final LabenvService labenvService;
     private final PathMapperService pathMapperService;
+    private final FileAndDirectoryRepo fileAndDirectoryRepo;
 
     private final String GATEWAY = "gateway";
     private final String CONNECTOR = "domibusConnector";
     private final String CLIENT = "domibusConnectorClient";
 
-    public ProcessController(PlatformService platformService, CreateLabenvService createLabenvService, LabenvService labenvService, PathMapperService pathMapperService) {
+    public ProcessController(PlatformService platformService, CreateLabenvService createLabenvService,
+                             LabenvService labenvService, PathMapperService pathMapperService,
+                             FileAndDirectoryRepo fileAndDirectoryRepo) {
         this.platformService = platformService;
         this.createLabenvService = createLabenvService;
         this.labenvService = labenvService;
         this.pathMapperService = pathMapperService;
+        this.fileAndDirectoryRepo = fileAndDirectoryRepo;
         this.runningProc = new HashMap<>();
     }
 
@@ -60,8 +62,11 @@ public class ProcessController {
 //        commands.add("exit");
 
         ProcessBuilder pb = new ProcessBuilder(commands);
-        // TODO do not hardcode!
-        pb.directory(new File("C:\\Entwicklung\\bitbucket\\ecodex-lab-box\\ecodex-lab-box"));
+        pb.directory(fileAndDirectoryRepo.getLabenvHomeDirectory().toFile());
+
+        if (fileAndDirectoryRepo.getMavenExecutable().isPresent()) {
+            // TODO WARN
+        }
 
         createLabenvService.createNextLabenv(pb, pathMapperService.getFullPath("labenv"+nextLabId));
     }

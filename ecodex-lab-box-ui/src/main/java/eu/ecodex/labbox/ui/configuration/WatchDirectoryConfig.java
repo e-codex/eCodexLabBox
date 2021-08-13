@@ -1,66 +1,35 @@
 package eu.ecodex.labbox.ui.configuration;
 
-import eu.ecodex.labbox.ui.AppStarter;
-import lombok.Getter;
+import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.*;
 
 @Slf4j
 @Configuration
 public class WatchDirectoryConfig {
 
+    private final FileAndDirectoryRepo fileAndDirectoryRepo;
 
-    @Getter
-    private Path labenvHomeDirectory;
-
-    public WatchDirectoryConfig(ApplicationEventPublisher publisher,
-                                @Value("${labenvironments.homedir}") String path)
-    {
-        // if the app can't set the labhome based on the property string it
-        // sets the working directory to wherever the app was started from
-        if (!(path != null && setLabenvHomeDirectory(path)))
-        {
-            try {
-                this.labenvHomeDirectory = new File(AppStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toPath();
-            } catch (URISyntaxException e) {
-                log.debug("unable to set default monitoring folder");
-            }
-        }
+    public WatchDirectoryConfig(FileAndDirectoryRepo fileAndDirectoryRepo) {
+        this.fileAndDirectoryRepo = fileAndDirectoryRepo;
     }
 
-    public synchronized boolean setLabenvHomeDirectory(String path) {
-        File file = new File(path);
-        if (file.exists()) {
-            this.labenvHomeDirectory = file.toPath();
-            return true;
-        }
-        return false;
-    }
-
-    public synchronized void setLabenvHomeDirectory(Path path) {
-        this.labenvHomeDirectory = path;
-    }
-
+//    @Bean ???
     public WatchService watchService() {
-        log.debug("MONITORING_FOLDER: {}", labenvHomeDirectory);
+        log.debug("MONITORING_FOLDER: {}", fileAndDirectoryRepo.getLabenvHomeDirectory());
         WatchService watchService = null;
         try {
             watchService = FileSystems.getDefault().newWatchService();
 
-            if (!Files.isDirectory(labenvHomeDirectory)) {
-                throw new RuntimeException("incorrect monitoring folder: " + labenvHomeDirectory);
+            if (!Files.isDirectory(fileAndDirectoryRepo.getLabenvHomeDirectory())) {
+                throw new RuntimeException("incorrect monitoring folder: " + fileAndDirectoryRepo.getLabenvHomeDirectory());
             }
 
-            labenvHomeDirectory.register(
+            fileAndDirectoryRepo.getLabenvHomeDirectory().register(
                     watchService,
                     StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_CREATE

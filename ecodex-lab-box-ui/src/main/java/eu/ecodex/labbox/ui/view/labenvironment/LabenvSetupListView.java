@@ -4,48 +4,63 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.AfterNavigationEvent;
-import com.vaadin.flow.router.AfterNavigationObserver;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
+import eu.ecodex.labbox.ui.domain.AppStateNotification;
 import eu.ecodex.labbox.ui.service.LabenvService;
+import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
 import lombok.Getter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 @Component
 @UIScope
-@Route(value = LabenvSetupView.ROUTE, layout = LabenvLayout.class)
+@Route(value = LabenvSetupListView.ROUTE, layout = LabenvLayout.class)
 @Order(1)
 @TabMetadata(title = "Setup", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvSetupView extends VerticalLayout implements AfterNavigationObserver {
+public class LabenvSetupListView extends VerticalLayout implements BeforeEnterObserver, AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
 
     public static final String ROUTE = "labs";
 
+    private final NotificationService notificationService;
     private final DirectoryController directoryController;
     private final LabenvService labenvService;
     private final ProcessController processController;
 
-    private final LabenvLaunchView details;
-    @Getter private final ListLabenvsGrid grid;
+    private final LaunchLabenvComponentListView details;
+    @Getter
+    private final LabenvGrid grid;
     private final TextField pathToLabHomeField;
     private final Label setHomeDirStatus;
+    private final List<Notification> activeNotifications;
 
-    public LabenvSetupView(DirectoryController directoryController, LabenvLaunchView details, LabenvService labenvService, ProcessController processController) {
+    public LabenvSetupListView(NotificationService notificationService, DirectoryController directoryController,
+                               LaunchLabenvComponentListView details, LabenvService labenvService,
+                               ProcessController processController) {
+        this.notificationService = notificationService;
         this.directoryController = directoryController;
         this.details = details;
         this.labenvService = labenvService;
         this.processController = processController;
-        directoryController.getReactiveUiComponents().put("listlabs", this);
-        this.grid = new ListLabenvsGrid(details);
+        directoryController.getReactiveLists().put("setuplist", this);
+        directoryController.getBroadcastReceivers().add(this);
+        activeNotifications = new ArrayList<>();
+        notificationService.getProcessedNotifications().clear();
+
+        this.grid = new LabenvGrid(details);
         // TODO try to use this for infos
         // see here: https://vaadin.com/docs/latest/ds/components/grid/#sorting
         // Item Details
@@ -72,7 +87,7 @@ public class LabenvSetupView extends VerticalLayout implements AfterNavigationOb
         Button scanForLabs = new Button(new Icon(VaadinIcon.REFRESH));
         scanForLabs.setText("Refresh Labs");
         scanForLabs.addClickListener(e -> {
-            this.directoryController.scanForLabDirectories();
+            this.directoryController.searchForLabenvDirectories();
             this.grid.setItems(labenvService.getLabenvironments().values());
         });
 
@@ -101,7 +116,10 @@ public class LabenvSetupView extends VerticalLayout implements AfterNavigationOb
     // e.g. @EventListener public void handleSpringEvent(BackendDataChangeEvent event);
     // This workaround enables async background threads to update the view
     // (ui.access synchronizes). This needs the @Push Annotation on the MainLayout (other places did not work)
+    @Override
     public void updateList() {
+        // if user has not visited this view then getUI() will be null
+        // that's why we .map instead of using .get, map won't do anything if null is passed
         getUI().map(ui -> ui.access(() -> {
             grid.setItems(labenvService.getLabenvironments().values());
         }));
@@ -111,8 +129,36 @@ public class LabenvSetupView extends VerticalLayout implements AfterNavigationOb
     public void afterNavigation(AfterNavigationEvent event) {
         pathToLabHomeField.setValue(directoryController.getLabenvHomeDirectory().toString());
         setHomeDirStatus.setVisible(false);
-        directoryController.scanForLabDirectories();
         grid.setItems(labenvService.getLabenvironments().values());
     }
 
+    @Override
+    public void updateNotification() {
+        getUI().map(ui -> ui.access(() -> {
+            notificationService.getNotifications().forEach(asn -> {
+                final Set<AppStateNotification> processedNotifications =
+                        notificationService.getProcessedNotifications();
+
+                if ( ! processedNotifications.contains(asn)) {
+                    final Notification notification = notificationService.createNotification(asn);
+                    notification.open();
+                    processedNotifications.add(asn);
+                }
+            });
+        }));
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        notificationService.getNotifications().forEach(asn -> {
+            final Set<AppStateNotification> processedNotifications =
+                    notificationService.getProcessedNotifications();
+
+            if ( ! processedNotifications.contains(asn)) {
+                final Notification notification = notificationService.createNotification(asn);
+                notification.open();
+                processedNotifications.add(asn);
+            }
+        });
+    }
 }

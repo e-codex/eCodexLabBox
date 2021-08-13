@@ -1,7 +1,9 @@
 package eu.ecodex.labbox.ui.service;
 
 import eu.ecodex.labbox.ui.domain.events.CreatedLabenvFolderEvent;
+import eu.ecodex.labbox.ui.domain.events.CreatedMavenFolderEvent;
 import eu.ecodex.labbox.ui.domain.events.DeletedLabenvFolderEvent;
+import eu.ecodex.labbox.ui.domain.events.DeletedMavenFolderEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,15 +43,25 @@ public class WatchDirectoryService {
                             "Event kind:" + event.kind()
                                     + ". File affected: " + event.context() + ".");
 
+                    // TODO maybe remove both .name calls
                     if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_CREATE.name())) {
+
                         if (event.context().toString().startsWith("labenv")) {
-                            CreatedLabenvFolderEvent c = new CreatedLabenvFolderEvent(this, event.context().toString());
+                            final CreatedLabenvFolderEvent c = new CreatedLabenvFolderEvent(this, event.context().toString());
+                            applicationEventPublisher.publishEvent(c);
+
+                        } else if (event.context().toString().startsWith("apache-maven")) {
+                            final CreatedMavenFolderEvent c = new CreatedMavenFolderEvent(this, event.context().toString());
                             applicationEventPublisher.publishEvent(c);
                         }
+
                     }
                     if (event.kind().name().equals(StandardWatchEventKinds.ENTRY_DELETE.name())) {
                         if (event.context().toString().startsWith("labenv")) {
-                            DeletedLabenvFolderEvent c = new DeletedLabenvFolderEvent(this, event.context().toString());
+                            final DeletedLabenvFolderEvent c = new DeletedLabenvFolderEvent(this, event.context().toString());
+                            applicationEventPublisher.publishEvent(c);
+                        } else if (event.context().toString().startsWith("apache-maven")) {
+                            final DeletedMavenFolderEvent c = new DeletedMavenFolderEvent(this);
                             applicationEventPublisher.publishEvent(c);
                         }
                     }

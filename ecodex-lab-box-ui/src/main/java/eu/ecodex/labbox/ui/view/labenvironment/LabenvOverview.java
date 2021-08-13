@@ -1,6 +1,7 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -18,6 +19,6 @@ public class LabenvOverview extends VerticalLayout implements BeforeEnterObserve
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        event.forwardTo(LabenvSetupView.class);
+        event.forwardTo(LabenvSetupListView.class);
     }
 }

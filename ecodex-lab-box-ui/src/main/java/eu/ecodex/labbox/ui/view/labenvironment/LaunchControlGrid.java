@@ -23,14 +23,14 @@ import java.util.ArrayList;
 
 @UIScope
 @Component
-public class ListWithLaunchControlGrid extends Grid<Labenv> {
+public class LaunchControlGrid extends Grid<Labenv> {
 
     private final ProcessController processController;
 
     private Notification notFoundOrStillLoading;
     private Notification noExecutable;
 
-    public ListWithLaunchControlGrid(ProcessController processController) {
+    public LaunchControlGrid(ProcessController processController) {
         this.processController = processController;
 
         notFoundOrStillLoading = new Notification("What port? There is no configuration file. Maybe the lab is still building?");
@@ -46,7 +46,7 @@ public class ListWithLaunchControlGrid extends Grid<Labenv> {
         this.setWidth("100%");
         this.setHeightByRows(true);
 
-        addColumn(l -> l.getPath().getFileName().toString()).setHeader("(Folder) Name").setWidth("10%")
+        addColumn(l -> l.getPath().getFileName().toString()).setHeader("Name").setWidth("10%")
                 .setComparator(new LabenvComparator()).setId("Name");
 //        addColumn("Status: Started, Stopped, Etc.").setHeader("Status").setWidth("30%");
         addComponentColumn(this::createGatewaySection).setHeader("Gateway").setWidth("20%");
