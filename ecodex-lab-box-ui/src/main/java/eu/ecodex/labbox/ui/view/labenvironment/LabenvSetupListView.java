@@ -20,6 +20,7 @@ import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
+import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import lombok.Getter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -32,11 +33,10 @@ import java.util.Set;
 @Route(value = LabenvSetupListView.ROUTE, layout = LabenvLayout.class)
 @Order(1)
 @TabMetadata(title = "Setup", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvSetupListView extends VerticalLayout implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
+public class LabenvSetupListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
 
     public static final String ROUTE = "labs";
 
-    private final NotificationService notificationService;
     private final DirectoryController directoryController;
     private final LabenvService labenvService;
     private final ProcessController processController;
@@ -50,7 +50,7 @@ public class LabenvSetupListView extends VerticalLayout implements AfterNavigati
     public LabenvSetupListView(NotificationService notificationService, DirectoryController directoryController,
                                LaunchLabenvComponentListView details, LabenvService labenvService,
                                ProcessController processController) {
-        this.notificationService = notificationService;
+        super(notificationService);
         this.directoryController = directoryController;
         this.details = details;
         this.labenvService = labenvService;
@@ -137,25 +137,4 @@ public class LabenvSetupListView extends VerticalLayout implements AfterNavigati
 //        updateAppStateNotification();
 //    }
 
-    @Override
-    public void updateAppStateNotification() {
-        getUI().map(ui -> ui.access(() -> {
-            // checks all defined app states and activates or deactivates the associated notification.
-            // Activation happens only if the message isn't currently displayed (active)
-            final Set<AppState> appState = notificationService.getAppState();
-            for (AppState s : AppState.values()) {
-                final Map<AppState, Notification> activeNotifications = notificationService.getActiveNotifications();
-                if (appState.contains(s)) {
-                    if (!activeNotifications.containsKey(s)) {
-                        final Notification notification = notificationService.createNotification(AppState.NO_MAVEN);
-                        activeNotifications.put(AppState.NO_MAVEN, notification);
-                        notification.open();
-                    }
-                } else {
-                    final Notification notification = activeNotifications.remove(AppState.NO_MAVEN);
-                    notification.setOpened(false);
-                }
-            }
-        }));
-    }
 }

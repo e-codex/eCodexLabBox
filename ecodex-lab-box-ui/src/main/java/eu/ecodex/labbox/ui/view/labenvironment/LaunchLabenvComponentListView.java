@@ -11,6 +11,7 @@ import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.NotificationService;
+import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +23,16 @@ import java.util.Set;
 @Route(value = LaunchLabenvComponentListView.ROUTE, layout = LabenvLayout.class)
 @Order(2)
 @TabMetadata(title = "Launch", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LaunchLabenvComponentListView extends VerticalLayout implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
+public class LaunchLabenvComponentListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
 
     public static final String ROUTE = "launch";
 
     private final LabenvService labenvService;
     private final LaunchControlGrid grid;
-    private final NotificationService notificationService;
 
     public LaunchLabenvComponentListView(DirectoryController directoryController, LabenvService labenvService, LaunchControlGrid grid, NotificationService notificationService)
     {
-        this.notificationService = notificationService;
+        super(notificationService);
         this.labenvService = labenvService;
         this.grid = grid;
         directoryController.getReactiveLists().put("launchlist", this);
@@ -67,26 +67,4 @@ public class LaunchLabenvComponentListView extends VerticalLayout implements Aft
 //    public void beforeEnter(BeforeEnterEvent event) {
 //        updateAppStateNotification();
 //    }
-
-    @Override
-    public void updateAppStateNotification() {
-        getUI().map(ui -> ui.access(() -> {
-            // checks all defined app states and activates or deactivates the associated notification.
-            // Activation happens only if the message isn't currently displayed (active)
-            final Set<AppState> appState = notificationService.getAppState();
-            for (AppState s : AppState.values()) {
-                final Map<AppState, Notification> activeNotifications = notificationService.getActiveNotifications();
-                if (appState.contains(s)) {
-                    if (!activeNotifications.containsKey(s)) {
-                        final Notification notification = notificationService.createNotification(AppState.NO_MAVEN);
-                        activeNotifications.put(AppState.NO_MAVEN, notification);
-                        notification.open();
-                    }
-                } else {
-                    final Notification notification = activeNotifications.remove(AppState.NO_MAVEN);
-                    notification.setOpened(false);
-                }
-            }
-        }));
-    }
 }
