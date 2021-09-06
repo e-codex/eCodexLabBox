@@ -1,5 +1,5 @@
 package eu.ecodex.labbox.ui.domain;
 
-public enum AppStateNotification {
+public enum AppState {
     NO_MAVEN
 }

@@ -1,7 +1,7 @@
 package eu.ecodex.labbox.ui.controller;
 
 import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
-import eu.ecodex.labbox.ui.domain.AppStateNotification;
+import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.domain.events.*;
 import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
@@ -62,8 +62,8 @@ public class DirectoryController {
     @EventListener
     public void handleDeletedMavenFolder(DeletedMavenFolderEvent event) {
         fileAndDirectoryRepo.setMavenExecutable(Optional.empty());
-        notificationService.getNotifications().add(AppStateNotification.NO_MAVEN);
-        broadcastReceivers.forEach(BroadcastReceiver::updateNotification);
+        notificationService.getAppState().add(AppState.NO_MAVEN);
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
     }
 
     @EventListener
@@ -159,10 +159,13 @@ public class DirectoryController {
             e.printStackTrace();
             // TODO Logging
         }
+        final Set<AppState> notifications = notificationService.getAppState();
         if (!mvn.isPresent()) {
-            notificationService.getNotifications().add(AppStateNotification.NO_MAVEN);
-            broadcastReceivers.forEach(BroadcastReceiver::updateNotification);
+            notifications.add(AppState.NO_MAVEN);
+        } else {
+            notifications.remove(AppState.NO_MAVEN);
         }
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
         return mvn;
     }
 }

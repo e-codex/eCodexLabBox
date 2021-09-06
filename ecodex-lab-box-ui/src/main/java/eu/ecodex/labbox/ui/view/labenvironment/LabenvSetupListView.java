@@ -9,12 +9,14 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
-import eu.ecodex.labbox.ui.domain.AppStateNotification;
+import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
@@ -22,8 +24,7 @@ import lombok.Getter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -31,7 +32,7 @@ import java.util.Set;
 @Route(value = LabenvSetupListView.ROUTE, layout = LabenvLayout.class)
 @Order(1)
 @TabMetadata(title = "Setup", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvSetupListView extends VerticalLayout implements BeforeEnterObserver, AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
+public class LabenvSetupListView extends VerticalLayout implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
 
     public static final String ROUTE = "labs";
 
@@ -45,7 +46,6 @@ public class LabenvSetupListView extends VerticalLayout implements BeforeEnterOb
     private final LabenvGrid grid;
     private final TextField pathToLabHomeField;
     private final Label setHomeDirStatus;
-    private final List<Notification> activeNotifications;
 
     public LabenvSetupListView(NotificationService notificationService, DirectoryController directoryController,
                                LaunchLabenvComponentListView details, LabenvService labenvService,
@@ -57,8 +57,6 @@ public class LabenvSetupListView extends VerticalLayout implements BeforeEnterOb
         this.processController = processController;
         directoryController.getReactiveLists().put("setuplist", this);
         directoryController.getBroadcastReceivers().add(this);
-        activeNotifications = new ArrayList<>();
-        notificationService.getProcessedNotifications().clear();
 
         this.grid = new LabenvGrid(details);
         // TODO try to use this for infos
@@ -130,35 +128,34 @@ public class LabenvSetupListView extends VerticalLayout implements BeforeEnterOb
         pathToLabHomeField.setValue(directoryController.getLabenvHomeDirectory().toString());
         setHomeDirStatus.setVisible(false);
         grid.setItems(labenvService.getLabenvironments().values());
+        updateAppStateNotification();
     }
 
+    // accessing the UI here isn't possible, because it is not yet available !
+//    @Override
+//    public void beforeEnter(BeforeEnterEvent event) {
+//        updateAppStateNotification();
+//    }
+
     @Override
-    public void updateNotification() {
+    public void updateAppStateNotification() {
         getUI().map(ui -> ui.access(() -> {
-            notificationService.getNotifications().forEach(asn -> {
-                final Set<AppStateNotification> processedNotifications =
-                        notificationService.getProcessedNotifications();
-
-                if ( ! processedNotifications.contains(asn)) {
-                    final Notification notification = notificationService.createNotification(asn);
-                    notification.open();
-                    processedNotifications.add(asn);
+            // checks all defined app states and activates or deactivates the associated notification.
+            // Activation happens only if the message isn't currently displayed (active)
+            final Set<AppState> appState = notificationService.getAppState();
+            for (AppState s : AppState.values()) {
+                final Map<AppState, Notification> activeNotifications = notificationService.getActiveNotifications();
+                if (appState.contains(s)) {
+                    if (!activeNotifications.containsKey(s)) {
+                        final Notification notification = notificationService.createNotification(AppState.NO_MAVEN);
+                        activeNotifications.put(AppState.NO_MAVEN, notification);
+                        notification.open();
+                    }
+                } else {
+                    final Notification notification = activeNotifications.remove(AppState.NO_MAVEN);
+                    notification.setOpened(false);
                 }
-            });
-        }));
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        notificationService.getNotifications().forEach(asn -> {
-            final Set<AppStateNotification> processedNotifications =
-                    notificationService.getProcessedNotifications();
-
-            if ( ! processedNotifications.contains(asn)) {
-                final Notification notification = notificationService.createNotification(asn);
-                notification.open();
-                processedNotifications.add(asn);
             }
-        });
+        }));
     }
 }

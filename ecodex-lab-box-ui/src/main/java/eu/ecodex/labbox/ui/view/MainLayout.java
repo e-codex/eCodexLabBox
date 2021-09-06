@@ -17,7 +17,7 @@ import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import org.springframework.stereotype.Component;
 
-import java.awt.Desktop;
+import java.awt.*;
 
 @UIScope
 @Component
@@ -26,10 +26,9 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
     private final DCTabHandler tabManager = new DCTabHandler();
 
-    private final NotificationService notificationService;
-
     public MainLayout(NotificationService notificationService) {
-        this.notificationService = notificationService;
+
+        notificationService.getActiveNotifications().clear();
 
         // TODO migrate this to new notification system when it's done
         if (Desktop.isDesktopSupported()) {
@@ -80,6 +79,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         topBar.add(tabManager.getTabs());
     }
 
+    @Override
     public void beforeEnter(BeforeEnterEvent event) {
         tabManager.beforeEnter(event);
     }
