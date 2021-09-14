@@ -26,7 +26,7 @@ title "ecodex-lab-box-ui"
 
 
 @echo on
-"%JAVA_HOME%\bin\java" -D"loader.path=./ui" -cp "%CLASSPATH%" "org.springframework.boot.loader.PropertiesLauncher"
+"%JAVA_HOME%\bin\java" -Dspring.profiles.active=prod -D"loader.path=./ui" -cp "%CLASSPATH%" "org.springframework.boot.loader.PropertiesLauncher"
 
 :end
 
