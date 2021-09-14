@@ -1,7 +1,10 @@
 package eu.ecodex.labbox.ui.controller;
 
-import eu.ecodex.labbox.ui.domain.UnsupportedPlatformException;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
+import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
+import eu.ecodex.labbox.ui.service.CreateLabenvService;
+import eu.ecodex.labbox.ui.service.LabenvService;
+import eu.ecodex.labbox.ui.service.PathMapperService;
 import eu.ecodex.labbox.ui.service.PlatformService;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
@@ -19,15 +22,58 @@ public class ProcessController {
     @Getter
     Map<String, Process> runningProc;
 
-    final PlatformService platformService;
+    private final PlatformService platformService;
+    private final CreateLabenvService createLabenvService;
+    private final LabenvService labenvService;
+    private final PathMapperService pathMapperService;
+    private final FileAndDirectoryRepo fileAndDirectoryRepo;
 
     private final String GATEWAY = "gateway";
     private final String CONNECTOR = "domibusConnector";
     private final String CLIENT = "domibusConnectorClient";
 
-    public ProcessController(PlatformService platformService) {
+    public ProcessController(PlatformService platformService, CreateLabenvService createLabenvService,
+                             LabenvService labenvService, PathMapperService pathMapperService,
+                             FileAndDirectoryRepo fileAndDirectoryRepo) {
         this.platformService = platformService;
+        this.createLabenvService = createLabenvService;
+        this.labenvService = labenvService;
+        this.pathMapperService = pathMapperService;
+        this.fileAndDirectoryRepo = fileAndDirectoryRepo;
         this.runningProc = new HashMap<>();
+    }
+
+    public void createLabenv() {
+
+        final List<String> commands = new ArrayList<>();
+
+        // build the lab first
+        if (labenvService.getLab() == null) {
+            commands.add(platformService.getShell());
+            commands.add(platformService.getShellOption());
+            commands.add("start");
+            commands.add("/wait"); // this is very important
+            commands.add("build_lab." + platformService.getScriptExtension());
+            commands.add("&&");
+        }
+
+        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
+
+        commands.add(platformService.getShell());
+        commands.add(platformService.getShellOption());
+        commands.add("start");
+        commands.add("/wait"); // this is very important
+        commands.add("build_lab_env." + platformService.getScriptExtension());
+        commands.add("lab.id:" + nextLabId);
+
+        ProcessBuilder pb = new ProcessBuilder(commands);
+        pb.directory(fileAndDirectoryRepo.getLabenvHomeDirectory().toFile());
+
+//        if (!fileAndDirectoryRepo.getMavenExecutable().isPresent()) {
+//            // could warn here, but it's probably better to disable the button
+//        }
+
+        createLabenvService.createNextLabenv(pb, pathMapperService.getFullPath("labenv"+nextLabId));
     }
 
     public void startConnector(Labenv lab) throws IOException {

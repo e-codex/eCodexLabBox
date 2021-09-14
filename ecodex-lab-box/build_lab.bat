@@ -23,4 +23,4 @@ echo ##################### Building ecodex-lab-box #####################
 echo.
 
 call "%MAVEN_CMD%" -f ..\pom.xml clean install
-
+exit

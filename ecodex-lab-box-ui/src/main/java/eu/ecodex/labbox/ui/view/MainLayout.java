@@ -12,6 +12,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
+import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import org.springframework.stereotype.Component;
@@ -25,27 +26,36 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
     private final DCTabHandler tabManager = new DCTabHandler();
 
-    public MainLayout() {
+    public MainLayout(NotificationService notificationService) {
 
-        // just a test
+        // if we were only using the map instead if a set and a map, then we would have to set the values of the map
+        // to null here, in other words, only clearing the active notifications associated with an app state
+        notificationService.getActiveNotifications().clear();
+
+        // TODO migrate this to new notification system when it's done
         if (Desktop.isDesktopSupported()) {
-            Notification notification = Notification.show("Desktop Integration available");
-            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            notification.setPosition(Notification.Position.TOP_END);
+            Notification desktopIntegrationAvailable = Notification.show("Desktop Integration available");
+            desktopIntegrationAvailable.setDuration(2000);
+            desktopIntegrationAvailable.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            desktopIntegrationAvailable.setPosition(Notification.Position.TOP_END);
         } else {
-            // won't be seen anyway, because there is no display in headless mode
-            Notification notification = Notification.show("App is running headless! No Desktop support!");
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            notification.setPosition(Notification.Position.TOP_END);
+            Notification noDesktopIntegration = Notification.show(
+                    "App is running headless mode and won't work properly. " +
+                    "It probably was started with the wrong parameters. " +
+                    "Please ensure that the app is run with the .headless(false) option!");
+            noDesktopIntegration.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            noDesktopIntegration.setPosition(Notification.Position.TOP_END);
+            noDesktopIntegration.setDuration(0);
         }
 
         setPrimarySection(Section.DRAWER);
 
         VerticalLayout topBar = new VerticalLayout();
+        topBar.setWidthFull();
         topBar.add(new DomibusConnectorAdminHeader());
         addToNavbar(topBar);
 
-        tabManager.setTabFontSize("bigger");
+        tabManager.setTabFontSize("large");
         tabManager
                 .createTab()
                 .withLabel("Lab Environments")
@@ -71,6 +81,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         topBar.add(tabManager.getTabs());
     }
 
+    @Override
     public void beforeEnter(BeforeEnterEvent event) {
         tabManager.beforeEnter(event);
     }

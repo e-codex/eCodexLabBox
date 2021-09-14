@@ -1,15 +1,16 @@
 package eu.ecodex.labbox.ui.controller;
 
-import com.vaadin.flow.component.Component;
 import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
+import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
-import eu.ecodex.labbox.ui.domain.events.CreatedLabenvFolderEvent;
-import eu.ecodex.labbox.ui.domain.events.DeletedLabenvFolderEvent;
-import eu.ecodex.labbox.ui.service.PathMapperService;
-import eu.ecodex.labbox.ui.service.WatchDirectoryService;
-import eu.ecodex.labbox.ui.view.labenvironment.LabenvListView;
+import eu.ecodex.labbox.ui.domain.events.*;
+import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
+import eu.ecodex.labbox.ui.service.*;
+import eu.ecodex.labbox.ui.view.labenvironment.BroadcastReceiver;
+import eu.ecodex.labbox.ui.view.labenvironment.ReactiveListUpdates;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
@@ -25,51 +26,96 @@ import static java.util.stream.Collectors.toMap;
 public class DirectoryController {
 
     private final WatchDirectoryConfig watchDirectoryConfig;
+    private final FileAndDirectoryRepo fileAndDirectoryRepo;
     private final WatchDirectoryService watchDirectoryService;
     private final PathMapperService pathMapperService;
+    private final LabenvService labenvService;
+    private final NotificationService notificationService;
+    private final PlatformService platformService;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Getter
-    private final Map<String, Component> reactiveUiComponents;
+    private final Map<String, ReactiveListUpdates> reactiveLists;
 
     @Getter
-    private Map<Path, Labenv> labenvironments;
+    private final List<BroadcastReceiver> broadcastReceivers;
 
-    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService) {
+    public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, FileAndDirectoryRepo fileAndDirectoryRepo,
+                               WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService,
+                               LabenvService labenvService, NotificationService notificationService, PlatformService platformService, ApplicationEventPublisher applicationEventPublisher) {
         this.watchDirectoryConfig = watchDirectoryConfig;
+        this.fileAndDirectoryRepo = fileAndDirectoryRepo;
         this.watchDirectoryService = watchDirectoryService;
         this.pathMapperService = pathMapperService;
-        this.reactiveUiComponents = new HashMap<>();
+        this.labenvService = labenvService;
+        this.notificationService = notificationService;
+        this.platformService = platformService;
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.reactiveLists = new HashMap<>();
+        this.broadcastReceivers = new ArrayList<>();
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
-        this.labenvironments = new HashMap<>();
+    }
+
+    @EventListener
+    public void handleDeletedLabFolder(DeletedLabFolderEvent e) {
+        labenvService.setLab(null);
+    }
+
+    @EventListener
+    public void handleLabBuildSucceeded(CreatedLabFolderEvent e) {
+        Path fullPath = pathMapperService.getFullPath(e.getNameOfNewDirectory());
+        labenvService.setLab(fullPath);
+    }
+
+    @EventListener
+    public void handleNewMavenFolder(CreatedMavenFolderEvent e) {
+        searchForMaven();
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
+    }
+
+    @EventListener
+    public void handleDeletedMavenFolder(DeletedMavenFolderEvent event) {
+        fileAndDirectoryRepo.setMavenExecutable(Optional.empty());
+        notificationService.getAppState().add(AppState.NO_MAVEN);
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
+    }
+
+    @EventListener
+    public void handleLabenvBuildSucceeded(LabenvBuildSucceeded e) {
+        final Labenv labenv = labenvService.getLabenvironments().get(e.getFullPathToLabenv());
+        labenv.parseGatewayServerXml();
+        labenv.parseConnectorProperties();
+        labenv.parseGatewayServerXml();
     }
 
     @EventListener
     public void handleNewLabenvFolder(CreatedLabenvFolderEvent e) {
         Path full = pathMapperService.getFullPath(e.getNameOfNewDirectory());
 
-        Labenv newLabenv = new Labenv(full);
-        labenvironments.put(full, newLabenv);
+        // TODO how to handle the case, that later on properties are added???
+        Labenv newLabenv = Labenv.buildOnly(full);
+        labenvService.getLabenvironments().put(full, newLabenv);
 
         // Adding a spring event listener to a vaadin view causes threading problems
-        //toUIPublisher.publishEvent(event);
+        // toUIPublisher.publishEvent(event);
 
-        // if user has not visited LabenvListView then this will be null
-        LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
-        listlabs.updateList();
+//        LabenvSetupListView setuplist = (LabenvSetupListView) reactiveUiComponents.get("setuplist");
+//        setuplist.updateList();
+        reactiveLists.forEach((k, v) -> v.updateList());
     }
 
     @EventListener
     public void handleDeletedLabenvFolder(DeletedLabenvFolderEvent e) {
         Path full = pathMapperService.getFullPath(e.getNameOfDeletedDirectory());
 
-        labenvironments.remove(full);
+        labenvService.getLabenvironments().remove(full);
 
-        LabenvListView listlabs = (LabenvListView) reactiveUiComponents.get("listlabs");
-        listlabs.updateList();
+        reactiveLists.forEach((k, v) -> v.updateList());
     }
 
-    public Path getLabenvHomeDirectory() {
-        return watchDirectoryConfig.getLabenvHomeDirectory();
+    public synchronized Path getLabenvHomeDirectory() {
+        return fileAndDirectoryRepo.getLabenvHomeDirectory();
     }
 
     public void startMonitoring() {
@@ -80,25 +126,78 @@ public class DirectoryController {
         watchDirectoryService.stopMonitoring();
     }
 
-    public void setLabenvHomeDirectory(Path path) {
+    public synchronized void setLabenvHomeDirectory(Path path) {
         stopMonitoring();
-        watchDirectoryConfig.setLabenvHomeDirectory(path);
+        fileAndDirectoryRepo.setLabenvHomeDirectory(path);
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
         startMonitoring();
+        searchForLabenvDirectories();
+        reactiveLists.forEach((k, v) -> v.updateList());
+        searchForMaven();
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
+        searchForLab();
     }
 
-    // run once on startup
-    public void scanForLabDirectories() {
+    // runs on startup
+    public void searchForLab() {
+        try {
+            labenvService.setLab(
+                    Files.list(fileAndDirectoryRepo.getLabenvHomeDirectory())
+                            .filter(Files::isDirectory)
+                            .filter(d -> d.getFileName().toString().equals("lab"))
+                            .findFirst()
+                            .orElse(null)
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // runs on startup
+    public void searchForLabenvDirectories() {
 
         try {
-            labenvironments = Files.list(watchDirectoryConfig.getLabenvHomeDirectory())
-                    .filter(Files::isDirectory)
-                    .filter(d -> d.getFileName().toString().startsWith("labenv"))
-                    .collect(toMap(path -> path, Labenv::new));
+            labenvService.setLabenvironments(
+                    Files.list(fileAndDirectoryRepo.getLabenvHomeDirectory())
+                            .filter(Files::isDirectory)
+                            .filter(d -> d.getFileName().toString().startsWith("labenv"))
+                            .collect(toMap(path -> path, Labenv::buildAndParse))
+            );
         } catch (IOException e) {
             e.printStackTrace();
             // TODO Logging
         }
         // TODO warn user if a folder does not contain step I) anything II) important files
+    }
+
+    // note: this runs once on startup
+    public Optional<Path> searchForMaven() {
+        Optional<Path> mvn = Optional.empty();
+        try {
+            mvn = Files.list(fileAndDirectoryRepo.getLabenvHomeDirectory())
+                    .filter(Files::isDirectory)
+                    .filter(d -> d.getFileName().toString().startsWith("apache-maven"))
+                    .map(d -> d.resolve("bin"))
+                    .map(d -> {
+                        if (platformService.isWindows()) {
+                            return d.resolve("mvn_cmd");
+                        } else {
+                            return d.resolve("mvn");
+                        }
+                    })
+                    .findFirst();
+            fileAndDirectoryRepo.setMavenExecutable(mvn);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // TODO Logging
+        }
+        // TODO migrate to AppStateService
+        final Set<AppState> notifications = notificationService.getAppState();
+        if (!mvn.isPresent()) {
+            notifications.add(AppState.NO_MAVEN);
+        } else {
+            notifications.remove(AppState.NO_MAVEN);
+        }
+        return mvn;
     }
 }

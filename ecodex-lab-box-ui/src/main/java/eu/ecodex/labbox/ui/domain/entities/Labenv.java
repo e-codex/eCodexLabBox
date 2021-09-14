@@ -2,6 +2,7 @@ package eu.ecodex.labbox.ui.domain.entities;
 
 
 
+import eu.ecodex.labbox.ui.domain.LaunchComponentState;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -20,18 +21,34 @@ public class Labenv {
     @EqualsAndHashCode.Include
     private final Path path;
 
-    private final String gatewayPort;
-    private final String connectorPort;
-    private final String clientPort;
+    private String gatewayPort;
+    private String connectorPort;
+    private String clientPort;
 
-    public Labenv(Path path) {
+    private LaunchComponentState gatewayState;
+    private LaunchComponentState connectorState;
+    private LaunchComponentState clientState;
+
+    private Labenv(Path path) {
         this.path = path;
-        this.connectorPort = parseConnectorProperties();
-        this.gatewayPort = parseGatewayServerXml();
-        this.clientPort = parseClientProperties();
+        this.gatewayState = LaunchComponentState.NOT_RUNNING;
+        this.connectorState = LaunchComponentState.NOT_RUNNING;
+        this.clientState = LaunchComponentState.NOT_RUNNING;
     }
 
-    private String parseGatewayServerXml() {
+    public static Labenv buildAndParse(Path path) {
+        Labenv lab = new Labenv(path);
+        lab.parseGatewayServerXml();
+        lab.parseConnectorProperties();
+        lab.parseClientProperties();
+        return lab;
+    }
+
+    public static Labenv buildOnly(Path path) {
+        return new Labenv(path);
+    }
+
+    public void parseGatewayServerXml() {
         Path property = path
                 .resolve("domibus-gateway")
                 .resolve("conf")
@@ -55,27 +72,27 @@ public class Labenv {
         } catch (IOException | XMLStreamException e) {
             e.printStackTrace();
         }
-        return result;
+        this.gatewayPort = result;
     }
 
-    private String parseConnectorProperties() {
+    public void parseConnectorProperties() {
         Path property = path
                 .resolve("domibus-connector")
                 .resolve("config")
                 .resolve("connector.properties");
 
         String result = "missing:connector.properties";
-        return getServerPortProperty(property, result);
+        this.connectorPort = getServerPortProperty(property, result);
     }
 
-    private String parseClientProperties() {
+    public void parseClientProperties() {
         Path property = path
                 .resolve("domibus-connector-client-application")
                 .resolve("config")
                 .resolve("connector-client.properties");
 
         String result = "missing:client.properties";
-        return getServerPortProperty(property, result);
+        this.clientPort = getServerPortProperty(property, result);
     }
 
     private String getServerPortProperty(Path property, String result) {
