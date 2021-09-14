@@ -9,8 +9,9 @@
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-box-distribution</artifactId>
   <build>
+  	<finalName>ecodex-lab-box-${project.version}</finalName>
     <plugins>
-      <plugin>
+      <!-- <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xml-maven-plugin</artifactId>
         <version>1.0.2</version>
@@ -33,7 +34,7 @@
             </transformationSet>
           </transformationSets>
         </configuration>
-      </plugin>
+      </plugin> -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
@@ -44,7 +45,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <appendAssemblyId>true</appendAssemblyId>
+              <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
                 <descriptor>src/main/assembly/labBoxAssembly.xml</descriptor>
               </descriptors>

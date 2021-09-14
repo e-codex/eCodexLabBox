@@ -3,43 +3,45 @@
 	<id>labbox</id>
 	<formats>
 		<format>zip</format>
+		<format>dir</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 
 	<fileSets>
         <fileSet>
             <includes>
-                <include>pom.xml</include>
+                <include>**/*</include>
             </includes>
-            <directory>${project.basedir}/../ecodex-lab-box/</directory>
-            <outputDirectory>lab-box</outputDirectory>
+            <directory>${project.basedir}/src/main/resources/apache-maven-3.8.1</directory>
+            <outputDirectory>/ecodex-lab-box/apache-maven-3.8.1</outputDirectory>
         </fileSet>
         <fileSet>
             <includes>
                 <include>**/*</include>
             </includes>
-            <excludes>
-                <exclude>*.sh</exclude>
-            </excludes>
-            <directory>${project.basedir}/src/main/mavenwrapper</directory>
-            <outputDirectory>lab-box</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <includes>
-                <include>*.sh</include>
-            </includes>
-            <fileMode>0755</fileMode>
-            <directory>${project.basedir}/src/main/mavenwrapper</directory>
-            <outputDirectory>lab-box</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <includes>
-                <include>*.txt</include>
-            </includes>
-            <fileMode>0755</fileMode>
-            <directory>${project.basedir}/src/main/readme</directory>
-            <outputDirectory>lab-box</outputDirectory>
+            <directory>${project.basedir}/../ecodex-lab-box/lab</directory>
+            <outputDirectory>/ecodex-lab-box/lab</outputDirectory>
         </fileSet>
     </fileSets>
-
+	<files>
+        <file>
+            <source>${project.basedir}/src/main/resources/target-pom.xml</source>
+            <outputDirectory>/ecodex-lab-box</outputDirectory>
+            <destName>pom.xml</destName>
+        </file>
+        <file>
+            <source>${project.basedir}/src/main/resources/build_lab_env.bat</source>
+            <outputDirectory>/ecodex-lab-box</outputDirectory>
+            <destName>build_lab_env.bat</destName>
+        </file>
+        <file>
+            <source>${project.basedir}/../ecodex-lab-box-ui/target/labbox-ui.jar</source>
+            <outputDirectory>/ui</outputDirectory>
+            <destName>ecodex-labbox-ui.jar</destName>
+        </file>
+        <file>
+            <source>${project.basedir}/../ecodex-lab-box-ui/src/main/resources/start.bat</source>
+            <lineEnding>windows</lineEnding>
+        </file>
+    </files>
 </assembly>
