@@ -10,6 +10,7 @@ import eu.ecodex.labbox.ui.view.labenvironment.BroadcastReceiver;
 import eu.ecodex.labbox.ui.view.labenvironment.ReactiveListUpdates;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
@@ -32,6 +33,8 @@ public class DirectoryController {
     private final NotificationService notificationService;
     private final PlatformService platformService;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+
     @Getter
     private final Map<String, ReactiveListUpdates> reactiveLists;
 
@@ -40,7 +43,7 @@ public class DirectoryController {
 
     public DirectoryController(WatchDirectoryConfig watchDirectoryConfig, FileAndDirectoryRepo fileAndDirectoryRepo,
                                WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService,
-                               LabenvService labenvService, NotificationService notificationService, PlatformService platformService) {
+                               LabenvService labenvService, NotificationService notificationService, PlatformService platformService, ApplicationEventPublisher applicationEventPublisher) {
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.fileAndDirectoryRepo = fileAndDirectoryRepo;
         this.watchDirectoryService = watchDirectoryService;
@@ -48,15 +51,27 @@ public class DirectoryController {
         this.labenvService = labenvService;
         this.notificationService = notificationService;
         this.platformService = platformService;
+        this.applicationEventPublisher = applicationEventPublisher;
         this.reactiveLists = new HashMap<>();
         this.broadcastReceivers = new ArrayList<>();
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
     }
 
     @EventListener
+    public void handleDeletedLabFolder(DeletedLabFolderEvent e) {
+        labenvService.setLab(null);
+    }
+
+    @EventListener
+    public void handleLabBuildSucceeded(CreatedLabFolderEvent e) {
+        Path fullPath = pathMapperService.getFullPath(e.getNameOfNewDirectory());
+        labenvService.setLab(fullPath);
+    }
+
+    @EventListener
     public void handleNewMavenFolder(CreatedMavenFolderEvent e) {
-        // TODO close active "no-maven" notifications
         searchForMaven();
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
     }
 
     @EventListener
@@ -117,11 +132,28 @@ public class DirectoryController {
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
         startMonitoring();
         searchForLabenvDirectories();
-        searchForMaven();
         reactiveLists.forEach((k, v) -> v.updateList());
+        searchForMaven();
+        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
+        searchForLab();
     }
 
-    // note: this runs once on startup
+    // runs on startup
+    public void searchForLab() {
+        try {
+            labenvService.setLab(
+                    Files.list(fileAndDirectoryRepo.getLabenvHomeDirectory())
+                            .filter(Files::isDirectory)
+                            .filter(d -> d.getFileName().toString().equals("lab"))
+                            .findFirst()
+                            .orElse(null)
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // runs on startup
     public void searchForLabenvDirectories() {
 
         try {
@@ -159,13 +191,13 @@ public class DirectoryController {
             e.printStackTrace();
             // TODO Logging
         }
+        // TODO migrate to AppStateService
         final Set<AppState> notifications = notificationService.getAppState();
         if (!mvn.isPresent()) {
             notifications.add(AppState.NO_MAVEN);
         } else {
             notifications.remove(AppState.NO_MAVEN);
         }
-        broadcastReceivers.forEach(BroadcastReceiver::updateAppStateNotification);
         return mvn;
     }
 }

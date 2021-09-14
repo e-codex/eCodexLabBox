@@ -28,6 +28,8 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
     public MainLayout(NotificationService notificationService) {
 
+        // if we were only using the map instead if a set and a map, then we would have to set the values of the map
+        // to null here, in other words, only clearing the active notifications associated with an app state
         notificationService.getActiveNotifications().clear();
 
         // TODO migrate this to new notification system when it's done

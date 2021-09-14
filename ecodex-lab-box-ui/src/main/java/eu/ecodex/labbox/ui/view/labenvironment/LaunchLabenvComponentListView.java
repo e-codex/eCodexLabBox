@@ -1,6 +1,5 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
@@ -8,15 +7,11 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
-import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.Set;
 
 @Component
 @UIScope

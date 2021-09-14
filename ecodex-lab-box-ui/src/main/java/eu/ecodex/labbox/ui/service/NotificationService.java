@@ -12,30 +12,27 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import eu.ecodex.labbox.ui.domain.AppState;
-import org.springframework.stereotype.Component;
+import eu.ecodex.labbox.ui.repository.AppStateRepo;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Component
+@Service
 public class NotificationService {
 
-    private final Set<AppState> appState;
-    private final Map<AppState, Notification> activeNotifications;
+    private final AppStateRepo appStateRepo;
 
-    public NotificationService() {
-        this.appState = new HashSet<>();
-        this.activeNotifications = new HashMap<>();
+    public NotificationService(AppStateRepo appStateRepo) {
+        this.appStateRepo = appStateRepo;
     }
 
     public synchronized Map<AppState, Notification> getActiveNotifications() {
-        return this.activeNotifications;
+        return appStateRepo.getActiveNotifications();
     }
 
     public synchronized Set<AppState> getAppState() {
-        return this.appState;
+        return appStateRepo.getAppState();
     }
 
     private Notification createNoMavenNotification() {
@@ -50,8 +47,10 @@ public class NotificationService {
         Button retryBtn = new Button(
                 "Download",
                 clickEvent -> {
+                    // TODO replace with something more appropriate
                     UI.getCurrent().getPage().open("https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/");
                     notification.close();
+                    appStateRepo.getActiveNotifications().remove(AppState.NO_MAVEN);
                 }
         );
         retryBtn.getStyle().set("margin", "0 0 0 var(--lumo-space-m)");
@@ -70,22 +69,18 @@ public class NotificationService {
                 VaadinIcon.CLOSE_SMALL.create(),
                 clickEvent -> {
                     notification.close();
-                    activeNotifications.remove(AppState.NO_MAVEN);
+                    appStateRepo.getActiveNotifications().remove(AppState.NO_MAVEN);
                 });
         closeBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
 
         return closeBtn;
     }
 
-    // if you just store ui notifications in a list and try to open them you run into the problem
-    // that the notifications themselves are stateful -> remember whether they were opened before
-    // after refresh the notification is not opened again
-    // Since our notifications are a system state indicator we need to persist across a refresh
-    // that's why we provide fresh instances through this matching method
     public Notification createNotification(AppState appStateNotification) {
         if (appStateNotification == AppState.NO_MAVEN) {
             return createNoMavenNotification();
         } else {
+            // this ensures all types are handled here
             throw new IllegalStateException("Bad Notification Type!");
         }
     }

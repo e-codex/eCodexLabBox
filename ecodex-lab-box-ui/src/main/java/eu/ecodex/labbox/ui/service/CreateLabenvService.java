@@ -18,21 +18,34 @@ public class CreateLabenvService {
     }
 
     // this controls whether the ui stalls while building the lab env or not
-    //
     @Async
     public void createNextLabenv(ProcessBuilder processBuilder, Path fullPath) {
-        Process start = null;
+        Process run = run(processBuilder);
+        while (run.isAlive()); // blocks execution until process is finished
+        // TODO we could do some exit value logic here
+//        System.out.println("Finished Lab: " + start.exitValue());
+        applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
+    }
+
+    @Async
+    public void createLab(ProcessBuilder processBuilder) {
+        Process run = run(processBuilder);
+
+        while (run.isAlive()); // blocks execution until process is finished
+        // TODO we could do some exit value logic here
+//        System.out.println("Finished Lab: " + start.exitValue());
+
+        // TODO we could do some event logic after the build
+//         applicationEventPublisher.publishEvent();
+    }
+
+    private Process run(ProcessBuilder processBuilder) {
+        Process p = null;
         try {
-            start = processBuilder.start();
+            p = processBuilder.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        while (start.isAlive()) {
-            System.out.println("waiting");
-        }
-        System.out.println(start.exitValue());
-
-        applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
+        return p;
     }
 }

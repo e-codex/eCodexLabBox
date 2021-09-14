@@ -1,8 +1,6 @@
 package eu.ecodex.labbox.ui.service;
 
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
-import lombok.Getter;
-import lombok.Synchronized;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
@@ -12,6 +10,7 @@ import java.util.Map;
 @Service
 public class LabenvService {
 
+    private Path lab;
     private Map<Path, Labenv> labenvironments;
 
     public LabenvService() {
@@ -24,5 +23,13 @@ public class LabenvService {
 
     public synchronized void setLabenvironments(Map<Path, Labenv> labenvironments) {
         this.labenvironments = labenvironments;
+    }
+
+    public synchronized Path getLab() {
+        return lab;
+    }
+
+    public synchronized void setLab(Path lab) {
+        this.lab = lab;
     }
 }

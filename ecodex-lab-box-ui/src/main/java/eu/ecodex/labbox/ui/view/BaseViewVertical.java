@@ -9,12 +9,12 @@ import eu.ecodex.labbox.ui.view.labenvironment.BroadcastReceiver;
 import java.util.Map;
 import java.util.Set;
 
-// this abstraction was created to help with app state notifications / system alerts
+// This abstraction was created to help with app state notifications / system alerts
 // if a app state is broadcasted all views check if they are the active ui and then check if they need to show a
 // notification. This lead to the code in updateAppStateNotification() to be duplicalted in all views. That's why
 // I created this base class, because all views should be able to receive the alert, otherwise the notification might
 // go unnoticed. Use BaseViewVertical wherever you would extend VerticalLayout.
-// If you should ever need a View with horizontal Layout or other vaadin component, just mimic what's done here.
+// If you should ever need a view with horizontal layout or other vaadin component, just mimic what's done here.
 public class BaseViewVertical extends VerticalLayout implements BroadcastReceiver {
 
     private final NotificationService notificationService;
@@ -39,7 +39,9 @@ public class BaseViewVertical extends VerticalLayout implements BroadcastReceive
                     }
                 } else {
                     final Notification notification = activeNotifications.remove(AppState.NO_MAVEN);
-                    notification.setOpened(false);
+                    if (notification != null) {
+                        notification.setOpened(false);
+                    }
                 }
             }
         }));

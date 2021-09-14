@@ -20,5 +20,6 @@ public class RunAfterStartupService {
         directoryController.searchForLabenvDirectories();
         directoryController.startMonitoring();
         directoryController.searchForMaven();
+        directoryController.searchForLab();
     }
 }

@@ -1,9 +1,11 @@
 package eu.ecodex.labbox.ui.controller;
 
-import eu.ecodex.labbox.ui.configuration.WatchDirectoryConfig;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
-import eu.ecodex.labbox.ui.service.*;
+import eu.ecodex.labbox.ui.service.CreateLabenvService;
+import eu.ecodex.labbox.ui.service.LabenvService;
+import eu.ecodex.labbox.ui.service.PathMapperService;
+import eu.ecodex.labbox.ui.service.PlatformService;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 
@@ -41,15 +43,22 @@ public class ProcessController {
         this.runningProc = new HashMap<>();
     }
 
-    private void createLab() {
-        // TODO FRIDAY
-        // TODO if there is no lab directory, run build_lab.bat first
-    }
-
     public void createLabenv() {
-        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
 
         final List<String> commands = new ArrayList<>();
+
+        // build the lab first
+        if (labenvService.getLab() == null) {
+            commands.add(platformService.getShell());
+            commands.add(platformService.getShellOption());
+            commands.add("start");
+            commands.add("/wait"); // this is very important
+            commands.add("build_lab." + platformService.getScriptExtension());
+            commands.add("&&");
+        }
+
+        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
+
         commands.add(platformService.getShell());
         commands.add(platformService.getShellOption());
         commands.add("start");
@@ -57,16 +66,12 @@ public class ProcessController {
         commands.add("build_lab_env." + platformService.getScriptExtension());
         commands.add("lab.id:" + nextLabId);
 
-        // does not work, "exit" needs to be in the script for the window to close after execution
-//        commands.add("&&");
-//        commands.add("exit");
-
         ProcessBuilder pb = new ProcessBuilder(commands);
         pb.directory(fileAndDirectoryRepo.getLabenvHomeDirectory().toFile());
 
-        if (fileAndDirectoryRepo.getMavenExecutable().isPresent()) {
-            // TODO WARN
-        }
+//        if (!fileAndDirectoryRepo.getMavenExecutable().isPresent()) {
+//            // could warn here, but it's probably better to disable the button
+//        }
 
         createLabenvService.createNextLabenv(pb, pathMapperService.getFullPath("labenv"+nextLabId));
     }
