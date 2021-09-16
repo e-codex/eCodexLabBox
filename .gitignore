@@ -1,14 +1,15 @@
 .idea/
 *.iml
-ecodex-lab-box/lab*
+ecodex-lab-box-builder/lab*
 
 
 target/
 /*.project
 */*.project
+/*.classpath
+*/*.classpath
 /*.settings*
 */*.settings*
 /ecodex-lab-box-ui/node_modules/*
-/ecodex-lab-box/mavenrepo/*
 /ecodex-lab-box-ui/*.js
 /ecodex-lab-box-ui/*.json

@@ -13,11 +13,11 @@
     <module>ecodex-lab-box-config</module>
     <module>ecodex-lab-box-tutorial</module>
     <module>ecodex-lab-box-gw-db-setup</module>
-    <module>ecodex-lab-box-distribution</module>
     <module>ecodex-lab-box-gw-pmode-upload</module>
     <!-- make sure ecodex-lab-box is the last module to build -->
-    <module>ecodex-lab-box</module>
+    <module>ecodex-lab-box-builder</module>
     <module>ecodex-lab-box-ui</module>
+    <module>ecodex-lab-box-distribution</module>
   </modules>
 
   <distributionManagement>
