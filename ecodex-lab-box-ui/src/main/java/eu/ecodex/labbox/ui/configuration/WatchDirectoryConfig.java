@@ -1,10 +1,8 @@
 package eu.ecodex.labbox.ui.configuration;
 
-import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
 import java.io.IOException;
 import java.nio.file.*;
 
