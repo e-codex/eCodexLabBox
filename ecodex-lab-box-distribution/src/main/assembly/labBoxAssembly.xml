@@ -19,7 +19,7 @@
             <includes>
                 <include>**/*</include>
             </includes>
-            <directory>${project.basedir}/../ecodex-lab-box/lab</directory>
+            <directory>${project.basedir}/../ecodex-lab-box-builder/lab</directory>
             <outputDirectory>/ecodex-lab-box/lab</outputDirectory>
         </fileSet>
     </fileSets>
