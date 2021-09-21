@@ -43,5 +43,8 @@
             <source>${project.basedir}/../ecodex-lab-box-ui/src/main/resources/start.bat</source>
             <lineEnding>windows</lineEnding>
         </file>
+        <file>
+            <source>${project.basedir}/src/main/resources/README.txt</source>
+        </file>
     </files>
 </assembly>

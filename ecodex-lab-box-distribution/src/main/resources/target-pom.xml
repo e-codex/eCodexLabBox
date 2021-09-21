@@ -168,7 +168,7 @@
                   <overwrite>true</overwrite>
                   <resources>
                     <resource>
-                      <directory>${project.basedir}/lab/domibus-connector</directory>
+                      <directory>${project.basedir}/lab/domibus-connector/standalone</directory>
                       <filtering>false</filtering>
                     </resource>
                   </resources>
