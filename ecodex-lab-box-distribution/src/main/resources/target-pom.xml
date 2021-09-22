@@ -29,7 +29,6 @@
     <gw07.host>localhost</gw07.host>
     <gw08.host>localhost</gw08.host>
     <gw09.host>localhost</gw09.host>
-    <gw10.host>localhost</gw10.host>
     <gw01.port>8010</gw01.port>
     <gw02.port>8020</gw02.port>
     <gw03.port>8030</gw03.port>
@@ -39,7 +38,6 @@
     <gw07.port>8070</gw07.port>
     <gw08.port>8080</gw08.port>
     <gw09.port>8090</gw09.port>
-    <gw10.port>8100</gw10.port>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <domibus-gw.version>4.2</domibus-gw.version>
@@ -232,6 +230,23 @@
                 </configuration>
               </execution>
               <execution>
+                <id>copy-domibus-connector-client-db-driver</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector-client-application/lib</outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>${project.basedir}/lab/h2-database</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              <execution>
                 <id>copy-component-config</id>
                 <phase>install</phase>
                 <goals>
@@ -269,10 +284,10 @@
         <gw03.port>8030</gw03.port>
         <gw04.port>8040</gw04.port>
         <gw05.port>8050</gw05.port>
-        <gw06.port>8050</gw06.port>
-        <gw07.port>8050</gw07.port>
-        <gw08.port>8050</gw08.port>
-        <gw09.port>8050</gw09.port>
+        <gw06.port>8060</gw06.port>
+        <gw07.port>8070</gw07.port>
+        <gw08.port>8080</gw08.port>
+        <gw09.port>8090</gw09.port>
       </properties>
     </profile>
   </profiles>

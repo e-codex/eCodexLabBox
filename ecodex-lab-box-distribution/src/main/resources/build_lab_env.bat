@@ -55,7 +55,12 @@ echo ##################### Setup of domibus-gateway database ###################
 echo.
 call %cd%\labenv%LAB_ID%\domibus-gateway\setup\setupdb.bat
 
-rem call %cd%\labenv%LAB_ID%\domibus-gateway\setup\setuppmodes.bat
+
+echo.
+echo ##################### Setup of domibusConnectorClient-Application database #####################
+echo.
+call %cd%\labenv%LAB_ID%\domibus-connector-client-application\setup\setupdb.bat
+
 
 goto end
 
