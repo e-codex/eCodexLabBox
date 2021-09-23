@@ -183,7 +183,7 @@
               </artifactItems>
             </configuration>
           </execution>
-          <execution>
+         <!--  <execution>
             <id>download-pmode-uploader</id>
             <phase>package</phase>
             <goals>
@@ -204,9 +204,9 @@
                 </artifactItem>
               </artifactItems>
             </configuration>
-          </execution>
+          </execution> -->
           <execution>
-            <id>download-p-mode-upload-tool</id>
+            <id>download-test-keystores</id>
             <phase>package</phase>
             <goals>
               <goal>unpack</goal>

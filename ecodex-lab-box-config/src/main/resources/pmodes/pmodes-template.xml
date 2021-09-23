@@ -44,9 +44,6 @@
             <party name="gw09" endpoint="http://${gw09.host}:${gw09.port}/domibus/services/msh" allowChunking="false">
                 <identifier partyId="gw09" partyIdType="partyTypeUrn"/>
             </party>
-            <party name="gw10" endpoint="http://${gw10.host}:${gw10.port}/domibus/services/msh" allowChunking="false">
-                <identifier partyId="gw10" partyIdType="partyTypeUrn"/>
-            </party>
 
         </parties>
         <meps>
@@ -294,7 +291,6 @@
                 <initiatorParty name="gw07"/>
                 <initiatorParty name="gw08"/>
                 <initiatorParty name="gw09"/>
-                <initiatorParty name="gw10"/>
             </initiatorParties>
             <responderParties>
                 <responderParty name="gw01"/>
@@ -306,7 +302,6 @@
                 <responderParty name="gw07"/>
                 <responderParty name="gw08"/>
                 <responderParty name="gw09"/>
-                <responderParty name="gw10"/>
             </responderParties>
             <legs>
                 <leg name="service1LegAction1"/>
@@ -334,7 +329,6 @@
                 <initiatorParty name="gw07"/>
                 <initiatorParty name="gw08"/>
                 <initiatorParty name="gw09"/>
-                <initiatorParty name="gw10"/>
             </initiatorParties>
             <responderParties>
                 <responderParty name="gw01"/>
@@ -346,7 +340,6 @@
                 <responderParty name="gw07"/>
                 <responderParty name="gw08"/>
                 <responderParty name="gw09"/>
-                <responderParty name="gw10"/>
             </responderParties>
             <legs>
                 <leg name="GWTESTLegGWTESTActionTestForm"/>
@@ -368,7 +361,6 @@
                 <initiatorParty name="gw07"/>
                 <initiatorParty name="gw08"/>
                 <initiatorParty name="gw09"/>
-                <initiatorParty name="gw10"/>
             </initiatorParties>
             <responderParties>
                 <responderParty name="gw01"/>
@@ -380,7 +372,6 @@
                 <responderParty name="gw07"/>
                 <responderParty name="gw08"/>
                 <responderParty name="gw09"/>
-                <responderParty name="gw10"/>
             </responderParties>
             <legs>
                 <leg name="ConTESTLegConTESTActionTestForm"/>

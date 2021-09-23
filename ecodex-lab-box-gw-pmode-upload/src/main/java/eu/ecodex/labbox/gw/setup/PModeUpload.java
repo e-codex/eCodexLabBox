@@ -23,6 +23,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.util.MimeType;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -163,11 +165,15 @@ public class PModeUpload {
             }
             LOGGER.trace("Cookies are: {}", cookieStore.getCookies());
 
-
+            ByteArrayBody byteArrayBody = new ByteArrayBody(this.pModeXml, ContentType.APPLICATION_XML, "pmode.xml");
+           
             MultipartEntityBuilder multipartBuilder = MultipartEntityBuilder.create()
-                    .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
-                    .addPart("description", new StringBody("pmode.xml", ContentType.TEXT_PLAIN))
-                    .addPart("file", new ByteArrayBody(this.pModeXml, "file"));
+//                    .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+//                    .addPart("description", new StringBody("pmode.xml", ContentType.TEXT_XML))
+                    .addTextBody("file", new String(this.pModeXml, "UTF-8"), ContentType.getByMimeType(MimeTypeUtils.APPLICATION_XML_VALUE));
+//                    .addBinaryBody("file", this.pModeXml, ContentType.getByMimeType(MimeTypeUtils.APPLICATION_XML_VALUE), "pmode.xml");
+            
+//                    .addPart("file", byteArrayBody);
 
 
             multipartBuilder.setContentType(ContentType.MULTIPART_FORM_DATA);
@@ -186,11 +192,12 @@ public class PModeUpload {
             HttpUriRequest uploadPost = RequestBuilder
                     .post(url + "/rest/pmode")
                     .addHeader("X-XSRF-TOKEN", value)
+                    .addParameter("description", "Upload from pmodeuploader")
                     .addHeader(httpUploadEntity.getContentType())
                     .setEntity(httpUploadEntity)
                     .build();
 
-            LOGGER.trace("execute post {} with headers {}", uploadPost, uploadPost.getAllHeaders());
+            LOGGER.info("execute post {} with headers {}", uploadPost, uploadPost.getAllHeaders());
 
             HttpResponse uploadResponse = client.execute(uploadPost); //, context);
 
