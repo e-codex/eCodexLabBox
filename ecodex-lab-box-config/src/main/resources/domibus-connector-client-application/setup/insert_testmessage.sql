@@ -15,7 +15,7 @@ MESSAGE_STATUS,
 CREATED
 )
 VALUES(
-1,
+CLIENT_MESSAGE_SEQ.NEXTVAL,
 'testMessage-${lab.id}-01',
 'testSender',
 'testRecipient',
