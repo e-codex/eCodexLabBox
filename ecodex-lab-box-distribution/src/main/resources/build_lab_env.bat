@@ -41,7 +41,23 @@ GOTO ParseParams
 GOTO ParseParams
 
 :SetMavenHome
-set "MAVEN_HOME=%cd%\apache-maven-3.8.1\bin\"
+set MVN_DIR=%MAVEN_HOME%
+goto :MavenHomeCheck
+
+:MavenHomeCheck  
+if "%MVN_DIR%"=="" (
+echo No MAVEN_HOME found! Setting local Maven...
+goto :SetMavenHomeLocal
+)
+else
+(
+echo MAVEN_HOME found. 
+goto :CheckLabId
+)
+
+
+:SetMavenHomeLocal
+set "MVN_DIR=%cd%\apache-maven-3.8.1"
 
 :CheckLabId
 	If "%LAB_ID%"=="" GOTO :usage
@@ -49,7 +65,7 @@ set "MAVEN_HOME=%cd%\apache-maven-3.8.1\bin\"
 echo.
 echo LAB_ID is %LAB_ID%
 
-set "MAVEN_CMD=%MAVEN_HOME%mvn.cmd "
+set "MAVEN_CMD=%MVN_DIR%\bin\mvn.cmd "
 
 echo.
 echo MAVEN_CMD is %MAVEN_CMD%
