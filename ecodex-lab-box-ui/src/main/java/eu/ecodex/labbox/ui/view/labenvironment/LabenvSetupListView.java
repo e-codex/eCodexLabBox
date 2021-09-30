@@ -6,6 +6,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.AfterNavigationEvent;
@@ -27,8 +28,8 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = LabenvSetupListView.ROUTE, layout = LabenvLayout.class)
 @Order(1)
-@TabMetadata(title = "Setup", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvSetupListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
+@TabMetadata(title = "Setup", icon = VaadinIcon.COGS, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = LabenvLayout.TAB_GROUP_NAME)
+public class LabenvSetupListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, NotificationReceiver {
 
     public static final String ROUTE = "labs";
 
@@ -54,7 +55,7 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
         directoryController.getBroadcastReceivers().add(this);
 
         this.grid = new LabenvGrid(details);
-        // TODO try to use this for infos
+        // try to use this for infos
         // see here: https://vaadin.com/docs/latest/ds/components/grid/#sorting
         // Item Details
 //        grid.setItemDetailsRenderer();
@@ -113,9 +114,7 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
     public void updateList() {
         // if user has not visited this view then getUI() will be null
         // that's why we .map instead of using .get, map won't do anything if null is passed
-        getUI().map(ui -> ui.access(() -> {
-            grid.setItems(labenvService.getLabenvironments().values());
-        }));
+        getUI().map(ui -> ui.access(() -> grid.setItems(labenvService.getLabenvironments().values())));
     }
 
     @Override
