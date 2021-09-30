@@ -11,12 +11,12 @@ import eu.ecodex.labbox.ui.view.labenvironment.ReactiveListUpdates;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import static java.util.stream.Collectors.toMap;
@@ -36,8 +36,6 @@ public class DirectoryController {
     private final NotificationService notificationService;
     private final PlatformService platformService;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     @Getter
     private final Map<String, ReactiveListUpdates> reactiveLists;
 
@@ -46,7 +44,7 @@ public class DirectoryController {
 
     public DirectoryController(@Value("${spring.profiles.active}") String mode, WatchDirectoryConfig watchDirectoryConfig, FileAndDirectoryRepo fileAndDirectoryRepo,
                                WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService,
-                               LabenvService labenvService, NotificationService notificationService, PlatformService platformService, ApplicationEventPublisher applicationEventPublisher) {
+                               LabenvService labenvService, NotificationService notificationService, PlatformService platformService) {
         this.mode = mode;
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.fileAndDirectoryRepo = fileAndDirectoryRepo;
@@ -55,7 +53,6 @@ public class DirectoryController {
         this.labenvService = labenvService;
         this.notificationService = notificationService;
         this.platformService = platformService;
-        this.applicationEventPublisher = applicationEventPublisher;
         this.reactiveLists = new HashMap<>();
         this.broadcastReceivers = new ArrayList<>();
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
