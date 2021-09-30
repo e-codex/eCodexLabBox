@@ -110,7 +110,7 @@ public class LaunchControlGrid extends Grid<Labenv> {
             if (labenv.getGatewayPort() == null) {
                 notFoundOrStillLoading.open();
             } else {
-                UI.getCurrent().getPage().open("http://localhost:" + labenv.getGatewayPort());
+                UI.getCurrent().getPage().open("http://localhost:" + labenv.getGatewayPort() + "/domibus");
             }
         });
         return openGatewayUI;
