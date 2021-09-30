@@ -3,11 +3,9 @@ package eu.ecodex.labbox.ui.view;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import eu.ecodex.labbox.ui.component.LumoLabel;
 
-public class DomibusConnectorAdminHeader extends HorizontalLayout implements BeforeEnterObserver {
+public class DomibusConnectorAdminHeader extends HorizontalLayout {
 
 	LumoLabel currentUser = new LumoLabel();
 
@@ -47,14 +45,4 @@ public class DomibusConnectorAdminHeader extends HorizontalLayout implements Bef
 
 	}
 
-
-	@Override
-	public void beforeEnter(BeforeEnterEvent event) {
-		// TODO re-enable this
-//		if (SecurityUtils.isUserLoggedIn()) {
-//			currentUser.setText("User: " + SecurityUtils.getUsername());
-//		} else {
-//			currentUser.setText("");
-//		}
-	}
 }

@@ -32,7 +32,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         // to null here, in other words, only clearing the active notifications associated with an app state
         notificationService.getActiveNotifications().clear();
 
-        // TODO migrate this to new notification system when it's done
+        // migrate this to new notification system when it's done
         if (Desktop.isDesktopSupported()) {
             Notification desktopIntegrationAvailable = Notification.show("Desktop Integration available");
             desktopIntegrationAvailable.setDuration(2000);
