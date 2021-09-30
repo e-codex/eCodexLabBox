@@ -1,1 +1,0 @@
-java -jar labbox-ui.jar
