@@ -4,7 +4,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -15,7 +14,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.domain.entities.LabenvComparator;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -119,7 +117,7 @@ public class LaunchControlGrid extends Grid<Labenv> {
     }
 
     private Button createLaunchConnectorButton(Labenv labenv) {
-        Button launchConnector = new Button(new Icon(VaadinIcon.ROCKET));
+        Button launchConnector = new Button(new Icon(VaadinIcon.PLAY));
         launchConnector.setText("Start Connector");
         launchConnector.addClickListener(c -> {
             try {
@@ -135,9 +133,7 @@ public class LaunchControlGrid extends Grid<Labenv> {
     private Button createStopConnectorButton(Labenv labenv) {
         Button stopConnector = new Button(new Icon(VaadinIcon.STOP));
         stopConnector.setText("Stop Connector");
-        stopConnector.addClickListener(c -> {
-            this.processController.stopConnector(labenv);
-        });
+        stopConnector.addClickListener(c -> this.processController.stopConnector(labenv));
         return stopConnector;
     }
 
@@ -156,7 +152,7 @@ public class LaunchControlGrid extends Grid<Labenv> {
 
     private Button createLaunchClientButton(Labenv labenv) {
 
-        Button launchClient = new Button(new Icon(VaadinIcon.STAR));
+        Button launchClient = new Button(new Icon(VaadinIcon.PLAY));
         launchClient.setText("Start Client");
         launchClient.addClickListener(c -> {
             try {
@@ -172,9 +168,7 @@ public class LaunchControlGrid extends Grid<Labenv> {
     private Button createStopClientButton(Labenv labenv) {
         Button stopClient = new Button(new Icon(VaadinIcon.STOP));
         stopClient.setText("Stop Connector Client");
-        stopClient.addClickListener(c -> {
-            this.processController.stopClient(labenv);
-        });
+        stopClient.addClickListener(c -> this.processController.stopClient(labenv));
         return stopClient;
     }
 

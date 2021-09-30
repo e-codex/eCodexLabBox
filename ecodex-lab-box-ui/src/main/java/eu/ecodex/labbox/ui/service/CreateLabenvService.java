@@ -22,7 +22,7 @@ public class CreateLabenvService {
     public void createNextLabenv(ProcessBuilder processBuilder, Path fullPath) {
         Process run = run(processBuilder);
         while (run.isAlive()); // blocks execution until process is finished
-        // TODO we could do some exit value logic here
+        // we could do some exit value logic here
 //        System.out.println("Finished Lab: " + start.exitValue());
         applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
     }
@@ -32,10 +32,10 @@ public class CreateLabenvService {
         Process run = run(processBuilder);
 
         while (run.isAlive()); // blocks execution until process is finished
-        // TODO we could do some exit value logic here
+        // we could do some exit value logic here
 //        System.out.println("Finished Lab: " + start.exitValue());
 
-        // TODO we could do some event logic after the build
+        // we could do some event logic after the build
 //         applicationEventPublisher.publishEvent();
     }
 

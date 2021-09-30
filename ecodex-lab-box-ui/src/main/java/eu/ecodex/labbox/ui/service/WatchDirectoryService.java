@@ -34,13 +34,11 @@ public class WatchDirectoryService {
             while ((key = watchService.take()) != null) {
                 for (WatchEvent<?> event : key.pollEvents()) {
 
-                    // TODO comment out
                     // For debugging:
-                    System.out.println(
+                    log.debug(
                             "Event kind:" + event.kind()
                                     + ". File affected: " + event.context() + ".");
 
-                    // TODO maybe remove both .name calls
                     if (event.kind().equals(StandardWatchEventKinds.ENTRY_CREATE)) {
 
                         if (event.context().toString().startsWith("labenv")) {

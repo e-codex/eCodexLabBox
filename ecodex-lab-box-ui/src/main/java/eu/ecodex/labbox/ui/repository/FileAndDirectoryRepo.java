@@ -27,18 +27,13 @@ public class FileAndDirectoryRepo {
 
         final ApplicationHome applicationHome = new ApplicationHome(this.getClass());
         if (activeProfile.equals("prod")) {
-            // the application distribution package contains this folder
             this.labenvHomeDirectory = applicationHome.getDir().toPath().getParent().resolve("ecodex-lab-box");
         } else {
-            // change ecodex-lab-box/ecodex-lab-box-ui/target/classes
-            // to ecodex-lab-box
-            // into ecodex-lab-box/ecodex-lab-box
-            this.labenvHomeDirectory = findExecutableOnPath("mvn");
-
+            this.labenvHomeDirectory = new File("C:\\Entwicklung\\ecodex-labhome-dev").toPath();
         }
     }
 
-    private Path findExecutableOnPath(String name) {
+    public Path findExecutableOnPath(String name) {
         for (String dirname : System.getenv("PATH").split(File.pathSeparator)) {
             File file = new File(dirname, name);
             if (file.isFile() && file.canExecute()) {

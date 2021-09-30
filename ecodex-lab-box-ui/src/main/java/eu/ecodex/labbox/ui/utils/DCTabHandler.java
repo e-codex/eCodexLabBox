@@ -5,8 +5,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -90,7 +88,7 @@ public class DCTabHandler implements BeforeEnterObserver {
     private void setTabEnabledOnUserRole() {
         pagesToTab.entrySet().stream()
                 .forEach(entry -> {
-                    // TODO re-enable Roles
+                    // re-enable Roles here if needed
 //                    entry.getValue().setEnabled(SecurityUtils.isUserAllowedToView(entry.getKey()));
                     entry.getValue().setEnabled(true);
                 });
@@ -175,28 +173,11 @@ public class DCTabHandler implements BeforeEnterObserver {
                 .forEach(c -> {
                     TabMetadata annotation = c.getClass().getAnnotation(TabMetadata.class);
                     LOGGER.debug("Adding configuration tab [{}] with title [{}]", c, annotation.title());
-
-                    // TODO refactor Icon into TabMetadata
-                    if (annotation.title().equals("Setup")){
-                        this.createTab()
-                                .withIcon(new Icon(VaadinIcon.COGS))
-                                .withThemeVariant(TabVariant.LUMO_ICON_ON_TOP)
-                                .withLabel(annotation.title())
-                                .addForComponent(c.getClass());
-                    } else if (annotation.title().equals("Launch")) {
-                        this.createTab()
-                                .withIcon(new Icon(VaadinIcon.ROCKET))
-                                .withThemeVariant(TabVariant.LUMO_ICON_ON_TOP)
-                                .withLabel(annotation.title())
-                                .addForComponent(c.getClass());
-                    } else {
-                        this.createTab()
-                                .withLabel(annotation.title())
-                                .withThemeVariant(TabVariant.LUMO_ICON_ON_TOP)
-                                .addForComponent(c.getClass());
-                    }
-
-
+                    this.createTab()
+                            .withIcon(annotation.icon())
+                            .withThemeVariant(annotation.themeVariant())
+                            .withLabel(annotation.title())
+                            .addForComponent(c.getClass());
                 });
     }
 }

@@ -1,25 +1,17 @@
 package eu.ecodex.labbox.ui.view;
 
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.labbox.ui.domain.AppState;
 import eu.ecodex.labbox.ui.service.NotificationService;
-import eu.ecodex.labbox.ui.view.labenvironment.BroadcastReceiver;
+import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Component
 @UIScope
 @Route(value = HomeView.ROUTE, layout = MainLayout.class)
-public class HomeView extends BaseViewVertical implements BroadcastReceiver, AfterNavigationObserver {
+public class HomeView extends BaseViewVertical implements NotificationReceiver, AfterNavigationObserver {
     public static final String ROUTE = "";
 
 

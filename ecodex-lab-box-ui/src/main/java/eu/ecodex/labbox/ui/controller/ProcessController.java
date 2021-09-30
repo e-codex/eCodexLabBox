@@ -47,16 +47,6 @@ public class ProcessController {
 
         final List<String> commands = new ArrayList<>();
 
-        // build the lab first
-        if (labenvService.getLab() == null) {
-            commands.add(platformService.getShell());
-            commands.add(platformService.getShellOption());
-            commands.add("start");
-            commands.add("/wait"); // this is very important
-            commands.add("build_lab." + platformService.getScriptExtension());
-            commands.add("&&");
-        }
-
         final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
 
         commands.add(platformService.getShell());
@@ -83,7 +73,7 @@ public class ProcessController {
         commands.add(platformService.getShell());
         commands.add(platformService.getShellOption());
         // "start" opens a window, if omitted the process will only show up in task manager
-        commands.add("start"); // TODO maybe unecessary / not working on unix platforms, needs to be tested
+        commands.add("start"); // maybe unecessary / not working on unix platforms, needs to be tested
         commands.add("start." + platformService.getScriptExtension());
 
         runningProc.put(lab.getPath().getFileName().toString() + " " + CONNECTOR,

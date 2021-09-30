@@ -1,6 +1,8 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
@@ -17,8 +19,8 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = LaunchLabenvComponentListView.ROUTE, layout = LabenvLayout.class)
 @Order(2)
-@TabMetadata(title = "Launch", tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LaunchLabenvComponentListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, BroadcastReceiver {
+@TabMetadata(title = "Launch", icon = VaadinIcon.ROCKET, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = LabenvLayout.TAB_GROUP_NAME)
+public class LaunchLabenvComponentListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, NotificationReceiver {
 
     public static final String ROUTE = "launch";
 
@@ -46,9 +48,7 @@ public class LaunchLabenvComponentListView extends BaseViewVertical implements A
     public void updateList() {
         // if user has not visited this view then getUI() will be null
         // that's why we .map instead of using .get, map won't do anything if null is passed
-        getUI().map(ui -> ui.access(() -> {
-            grid.setItems(labenvService.getLabenvironments().values());
-        }));
+        getUI().map(ui -> ui.access(() -> grid.setItems(labenvService.getLabenvironments().values())));
     }
 
     @Override
