@@ -12,8 +12,14 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AppStarter {
     public static void main(String[] args) {
-        // .headless(false) is needed to open File Browser via Java Desktop API
-        new SpringApplicationBuilder(AppStarter.class).headless(false).run(args);
+        final String javaVersion = System.getProperty("java.version");
+
+        if (javaVersion.startsWith("1.8")) {
+//             .headless(false) is needed to open File Browser via Java Desktop API
+            new SpringApplicationBuilder(AppStarter.class).headless(false).run(args);
+        } else {
+            System.out.println("This Application requires Java 8. Your version is: " + javaVersion);
+        }
     }
 
     @Bean
