@@ -50,6 +50,7 @@ public class LaunchControlGrid extends Grid<Labenv> {
         addComponentColumn(this::createGatewaySection).setHeader("Gateway").setWidth("20%");
         addComponentColumn(this::createConnectorSection).setHeader("Connector").setWidth("20%");
         addComponentColumn(this::createClientSection).setHeader("Client").setWidth("20%");
+        addComponentColumn(this::createClientMessageSection).setHeader("Message").setWidth("20%");
 
         ArrayList<GridSortOrder<Labenv>> sort = new ArrayList<>();
         GridSortOrder<Labenv> order = new GridSortOrder<>(this.getColumns().get(0), SortDirection.ASCENDING);
@@ -73,6 +74,12 @@ public class LaunchControlGrid extends Grid<Labenv> {
     private VerticalLayout createClientSection(Labenv labenv) {
         final VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.add(createLaunchClientButton(labenv), createStopClientButton(labenv), createOpenClientUIButton(labenv));
+        return verticalLayout;
+    }
+    
+    private VerticalLayout createClientMessageSection(Labenv labenv) {
+        final VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.add(createOpenClientMessageButton(labenv));
         return verticalLayout;
     }
 
@@ -180,6 +187,19 @@ public class LaunchControlGrid extends Grid<Labenv> {
                 notFoundOrStillLoading.open();
             } else {
                 UI.getCurrent().getPage().open("http://localhost:" + labenv.getClientPort());
+            }
+        });
+        return openClientUI;
+    }
+    
+    private Button createOpenClientMessageButton(Labenv labenv) {
+        Button openClientUI = new Button(new Icon(VaadinIcon.ENVELOPE));
+        openClientUI.setText("Trigger Connector Client Message");
+        openClientUI.addClickListener(c -> {
+            if (labenv.getClientPort() == null) {
+                notFoundOrStillLoading.open();
+            } else {
+                UI.getCurrent().getPage().open("http://localhost:" + labenv.getClientPort() + "/messages/sendMessage/100");
             }
         });
         return openClientUI;
