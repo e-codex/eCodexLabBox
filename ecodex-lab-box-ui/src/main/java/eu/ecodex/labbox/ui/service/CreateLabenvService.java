@@ -27,18 +27,6 @@ public class CreateLabenvService {
         applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
     }
 
-    @Async
-    public void createLab(ProcessBuilder processBuilder) {
-        Process run = run(processBuilder);
-
-        while (run.isAlive()); // blocks execution until process is finished
-        // we could do some exit value logic here
-//        System.out.println("Finished Lab: " + start.exitValue());
-
-        // we could do some event logic after the build
-//         applicationEventPublisher.publishEvent();
-    }
-
     private Process run(ProcessBuilder processBuilder) {
         Process p = null;
         try {
