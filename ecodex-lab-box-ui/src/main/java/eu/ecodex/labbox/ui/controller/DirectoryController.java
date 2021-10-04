@@ -87,7 +87,7 @@ public class DirectoryController {
         final Labenv labenv = labenvService.getLabenvironments().get(e.getFullPathToLabenv());
         labenv.parseGatewayServerXml();
         labenv.parseConnectorProperties();
-        labenv.parseGatewayServerXml();
+        labenv.parseClientProperties();
     }
 
     @EventListener
