@@ -37,24 +37,23 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
     private final LabenvService labenvService;
     private final ProcessController processController;
 
-    private final LaunchLabenvComponentListView details;
     @Getter
     private final LabenvGrid grid;
     private final TextField pathToLabHomeField;
     private final Label setHomeDirStatus;
 
-    public LabenvSetupListView(NotificationService notificationService, DirectoryController directoryController,
-                               LaunchLabenvComponentListView details, LabenvService labenvService,
+    public LabenvSetupListView(NotificationService notificationService,
+                               DirectoryController directoryController,
+                               LabenvService labenvService,
                                ProcessController processController) {
         super(notificationService);
         this.directoryController = directoryController;
-        this.details = details;
         this.labenvService = labenvService;
         this.processController = processController;
         directoryController.getReactiveLists().put("setuplist", this);
         directoryController.getBroadcastReceivers().add(this);
 
-        this.grid = new LabenvGrid(details);
+        this.grid = new LabenvGrid();
         // try to use this for infos
         // see here: https://vaadin.com/docs/latest/ds/components/grid/#sorting
         // Item Details
@@ -78,13 +77,6 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
         // it is not possible to call DirectoryController::setLabenvHomeDirectory without this
         binder.setBean(directoryController);
 
-        Button scanForLabs = new Button(new Icon(VaadinIcon.REFRESH));
-        scanForLabs.setText("Refresh Labs");
-        scanForLabs.addClickListener(e -> {
-            this.directoryController.searchForLabenvDirectories();
-            this.grid.setItems(labenvService.getLabenvironments().values());
-        });
-
         Button createLabenv = new Button(new Icon(VaadinIcon.PLUS_CIRCLE));
         createLabenv.setText("Add Labenvironment");
         createLabenv.addClickListener(e -> this.processController.createLabenv());
@@ -93,15 +85,11 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
         gridLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
         gridLayout.add(createLabenv);
 
-        final VerticalLayout rescan = new VerticalLayout();
-        rescan.setAlignItems(Alignment.END);
-        rescan.add(scanForLabs);
-
         final VerticalLayout homeDirLayout = new VerticalLayout();
         homeDirLayout.add(pathToLabHomeField, setHomeDirStatus);
 
         final VerticalLayout main = new VerticalLayout();
-        main.add(homeDirLayout, gridLayout, rescan);
+        main.add(homeDirLayout, gridLayout);
 
         add(main);
     }

@@ -15,9 +15,10 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
+import eu.ecodex.labbox.ui.view.settings.ProxySettingsView;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
+import java.awt.Desktop;
 
 @UIScope
 @Component
@@ -65,17 +66,8 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         tabManager
                 .createTab()
                 .withLabel("Configuration")
-                .withIcon(new Icon(VaadinIcon.FILE_CODE));
-
-        tabManager
-                .createTab()
-                .withLabel("Configuration")
-                .withIcon(new Icon(VaadinIcon.COG_O));
-
-        tabManager
-                .createTab()
-                .withLabel("Info")
-                .withIcon(VaadinIcon.INFO_CIRCLE_O);
+                .withIcon(new Icon(VaadinIcon.SCREWDRIVER))
+                .addForComponent(ProxySettingsView.class);
 
         tabManager.getTabs().setOrientation(Tabs.Orientation.HORIZONTAL);
         topBar.add(tabManager.getTabs());

@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "lab-box.settings.proxy.ip",
+      "type": "java.lang.String",
+      "description": "Description for lab-box.settings.proxy.ip."
+    },
+    {
+      "name": "lab-box.settings.proxy.port",
+      "type": "java.lang.String",
+      "description": "Description for lab-box.settings.proxy.port."
+    }
+  ] }

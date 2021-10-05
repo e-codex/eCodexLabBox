@@ -25,8 +25,8 @@ public class LaunchControlGrid extends Grid<Labenv> {
 
     private final ProcessController processController;
 
-    private Notification notFoundOrStillLoading;
-    private Notification noExecutable;
+    private final Notification notFoundOrStillLoading;
+    private final Notification noExecutable;
 
     public LaunchControlGrid(ProcessController processController) {
         this.processController = processController;
