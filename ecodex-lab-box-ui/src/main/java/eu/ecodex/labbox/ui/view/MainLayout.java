@@ -65,7 +65,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
         tabManager
                 .createTab()
-                .withLabel("Configuration")
+                .withLabel("Settings")
                 .withIcon(new Icon(VaadinIcon.SCREWDRIVER))
                 .addForComponent(ProxySettingsView.class);
 

@@ -13,7 +13,7 @@ public class IpAddressValidator implements Converter<String, String> {
         if (InetAddressValidator.getInstance().isValidInet4Address(ip)) {
             return Result.ok(ip);
         } else {
-            return Result.error("Not a valid Ip Address!");
+            return Result.error("Not a valid IP address!");
         }
     }
 
