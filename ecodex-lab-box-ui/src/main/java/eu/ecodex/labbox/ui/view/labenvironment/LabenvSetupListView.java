@@ -18,9 +18,9 @@ import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.controller.SettingsController;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.Proxy;
 import eu.ecodex.labbox.ui.service.LabenvService;
-import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
 import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import lombok.Getter;
@@ -47,20 +47,20 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
     private final Label setHomeDirStatus;
     private final Checkbox useProxy;
 
-    public LabenvSetupListView(NotificationService notificationService,
+    public LabenvSetupListView(UpdateFrontendController updateFrontendController,
                                DirectoryController directoryController,
                                LabenvService labenvService,
                                ProcessController processController, SettingsController settingsController)
     {
-        super(notificationService);
+        super(updateFrontendController);
 
         this.directoryController = directoryController;
         this.labenvService = labenvService;
         this.processController = processController;
         this.settingsController = settingsController;
 
-        directoryController.getReactiveLists().put("setuplist", this);
-        directoryController.getBroadcastReceivers().add(this);
+        updateFrontendController.getNotificationReceivers().add(this);
+        updateFrontendController.getListOfViewsWithLiveUpdates().add(this);
 
         this.grid = new LabenvGrid();
         // try to use this for infos

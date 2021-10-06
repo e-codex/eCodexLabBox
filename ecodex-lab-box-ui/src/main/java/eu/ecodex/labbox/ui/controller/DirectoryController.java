@@ -8,7 +8,6 @@ import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
 import eu.ecodex.labbox.ui.service.*;
 import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import eu.ecodex.labbox.ui.view.labenvironment.ReactiveListUpdates;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
@@ -17,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -33,28 +34,20 @@ public class DirectoryController {
     private final WatchDirectoryService watchDirectoryService;
     private final PathMapperService pathMapperService;
     private final LabenvService labenvService;
-    private final NotificationService notificationService;
+    private final UpdateFrontendService updateFrontendService;
     private final PlatformService platformService;
-
-    @Getter
-    private final Map<String, ReactiveListUpdates> reactiveLists;
-
-    @Getter
-    private final List<NotificationReceiver> broadcastReceivers;
 
     public DirectoryController(@Value("${spring.profiles.active}") String mode, WatchDirectoryConfig watchDirectoryConfig, FileAndDirectoryRepo fileAndDirectoryRepo,
                                WatchDirectoryService watchDirectoryService, PathMapperService pathMapperService,
-                               LabenvService labenvService, NotificationService notificationService, PlatformService platformService) {
+                               LabenvService labenvService, UpdateFrontendService updateFrontendService, PlatformService platformService) {
         this.mode = mode;
         this.watchDirectoryConfig = watchDirectoryConfig;
         this.fileAndDirectoryRepo = fileAndDirectoryRepo;
         this.watchDirectoryService = watchDirectoryService;
         this.pathMapperService = pathMapperService;
         this.labenvService = labenvService;
-        this.notificationService = notificationService;
+        this.updateFrontendService = updateFrontendService;
         this.platformService = platformService;
-        this.reactiveLists = new HashMap<>();
-        this.broadcastReceivers = new ArrayList<>();
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
     }
 
@@ -72,14 +65,14 @@ public class DirectoryController {
     @EventListener
     public void handleNewMavenFolder(CreatedMavenFolderEvent e) {
         searchForMaven();
-        broadcastReceivers.forEach(NotificationReceiver::updateAppStateNotification);
+        updateFrontendService.getNotificationReceivers().forEach(NotificationReceiver::updateAppStateNotification);
     }
 
     @EventListener
     public void handleDeletedMavenFolder(DeletedMavenFolderEvent event) {
         fileAndDirectoryRepo.setMavenExecutable(Optional.empty());
-        notificationService.getAppState().add(AppState.NO_MAVEN);
-        broadcastReceivers.forEach(NotificationReceiver::updateAppStateNotification);
+        updateFrontendService.getAppState().add(AppState.NO_MAVEN);
+        updateFrontendService.getNotificationReceivers().forEach(NotificationReceiver::updateAppStateNotification);
     }
 
     @EventListener
@@ -88,6 +81,8 @@ public class DirectoryController {
         labenv.parseGatewayServerXml();
         labenv.parseConnectorProperties();
         labenv.parseClientProperties();
+        updateFrontendService.getAppState().add(AppState.LABENV_CREATED);
+        updateFrontendService.getNotificationReceivers().forEach(NotificationReceiver::updateAppStateNotification);
     }
 
     @EventListener
@@ -103,7 +98,7 @@ public class DirectoryController {
 
 //        LabenvSetupListView setuplist = (LabenvSetupListView) reactiveUiComponents.get("setuplist");
 //        setuplist.updateList();
-        reactiveLists.forEach((k, v) -> v.updateList());
+        updateFrontendService.getReactiveLists().forEach(ReactiveListUpdates::updateList);
     }
 
     @EventListener
@@ -112,11 +107,15 @@ public class DirectoryController {
 
         labenvService.getLabenvironments().remove(full);
 
-        reactiveLists.forEach((k, v) -> v.updateList());
+        updateFrontendService.getReactiveLists().forEach(ReactiveListUpdates::updateList);
     }
 
     public synchronized Path getLabenvHomeDirectory() {
         return fileAndDirectoryRepo.getLabenvHomeDirectory();
+    }
+
+    public synchronized Map<Path, Labenv> getLabEnvironments() {
+        return labenvService.getLabenvironments();
     }
 
     public void startMonitoring() {
@@ -133,9 +132,9 @@ public class DirectoryController {
         watchDirectoryService.setWatchService(watchDirectoryConfig.watchService());
         startMonitoring();
         searchForLabenvDirectories();
-        reactiveLists.forEach((k, v) -> v.updateList());
+        updateFrontendService.getReactiveLists().forEach(ReactiveListUpdates::updateList);
         searchForMaven();
-        broadcastReceivers.forEach(NotificationReceiver::updateAppStateNotification);
+        updateFrontendService.getNotificationReceivers().forEach(NotificationReceiver::updateAppStateNotification);
         searchForLab();
     }
 
@@ -197,7 +196,7 @@ public class DirectoryController {
         fileAndDirectoryRepo.setMavenExecutable(mvn);
 
         // TODO migrate to AppStateService
-        final Set<AppState> notifications = notificationService.getAppState();
+        final Set<AppState> notifications = updateFrontendService.getAppState();
         if (!mvn.isPresent()) {
             notifications.add(AppState.NO_MAVEN);
         } else {

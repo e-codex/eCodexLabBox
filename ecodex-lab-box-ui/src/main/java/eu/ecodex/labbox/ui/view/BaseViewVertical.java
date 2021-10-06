@@ -2,8 +2,8 @@ package eu.ecodex.labbox.ui.view;
 
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.AppState;
-import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 
 import java.util.Map;
@@ -17,28 +17,31 @@ import java.util.Set;
 // If you should ever need a view with horizontal layout or other vaadin component, just mimic what's done here.
 public class BaseViewVertical extends VerticalLayout implements NotificationReceiver {
 
-    private final NotificationService notificationService;
+    private final UpdateFrontendController updateFrontendController;
 
-    public BaseViewVertical(NotificationService notificationService) {
-        this.notificationService = notificationService;
+    public BaseViewVertical(UpdateFrontendController updateFrontendController) {
+        this.updateFrontendController = updateFrontendController;
     }
 
     @Override
     public void updateAppStateNotification() {
-         getUI().map(ui -> ui.access(() -> {
-            // checks all defined app states and activates or deactivates the associated notification.
-            // Activation happens only if the message isn't currently displayed (active)
-            final Set<AppState> appState = notificationService.getAppState();
-            for (AppState s : AppState.values()) {
-                final Map<AppState, Notification> activeNotifications = notificationService.getActiveNotifications();
-                if (appState.contains(s)) {
-                    if (!activeNotifications.containsKey(s)) {
-                        final Notification notification = notificationService.createNotification(AppState.NO_MAVEN);
-                        activeNotifications.put(AppState.NO_MAVEN, notification);
+        // Checks all defined app states and activates or deactivates the associated notification.
+        // Activation happens only if the message isn't currently displayed (active)
+        // To further complicate this, the user might have multiple tabs open.
+        // We want to show the notification in every tab, but never twice in each tab.
+        // That's why the key is a composite of UIId and AppState.
+        getUI().map(ui -> ui.access(() -> {
+            final Set<AppState> appState = updateFrontendController.getAppState();
+            for (AppState state : AppState.values()) {
+                final Map<String, Notification> activeNotifications = updateFrontendController.getActiveNotifications();
+                if (appState.contains(state)) {
+                    if (!activeNotifications.containsKey(state.toString() + ui.getUIId())) {
+                        final Notification notification = updateFrontendController.getNotification(state);
+                        activeNotifications.put(state.toString() + ui.getUIId(), notification);
                         notification.open();
                     }
                 } else {
-                    final Notification notification = activeNotifications.remove(AppState.NO_MAVEN);
+                    final Notification notification = activeNotifications.remove(state.toString() + ui.getUIId());
                     if (notification != null) {
                         notification.setOpened(false);
                     }

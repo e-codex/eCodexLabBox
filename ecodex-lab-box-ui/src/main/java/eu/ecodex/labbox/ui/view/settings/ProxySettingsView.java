@@ -17,12 +17,11 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.SettingsController;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.Proxy;
-import eu.ecodex.labbox.ui.service.NotificationService;
 import eu.ecodex.labbox.ui.utils.IpAddressValidator;
 import eu.ecodex.labbox.ui.utils.PortValidator;
 import eu.ecodex.labbox.ui.view.BaseViewVertical;
-import eu.ecodex.labbox.ui.view.labenvironment.LabenvSetupListView;
 import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -32,10 +31,12 @@ import java.util.stream.Collectors;
 
 @Component
 @UIScope
-@Route(value = LabenvSetupListView.ROUTE, layout = SettingsLayout.class)
+@Route(value = ProxySettingsView.ROUTE, layout = SettingsLayout.class)
 @Order(1)
 @TabMetadata(title = "Proxy", icon = VaadinIcon.SERVER, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = SettingsLayout.TAB_GROUP_NAME)
 public class ProxySettingsView extends BaseViewVertical implements AfterNavigationObserver, NotificationReceiver {
+
+    public static final String ROUTE = "proxy";
 
     private final SettingsController settingsController;
 
@@ -48,8 +49,8 @@ public class ProxySettingsView extends BaseViewVertical implements AfterNavigati
 
     private final Binder<Proxy> proxyBinder;
 
-    public ProxySettingsView(NotificationService notificationService, SettingsController settingsController) {
-        super(notificationService);
+    public ProxySettingsView(UpdateFrontendController updateFrontendController, SettingsController settingsController) {
+        super(updateFrontendController);
         this.settingsController = settingsController;
 
         proxyHost = new TextField();

@@ -12,7 +12,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.labbox.ui.service.NotificationService;
+import eu.ecodex.labbox.ui.service.UpdateFrontendService;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import eu.ecodex.labbox.ui.view.settings.ProxySettingsView;
@@ -27,11 +27,11 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
     private final DCTabHandler tabManager = new DCTabHandler();
 
-    public MainLayout(NotificationService notificationService) {
+    public MainLayout(UpdateFrontendService updateFrontendService) {
 
         // if we were only using the map instead if a set and a map, then we would have to set the values of the map
         // to null here, in other words, only clearing the active notifications associated with an app state
-        notificationService.getActiveNotifications().clear();
+        updateFrontendService.getActiveNotifications().clear();
 
         // migrate this to new notification system when it's done
         if (Desktop.isDesktopSupported()) {
@@ -67,6 +67,18 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
                 .createTab()
                 .withLabel("Settings")
                 .withIcon(new Icon(VaadinIcon.SCREWDRIVER))
+                .addForComponent(ProxySettingsView.class);
+
+        tabManager
+                .createTab()
+                .withLabel("Component Documentation")
+                .withIcon(new Icon(VaadinIcon.RECORDS))
+                .addForComponent(ProxySettingsView.class);
+
+        tabManager
+                .createTab()
+                .withLabel("Help")
+                .withIcon(new Icon(VaadinIcon.QUESTION_CIRCLE_O))
                 .addForComponent(ProxySettingsView.class);
 
         tabManager.getTabs().setOrientation(Tabs.Orientation.HORIZONTAL);

@@ -1,13 +1,11 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
 
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.labbox.ui.service.NotificationService;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +17,8 @@ public class LabenvOverview extends BaseViewVertical implements BeforeEnterObser
 
     public static final String ROUTE = "";
 
-    public LabenvOverview(NotificationService notificationService) {
-        super(notificationService);
+    public LabenvOverview(UpdateFrontendController updateFrontendController) {
+        super(updateFrontendController);
     }
 
     @Override
