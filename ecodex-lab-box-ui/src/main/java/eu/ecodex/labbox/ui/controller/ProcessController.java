@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.controller;
 
+import eu.ecodex.labbox.ui.domain.Proxy;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
 import eu.ecodex.labbox.ui.service.CreateLabenvService;
@@ -43,27 +44,44 @@ public class ProcessController {
         this.runningProc = new HashMap<>();
     }
 
-    public void createLabenv() {
-
+    private List<String> nextLabenv(String id) {
         final List<String> commands = new ArrayList<>();
-
-        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
 
         commands.add(platformService.getShell());
         commands.add(platformService.getShellOption());
         commands.add("start");
         commands.add("/wait"); // this is very important
         commands.add("build_lab_env." + platformService.getScriptExtension());
-        commands.add("lab.id:" + nextLabId);
+        commands.add("lab.id:" + id);
 
+        return commands;
+    }
+
+    public void createLabenv() {
+        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
+
+        final List<String> commands = nextLabenv(nextLabId);
+
+        runAndOnCompleteNotify(nextLabId, commands);
+    }
+
+    private void runAndOnCompleteNotify(String nextLabId, List<String> commands) {
         ProcessBuilder pb = new ProcessBuilder(commands);
         pb.directory(fileAndDirectoryRepo.getLabenvHomeDirectory().toFile());
 
-//        if (!fileAndDirectoryRepo.getMavenExecutable().isPresent()) {
-//            // could warn here, but it's probably better to disable the button
-//        }
+        createLabenvService.createNextLabenv(pb, pathMapperService.getFullPath("labenv" + nextLabId));
+    }
 
-        createLabenvService.createNextLabenv(pb, pathMapperService.getFullPath("labenv"+nextLabId));
+    public void createLabenv(Proxy proxy) {
+        final String nextLabId = "0" + (labenvService.getLabenvironments().size() + 1);
+        final List<String> commands = nextLabenv(nextLabId);
+
+        String ip = proxy.getIp();
+        String port = proxy.getPort();
+
+        commands.add("https.proxy.host: "+ ip + " https.proxy.port:" + port);
+
+        runAndOnCompleteNotify(nextLabId, commands);
     }
 
     public void startConnector(Labenv lab) throws IOException {

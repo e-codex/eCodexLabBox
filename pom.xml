@@ -42,6 +42,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <lombok.version>1.18.20</lombok.version>
     <apache.commons.lang.version>3.11</apache.commons.lang.version>
+    <apache.commons.validator.version>1.7</apache.commons.validator.version>
   </properties>
 
   <!-- TODO: idea: allow p2p testing over testing network maybe: https://github.com/i2p/i2p.i2p -->

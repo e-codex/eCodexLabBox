@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class LabenvGrid extends Grid<Labenv> {
 
-    public LabenvGrid(LaunchLabenvComponentListView details) {
+    public LabenvGrid() {
         super();
 
         this.setWidth("100%");
