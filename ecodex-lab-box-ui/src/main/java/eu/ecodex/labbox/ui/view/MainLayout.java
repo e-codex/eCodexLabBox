@@ -14,6 +14,8 @@ import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.service.UpdateFrontendService;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
+import eu.ecodex.labbox.ui.view.componentdocumentation.ComponentDocumentationView;
+import eu.ecodex.labbox.ui.view.help.HelpView;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import eu.ecodex.labbox.ui.view.settings.ProxySettingsView;
 import org.springframework.stereotype.Component;
@@ -73,13 +75,13 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
                 .createTab()
                 .withLabel("Component Documentation")
                 .withIcon(new Icon(VaadinIcon.RECORDS))
-                .addForComponent(ProxySettingsView.class);
+                .addForComponent(ComponentDocumentationView.class);
 
         tabManager
                 .createTab()
                 .withLabel("Help")
                 .withIcon(new Icon(VaadinIcon.QUESTION_CIRCLE_O))
-                .addForComponent(ProxySettingsView.class);
+                .addForComponent(HelpView.class);
 
         tabManager.getTabs().setOrientation(Tabs.Orientation.HORIZONTAL);
         topBar.add(tabManager.getTabs());

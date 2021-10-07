@@ -20,7 +20,6 @@ import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.controller.SettingsController;
 import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.Proxy;
-import eu.ecodex.labbox.ui.service.LabenvService;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
 import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import lombok.Getter;
@@ -37,7 +36,6 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
     public static final String ROUTE = "labs";
 
     private final DirectoryController directoryController;
-    private final LabenvService labenvService;
     private final ProcessController processController;
     private final SettingsController settingsController;
 
@@ -49,13 +47,11 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
 
     public LabenvSetupListView(UpdateFrontendController updateFrontendController,
                                DirectoryController directoryController,
-                               LabenvService labenvService,
                                ProcessController processController, SettingsController settingsController)
     {
         super(updateFrontendController);
 
         this.directoryController = directoryController;
-        this.labenvService = labenvService;
         this.processController = processController;
         this.settingsController = settingsController;
 
@@ -121,14 +117,14 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
     public void updateList() {
         // if user has not visited this view then getUI() will be null
         // that's why we .map instead of using .get, map won't do anything if null is passed
-        getUI().map(ui -> ui.access(() -> grid.setItems(labenvService.getLabenvironments().values())));
+        getUI().map(ui -> ui.access(() -> grid.setItems(directoryController.getLabEnvironments().values())));
     }
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         pathToLabHomeField.setValue(directoryController.getLabenvHomeDirectory().toString());
         setHomeDirStatus.setVisible(false);
-        grid.setItems(labenvService.getLabenvironments().values());
+        grid.setItems(directoryController.getLabEnvironments().values());
         Proxy proxy = settingsController.getProxy();
         if (proxy.getIp().isEmpty() || proxy.getPort().isEmpty()) {
             useProxy.setValue(false);
