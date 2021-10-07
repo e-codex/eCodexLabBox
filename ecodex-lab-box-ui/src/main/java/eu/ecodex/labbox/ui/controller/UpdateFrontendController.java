@@ -22,6 +22,7 @@ public class UpdateFrontendController {
     public Set<ReactiveListUpdates> getListOfViewsWithLiveUpdates() {
         return updateFrontendService.getReactiveLists();
     }
+
     public Set<NotificationReceiver> getNotificationReceivers() {
         return updateFrontendService.getNotificationReceivers();
     }
