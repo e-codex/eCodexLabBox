@@ -9,8 +9,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
-import eu.ecodex.labbox.ui.service.LabenvService;
-import eu.ecodex.labbox.ui.service.NotificationService;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -24,16 +23,16 @@ public class LaunchLabenvComponentListView extends BaseViewVertical implements A
 
     public static final String ROUTE = "launch";
 
-    private final LabenvService labenvService;
+    private final DirectoryController directoryController;
     private final LaunchControlGrid grid;
 
-    public LaunchLabenvComponentListView(DirectoryController directoryController, LabenvService labenvService, LaunchControlGrid grid, NotificationService notificationService)
-    {
-        super(notificationService);
-        this.labenvService = labenvService;
+    public LaunchLabenvComponentListView(UpdateFrontendController updateFrontendController, DirectoryController directoryController, LaunchControlGrid grid) {
+        super(updateFrontendController);
+        this.directoryController = directoryController;
         this.grid = grid;
-        directoryController.getReactiveLists().put("launchlist", this);
-        directoryController.getBroadcastReceivers().add(this);
+
+        updateFrontendController.getNotificationReceivers().add(this);
+        updateFrontendController.getListOfViewsWithLiveUpdates().add(this);
 
         final VerticalLayout gridLayout = new VerticalLayout();
         gridLayout.add(grid);
@@ -48,12 +47,12 @@ public class LaunchLabenvComponentListView extends BaseViewVertical implements A
     public void updateList() {
         // if user has not visited this view then getUI() will be null
         // that's why we .map instead of using .get, map won't do anything if null is passed
-        getUI().map(ui -> ui.access(() -> grid.setItems(labenvService.getLabenvironments().values())));
+        getUI().map(ui -> ui.access(() -> grid.setItems(directoryController.getLabEnvironments().values())));
     }
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        grid.setItems(labenvService.getLabenvironments().values());
+        grid.setItems(directoryController.getLabEnvironments().values());
         updateAppStateNotification();
     }
 

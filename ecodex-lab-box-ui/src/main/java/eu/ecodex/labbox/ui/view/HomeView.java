@@ -1,12 +1,12 @@
 package eu.ecodex.labbox.ui.view;
 
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.labbox.ui.service.NotificationService;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +16,8 @@ import org.springframework.stereotype.Component;
 public class HomeView extends BaseViewVertical implements NotificationReceiver, AfterNavigationObserver {
     public static final String ROUTE = "";
 
-
-   
-    public HomeView(NotificationService notificationService) {
-        super(notificationService);
+    public HomeView(UpdateFrontendController updateFrontendController) {
+        super(updateFrontendController);
         final VerticalLayout layout = new VerticalLayout();
         layout.setWidth("95%");
         layout.setHeightFull();

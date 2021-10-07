@@ -23,14 +23,14 @@ public class AppStateRepo {
 
     // this map gets cleared when the MainLayout is created
     // creation of the MainLayout happens only initially and after browser/page refresh
-    private final Map<AppState, Notification> activeNotifications;
+    private final Map<String, Notification> activeNotifications;
 
     public AppStateRepo() {
         this.appState = new HashSet<>();
         this.activeNotifications = new HashMap<>();
     }
 
-    public synchronized Map<AppState, Notification> getActiveNotifications() {
+    public synchronized Map<String, Notification> getActiveNotifications() {
         return this.activeNotifications;
     }
 
