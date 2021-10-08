@@ -92,7 +92,7 @@ public class UpdateFrontendService {
         notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         final Icon icon = VaadinIcon.WARNING.create();
         final Text text = new Text(
-                MessageFormat.format("Building Labenv {0} failed: {1}",
+                MessageFormat.format("Building {0} failed, reason: {1}",
                 appEventState.getMetaData().getPath().getFileName(),
                 appEventState.getMetaData().getExitcode())
         );

@@ -1,10 +1,7 @@
 package eu.ecodex.labbox.ui.controller;
 
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import eu.ecodex.labbox.ui.domain.AppEventState;
 import eu.ecodex.labbox.ui.domain.AppEventType;
-import eu.ecodex.labbox.ui.domain.Exitcode;
 import eu.ecodex.labbox.ui.domain.entities.Labenv;
 import eu.ecodex.labbox.ui.domain.events.*;
 import eu.ecodex.labbox.ui.repository.FileAndDirectoryRepo;
@@ -67,25 +64,11 @@ public class EventHandlingController {
 
     @EventListener
     public void handleLabenvBuildFailed(LabenvBuildFailed e) {
-        final Exitcode exitcode = e.getExitcode();
-        if (exitcode == Exitcode.PROXY_CONNECTION_ERROR) {
-            final Notification notification = new Notification("Building Labenv failed: " + exitcode);
-            notification.setPosition(Notification.Position.TOP_CENTER);
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            updateFrontendService.getNotificationReceivers().forEach(n -> n.receiveOneOffNotification(notification));
-            // TODO cleanup folders ???
-        } else {
-            // TODO remove all of this, just should be in other if branch
-
-            final AppEventState appEventState = new AppEventState(AppEventType.LABENV_BUILD_FAILED);
-            appEventState.getMetaData().setExitcode(Exitcode.SCRIPT_ERROR);
-            appEventState.getMetaData().setPath(e.getFullPath());
-            updateFrontendService.getAppEventState().add(appEventState);
-
-//            final Notification notification = updateFrontendService.createNotification(appEventState);
-//            updateFrontendService.getNotificationReceivers().forEach(n -> n.receiveOneOffNotification(notification));
-            updateFrontendService.getNotificationReceivers().forEach(NotificationReceiver::updateAppStateNotification);
-        }
+        final AppEventState appEventState = new AppEventState(AppEventType.LABENV_BUILD_FAILED);
+        appEventState.getMetaData().setExitcode(e.getExitcode());
+        appEventState.getMetaData().setPath(e.getFullPath());
+        updateFrontendService.getAppEventState().add(appEventState);
+        updateFrontendService.getNotificationReceivers().forEach(NotificationReceiver::updateAppStateNotification);
     }
 
     @EventListener
