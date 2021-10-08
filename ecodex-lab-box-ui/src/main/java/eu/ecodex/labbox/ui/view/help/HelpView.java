@@ -2,6 +2,7 @@ package eu.ecodex.labbox.ui.view.help;
 
 import com.vaadin.flow.component.html.IFrame;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
@@ -25,10 +26,10 @@ public class HelpView extends BaseViewVertical implements AfterNavigationObserve
 
     public HelpView(UpdateFrontendController updateFrontendController) {
         super(updateFrontendController);
-        
+
         IFrame tutorial = new IFrame("html/tutorial.html");
         tutorial.setWidth("100%");
-        
+
         add(tutorial);
     }
 

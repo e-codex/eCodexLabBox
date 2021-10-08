@@ -6,18 +6,15 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
-import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import org.springframework.stereotype.Component;
 
 @Component
 @UIScope
 @Route(value = HomeView.ROUTE, layout = MainLayout.class)
-public class HomeView extends BaseViewVertical implements NotificationReceiver, AfterNavigationObserver {
+public class HomeView extends VerticalLayout implements AfterNavigationObserver {
     public static final String ROUTE = "";
 
-    public HomeView(UpdateFrontendController updateFrontendController) {
-        super(updateFrontendController);
+    public HomeView() {
         final VerticalLayout layout = new VerticalLayout();
         layout.setWidth("95%");
         layout.setHeightFull();
@@ -55,7 +52,6 @@ public class HomeView extends BaseViewVertical implements NotificationReceiver, 
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        updateAppStateNotification();
     }
     // accessing the UI here isn't possible, because it is not yet available !
 //    @Override

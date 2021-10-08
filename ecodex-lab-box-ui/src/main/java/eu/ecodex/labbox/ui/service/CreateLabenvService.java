@@ -1,5 +1,7 @@
 package eu.ecodex.labbox.ui.service;
 
+import eu.ecodex.labbox.ui.domain.Exitcode;
+import eu.ecodex.labbox.ui.domain.events.LabenvBuildFailed;
 import eu.ecodex.labbox.ui.domain.events.LabenvBuildSucceeded;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
@@ -21,10 +23,14 @@ public class CreateLabenvService {
     @Async
     public void createNextLabenv(ProcessBuilder processBuilder, Path fullPath) {
         Process run = run(processBuilder);
-        while (run.isAlive()); // blocks execution until process is finished
-        // we could do some exit value logic here
-//        System.out.println("Finished Lab: " + start.exitValue());
-        applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
+        while (run.isAlive()) ; // blocks execution until process is finished
+        if (run.exitValue() == Exitcode.SCRIPT_SUCCESS.value) {
+            applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
+        } else if (run.exitValue() == Exitcode.PROXY_CONNECTION_ERROR.value) {
+            applicationEventPublisher.publishEvent(new LabenvBuildFailed(this, Exitcode.PROXY_CONNECTION_ERROR, fullPath));
+        } else {
+            applicationEventPublisher.publishEvent(new LabenvBuildFailed(this, Exitcode.SCRIPT_ERROR, fullPath));
+        }
     }
 
     private Process run(ProcessBuilder processBuilder) {

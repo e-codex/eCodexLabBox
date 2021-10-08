@@ -11,13 +11,15 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import eu.ecodex.labbox.ui.domain.AppState;
-import eu.ecodex.labbox.ui.repository.AppStateRepo;
+import eu.ecodex.labbox.ui.domain.AppEventState;
+import eu.ecodex.labbox.ui.domain.AppEventType;
+import eu.ecodex.labbox.ui.repository.AppEventStateRepo;
 import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import eu.ecodex.labbox.ui.view.labenvironment.ReactiveListUpdates;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +27,7 @@ import java.util.Set;
 @Service
 public class UpdateFrontendService {
 
-    private final AppStateRepo appStateRepo;
+    private final AppEventStateRepo appEventStateRepo;
 
     @Getter
     private final Set<ReactiveListUpdates> reactiveLists;
@@ -33,25 +35,25 @@ public class UpdateFrontendService {
     @Getter
     private final Set<NotificationReceiver> notificationReceivers;
 
-    public UpdateFrontendService(AppStateRepo appStateRepo) {
-        this.appStateRepo = appStateRepo;
+    public UpdateFrontendService(AppEventStateRepo appEventStateRepo) {
+        this.appEventStateRepo = appEventStateRepo;
         this.reactiveLists = new HashSet<>();
         this.notificationReceivers = new HashSet<>();
     }
 
     public synchronized Map<String, Notification> getActiveNotifications() {
-        return appStateRepo.getActiveNotifications();
+        return appEventStateRepo.getActiveNotifications();
     }
 
-    public synchronized Set<AppState> getAppState() {
-        return appStateRepo.getAppState();
+    public synchronized Set<AppEventState> getAppEventState() {
+        return appEventStateRepo.getAppEventState();
     }
 
     private Notification createNoMavenNotification() {
         Notification notification = new Notification();
         notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         notification.setPosition(Notification.Position.TOP_END);
-        notification.setId(AppState.NO_MAVEN.toString());
+        notification.setId(AppEventType.NO_MAVEN.toString());
 
         Icon icon = VaadinIcon.WARNING.create();
         Div info = new Div(new Text("No maven distribution found!"));
@@ -62,48 +64,75 @@ public class UpdateFrontendService {
                     // TODO replace with something more appropriate
                     UI.getCurrent().getPage().open("https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/");
                     notification.close();
-                    appStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + AppState.NO_MAVEN.toString());
+                    appEventStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + AppEventType.NO_MAVEN.toString());
                 }
         );
         retryBtn.getStyle().set("margin", "0 0 0 var(--lumo-space-m)");
 
+        Button closeBtn = new Button(
+                VaadinIcon.CLOSE_SMALL.create(),
+                clickEvent -> {
+                    notification.close();
+                    appEventStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + AppEventType.NO_MAVEN.toString());
+                });
+        closeBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+
         HorizontalLayout layout = new HorizontalLayout(
                 icon, info, retryBtn,
-                createCloseBtn(notification));
+                closeBtn);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
         notification.add(layout);
         return notification;
     }
 
-    private Button createCloseBtn(Notification notification) {
+    private Notification createBuildFailedNotification(AppEventState appEventState) {
+        final Notification notification = new Notification();
+        notification.setPosition(Notification.Position.TOP_CENTER);
+        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        final Icon icon = VaadinIcon.WARNING.create();
+        final Text text = new Text(
+                MessageFormat.format("Building Labenv {0} failed: {1}",
+                appEventState.getMetaData().getPath().getFileName(),
+                appEventState.getMetaData().getExitcode())
+        );
+        Div info = new Div(text);
         Button closeBtn = new Button(
                 VaadinIcon.CLOSE_SMALL.create(),
                 clickEvent -> {
                     notification.close();
-                    appStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + AppState.NO_MAVEN.toString());
+//                    appEventStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + AppEventState.LABENV_CREATED.toString());
+                    appEventStateRepo.getAppEventState().remove(appEventState);
+                    notificationReceivers.forEach(NotificationReceiver::updateAppStateNotification);
                 });
         closeBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
 
-        return closeBtn;
+        HorizontalLayout layout = new HorizontalLayout(
+                icon, info, closeBtn);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+        notification.add(layout);
+        return notification;
     }
 
-    public Notification createNotification(AppState appStateNotification) {
-        if (appStateNotification == AppState.NO_MAVEN) {
+    public Notification createNotification(AppEventState state) {
+        if (state.getAppEventType() == AppEventType.NO_MAVEN) {
             return createNoMavenNotification();
-        } else if (appStateNotification == AppState.LABENV_CREATED) {
-            return createLabenvCreatedRememberPmodeConfigNotification();
+        } else if (state.getAppEventType() == AppEventType.LABENV_CREATED) {
+            return createLabenvCreatedRememberPmodeConfigNotification(state);
+        } else if (state.getAppEventType() == AppEventType.LABENV_BUILD_FAILED) {
+            return createBuildFailedNotification(state);
         } else {
             // this ensures all types are handled here
             throw new IllegalStateException("Bad Notification Type!");
         }
     }
 
-    private Notification createLabenvCreatedRememberPmodeConfigNotification() {
+    private Notification createLabenvCreatedRememberPmodeConfigNotification(AppEventState state) {
         Notification notification = new Notification();
-        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        notification.addThemeVariants(NotificationVariant.LUMO_PRIMARY);
         notification.setPosition(Notification.Position.TOP_CENTER);
-        notification.setId(AppState.LABENV_CREATED.toString());
+        notification.setId(state.getAppEventType().toString());
 
         Icon icon = VaadinIcon.WARNING.create();
         final Text text = new Text("Remember, remember pmodes engender! Remember, remember pmodes engender! Remember, remember pmodes engender!");
@@ -113,8 +142,9 @@ public class UpdateFrontendService {
                 "Confirm",
                 clickEvent -> {
                     notification.close();
-                    appStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + AppState.LABENV_CREATED.toString());
-                    appStateRepo.getAppState().remove(AppState.LABENV_CREATED);
+//                    appEventStateRepo.getActiveNotifications().remove(UI.getCurrent().getUIId() + state.getAppEventType().toString() + state.getMetaData().getPath().getFileName());
+                    appEventStateRepo.getAppEventState().remove(state);
+                    notificationReceivers.forEach(NotificationReceiver::updateAppStateNotification);
                 }
         );
         confirmedButton.getStyle().set("margin", "0 0 0 var(--lumo-space-l)");

@@ -5,6 +5,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -17,12 +18,9 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.SettingsController;
-import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.Proxy;
 import eu.ecodex.labbox.ui.utils.IpAddressValidator;
 import eu.ecodex.labbox.ui.utils.PortValidator;
-import eu.ecodex.labbox.ui.view.BaseViewVertical;
-import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +32,7 @@ import java.util.stream.Collectors;
 @Route(value = ProxySettingsView.ROUTE, layout = SettingsLayout.class)
 @Order(1)
 @TabMetadata(title = "Proxy", icon = VaadinIcon.SERVER, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = SettingsLayout.TAB_GROUP_NAME)
-public class ProxySettingsView extends BaseViewVertical implements AfterNavigationObserver, NotificationReceiver {
+public class ProxySettingsView extends VerticalLayout implements AfterNavigationObserver {
 
     public static final String ROUTE = "proxy";
 
@@ -49,8 +47,7 @@ public class ProxySettingsView extends BaseViewVertical implements AfterNavigati
 
     private final Binder<Proxy> proxyBinder;
 
-    public ProxySettingsView(UpdateFrontendController updateFrontendController, SettingsController settingsController) {
-        super(updateFrontendController);
+    public ProxySettingsView(SettingsController settingsController) {
         this.settingsController = settingsController;
 
         proxyHost = new TextField();
@@ -87,7 +84,7 @@ public class ProxySettingsView extends BaseViewVertical implements AfterNavigati
 
     private void valueChange(HasValue.ValueChangeEvent<String> e) {
         if (proxyBinder.writeBeanIfValid(proxyBeingEdited)) {
-            infoLabel.setText("Saved bean values: " + proxyBeingEdited);
+            infoLabel.setText("Saved settings: " + proxyBeingEdited);
             infoLabel.getStyle().set("color", "green");
             infoLabel.setVisible(true);
             settingsController.setProxy(proxyBeingEdited);
@@ -110,7 +107,5 @@ public class ProxySettingsView extends BaseViewVertical implements AfterNavigati
 
         proxyHost.addValueChangeListener(this::valueChange);
         proxyPort.addValueChangeListener(this::valueChange);
-
-        updateAppStateNotification();
     }
 }

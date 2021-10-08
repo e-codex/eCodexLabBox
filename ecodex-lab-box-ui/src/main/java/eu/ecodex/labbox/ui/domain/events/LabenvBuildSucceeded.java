@@ -11,7 +11,7 @@ import java.nio.file.Path;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class LabenvBuildSucceeded extends ApplicationEvent {
-    private Path fullPathToLabenv;
+    private final Path fullPathToLabenv;
 
     public LabenvBuildSucceeded(Object source, Path fullPathToLabenv) {
         super(source);
