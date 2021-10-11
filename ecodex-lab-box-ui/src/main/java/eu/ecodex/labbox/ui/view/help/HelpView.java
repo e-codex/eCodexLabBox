@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.view.help;
 
+import com.vaadin.flow.component.html.IFrame;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.router.AfterNavigationEvent;
@@ -17,13 +18,18 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = HelpView.ROUTE, layout = HelpLayout.class)
 @Order(1)
-@TabMetadata(title = "Help1", icon = VaadinIcon.LIGHTBULB, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = HelpLayout.TAB_GROUP_NAME)
+@TabMetadata(title = "Tutorial", icon = VaadinIcon.LIGHTBULB, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = HelpLayout.TAB_GROUP_NAME)
 public class HelpView extends BaseViewVertical implements AfterNavigationObserver, NotificationReceiver {
 
-    public static final String ROUTE = "help1";
+    public static final String ROUTE = "tutorial";
 
     public HelpView(UpdateFrontendController updateFrontendController) {
         super(updateFrontendController);
+        
+        IFrame tutorial = new IFrame("html/tutorial.html");
+        tutorial.setWidth("100%");
+        
+        add(tutorial);
     }
 
     @Override
