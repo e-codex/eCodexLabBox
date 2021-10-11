@@ -18,10 +18,8 @@ import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.controller.SettingsController;
-import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.Proxy;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
-import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import lombok.Getter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -31,7 +29,7 @@ import org.springframework.stereotype.Component;
 @Route(value = LabenvSetupListView.ROUTE, layout = LabenvLayout.class)
 @Order(1)
 @TabMetadata(title = "Setup", icon = VaadinIcon.COGS, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LabenvSetupListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, NotificationReceiver {
+public class LabenvSetupListView extends VerticalLayout implements AfterNavigationObserver, ReactiveListUpdates {
 
     public static final String ROUTE = "labs";
 
@@ -45,18 +43,13 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
     private final Label setHomeDirStatus;
     private final Checkbox useProxy;
 
-    public LabenvSetupListView(UpdateFrontendController updateFrontendController,
-                               DirectoryController directoryController,
-                               ProcessController processController, SettingsController settingsController)
-    {
-        super(updateFrontendController);
+
+    public LabenvSetupListView(DirectoryController directoryController,
+                               ProcessController processController, SettingsController settingsController) {
 
         this.directoryController = directoryController;
         this.processController = processController;
         this.settingsController = settingsController;
-
-        updateFrontendController.getNotificationReceivers().add(this);
-        updateFrontendController.getListOfViewsWithLiveUpdates().add(this);
 
         this.grid = new LabenvGrid();
         // try to use this for infos
@@ -134,7 +127,6 @@ public class LabenvSetupListView extends BaseViewVertical implements AfterNaviga
             useProxy.setLabel("use proxy when building lab environments");
             useProxy.setEnabled(true);
         }
-        updateAppStateNotification();
     }
 
     // accessing the UI here isn't possible, because it is not yet available !

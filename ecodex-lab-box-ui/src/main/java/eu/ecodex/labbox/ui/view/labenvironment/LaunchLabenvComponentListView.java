@@ -9,8 +9,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
-import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
-import eu.ecodex.labbox.ui.view.BaseViewVertical;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -19,20 +17,16 @@ import org.springframework.stereotype.Component;
 @Route(value = LaunchLabenvComponentListView.ROUTE, layout = LabenvLayout.class)
 @Order(2)
 @TabMetadata(title = "Launch", icon = VaadinIcon.ROCKET, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = LabenvLayout.TAB_GROUP_NAME)
-public class LaunchLabenvComponentListView extends BaseViewVertical implements AfterNavigationObserver, ReactiveListUpdates, NotificationReceiver {
+public class LaunchLabenvComponentListView extends VerticalLayout implements AfterNavigationObserver, ReactiveListUpdates {
 
     public static final String ROUTE = "launch";
 
     private final DirectoryController directoryController;
     private final LaunchControlGrid grid;
 
-    public LaunchLabenvComponentListView(UpdateFrontendController updateFrontendController, DirectoryController directoryController, LaunchControlGrid grid) {
-        super(updateFrontendController);
+    public LaunchLabenvComponentListView(DirectoryController directoryController, LaunchControlGrid grid) {
         this.directoryController = directoryController;
         this.grid = grid;
-
-        updateFrontendController.getNotificationReceivers().add(this);
-        updateFrontendController.getListOfViewsWithLiveUpdates().add(this);
 
         final VerticalLayout gridLayout = new VerticalLayout();
         gridLayout.add(grid);
@@ -53,7 +47,6 @@ public class LaunchLabenvComponentListView extends BaseViewVertical implements A
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         grid.setItems(directoryController.getLabEnvironments().values());
-        updateAppStateNotification();
     }
 
     // accessing the UI here isn't possible, because it is not yet available !

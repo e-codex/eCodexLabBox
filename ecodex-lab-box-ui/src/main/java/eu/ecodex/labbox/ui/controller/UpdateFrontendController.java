@@ -1,7 +1,7 @@
 package eu.ecodex.labbox.ui.controller;
 
 import com.vaadin.flow.component.notification.Notification;
-import eu.ecodex.labbox.ui.domain.AppState;
+import eu.ecodex.labbox.ui.domain.AppEventState;
 import eu.ecodex.labbox.ui.service.UpdateFrontendService;
 import eu.ecodex.labbox.ui.view.labenvironment.NotificationReceiver;
 import eu.ecodex.labbox.ui.view.labenvironment.ReactiveListUpdates;
@@ -22,19 +22,20 @@ public class UpdateFrontendController {
     public Set<ReactiveListUpdates> getListOfViewsWithLiveUpdates() {
         return updateFrontendService.getReactiveLists();
     }
+
     public Set<NotificationReceiver> getNotificationReceivers() {
         return updateFrontendService.getNotificationReceivers();
     }
 
-    public Set<AppState> getAppState() {
-        return updateFrontendService.getAppState();
+    public Set<AppEventState> getAppState() {
+        return updateFrontendService.getAppEventState();
     }
 
     public Map<String, Notification> getActiveNotifications() {
         return updateFrontendService.getActiveNotifications();
     }
 
-    public Notification getNotification(AppState state) {
+    public Notification getNotification(AppEventState state) {
         return updateFrontendService.createNotification(state);
     }
 }

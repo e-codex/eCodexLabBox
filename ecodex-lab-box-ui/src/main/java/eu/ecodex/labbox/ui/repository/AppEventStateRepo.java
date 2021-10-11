@@ -1,7 +1,7 @@
 package eu.ecodex.labbox.ui.repository;
 
 import com.vaadin.flow.component.notification.Notification;
-import eu.ecodex.labbox.ui.domain.AppState;
+import eu.ecodex.labbox.ui.domain.AppEventState;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Repository
-public class AppStateRepo {
+public class AppEventStateRepo {
 
     // It's possible to only use the map activeNotifications to provide the functionality.
     // On startup one would check, if the key exists in the map and if the value is not null.
@@ -19,14 +19,14 @@ public class AppStateRepo {
     // key & value -> AppState set, Notification active
     // but I feel somehow uncomfortable mapping keys to null, in the case of clearing active notifications
     // and I don't have the time right now
-    private final Set<AppState> appState;
+    private final Set<AppEventState> appEventState;
 
     // this map gets cleared when the MainLayout is created
     // creation of the MainLayout happens only initially and after browser/page refresh
     private final Map<String, Notification> activeNotifications;
 
-    public AppStateRepo() {
-        this.appState = new HashSet<>();
+    public AppEventStateRepo() {
+        this.appEventState = new HashSet<>();
         this.activeNotifications = new HashMap<>();
     }
 
@@ -34,7 +34,7 @@ public class AppStateRepo {
         return this.activeNotifications;
     }
 
-    public synchronized Set<AppState> getAppState() {
-        return this.appState;
+    public synchronized Set<AppEventState> getAppEventState() {
+        return this.appEventState;
     }
 }
