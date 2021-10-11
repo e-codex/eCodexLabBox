@@ -1,5 +1,9 @@
 package eu.ecodex.labbox.ui.view;
 
+import java.awt.Desktop;
+
+import org.springframework.stereotype.Component;
+
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,14 +16,13 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
+
+import eu.ecodex.labbox.ui.service.UpdateFrontendService;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
-import eu.ecodex.labbox.ui.view.componentdocumentation.ComponentDocumentationView;
+import eu.ecodex.labbox.ui.view.componentdocumentation.DomibusGatewayDocumentationView;
 import eu.ecodex.labbox.ui.view.help.HelpView;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import eu.ecodex.labbox.ui.view.settings.ProxySettingsView;
-import org.springframework.stereotype.Component;
-
-import java.awt.Desktop;
 
 @UIScope
 @Component
@@ -27,14 +30,12 @@ import java.awt.Desktop;
 public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
 
     private final DCTabHandler tabManager = new DCTabHandler();
-    private final NotificationHandler notificationHandler;
 
-    public MainLayout(NotificationHandler notificationHandler) {
-        this.notificationHandler = notificationHandler;
+    public MainLayout(UpdateFrontendService updateFrontendService) {
 
         // if we were only using the map instead if a set and a map, then we would have to set the values of the map
         // to null here, in other words, only clearing the active notifications associated with an app state
-        notificationHandler.getActiveNotifications().clear();
+        updateFrontendService.getActiveNotifications().clear();
 
         // migrate this to new notification system when it's done
         if (Desktop.isDesktopSupported()) {
@@ -76,7 +77,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
                 .createTab()
                 .withLabel("Component Documentation")
                 .withIcon(new Icon(VaadinIcon.RECORDS))
-                .addForComponent(ComponentDocumentationView.class);
+                .addForComponent(DomibusGatewayDocumentationView.class);
 
         tabManager
                 .createTab()
@@ -86,7 +87,6 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
         tabManager.getTabs().setOrientation(Tabs.Orientation.HORIZONTAL);
         topBar.add(tabManager.getTabs());
-        topBar.add(notificationHandler);
     }
 
     @Override
