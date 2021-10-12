@@ -1,0 +1,10 @@
+= Welcome to e-CODEX Lab-Box
+
+This is the user interface for the e-CODEX-lab-box. The e-CODEX-lab-box intends to be a starting point for those who want to get technically involved with e-CODEX building blocks. 
+The e-CODEX-lab-box shows what technical components need to be installed and configured when setting up an e-CODEX environment.
+It also gives insight on the message transfer and lets you exchange messages between lab environments.
+
+== Disclaimer
+*Beware that the ecodex-lab-box is only a showcase and strictly not to be used for setting up productive environments!*
+
+

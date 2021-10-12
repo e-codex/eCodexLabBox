@@ -1,19 +1,15 @@
 = Tutorial on the usage of the e-CODEX lab box
 
+:toc:
 
-
-
-
-
-=== General information on the e-CODEX lab box
-
-The e-CODEX lab box has the intention to show first-timers in e-CODEX how the e-CODEX technical components (building-blocks) in an e-CODEX envrionments are working.
+The e-CODEX lab box has the intention to show first-timers in e-CODEX how the e-CODEX technical components (building-blocks) in an e-CODEX envrionment are working.
 
 It gives the possibility to easily set-up so called "lab environments" which are pre-configured to communicate with each other.
 
-There is also a test messages prepared in each new lab environment which is easy to trigger to be sent to another lab environment.
+There is also a test message prepared in each new lab environment which is easy to trigger to be sent to another lab environment.
 This way a user can follow the route of one message between working e-CODEX environments.
 
-=== Creating a new lab environment
+
+== Creating a new lab environment
 
 image::logo_ecodex_0.png[]

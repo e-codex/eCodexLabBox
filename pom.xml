@@ -43,6 +43,10 @@
     <lombok.version>1.18.20</lombok.version>
     <apache.commons.lang.version>3.11</apache.commons.lang.version>
     <apache.commons.validator.version>1.7</apache.commons.validator.version>
+    <domibus-gw.version>4.2</domibus-gw.version>
+    <domibus-connector-plugin.version>4.2.0</domibus-connector-plugin.version>
+    <domibus-connector.version>4.3.3</domibus-connector.version>
+    <domibus-connector-client-application.version>4.3.0</domibus-connector-client-application.version>
   </properties>
 
   <!-- TODO: idea: allow p2p testing over testing network maybe: https://github.com/i2p/i2p.i2p -->

@@ -1,0 +1,4 @@
+= domibusConnector documentation
+
+== Version of domibusConnector in this e-CODEX lab box
+{domibus-connector-version}

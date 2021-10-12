@@ -14,3 +14,4 @@ target/
 /ecodex-lab-box-ui/*.js
 /ecodex-lab-box-ui/*.json
 /ecodex-lab-box-ui/src/main/resources/META-INF/resources/html
+/ecodex-lab-box-builder/*.versionsBackup

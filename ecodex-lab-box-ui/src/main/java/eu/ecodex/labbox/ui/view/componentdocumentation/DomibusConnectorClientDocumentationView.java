@@ -10,16 +10,18 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import eu.ecodex.labbox.ui.configuration.TabMetadata;
+import eu.ecodex.labbox.ui.view.StaticContentView;
 
 @Component
 @UIScope
 @Route(value = DomibusConnectorClientDocumentationView.ROUTE, layout = ComponentDocumentationLayout.class)
 @Order(3)
 @TabMetadata(title = "domibusConnectorClient", icon = VaadinIcon.LIGHTBULB, themeVariant = TabVariant.LUMO_ICON_ON_TOP, tabGroup = ComponentDocumentationLayout.TAB_GROUP_NAME)
-public class DomibusConnectorClientDocumentationView extends VerticalLayout {
+public class DomibusConnectorClientDocumentationView extends StaticContentView {
 
     public static final String ROUTE = "connectorClientDocumentation";
 
     public DomibusConnectorClientDocumentationView() {
+    	super("html/connectorClientDocumentation.html");
     }
 }
