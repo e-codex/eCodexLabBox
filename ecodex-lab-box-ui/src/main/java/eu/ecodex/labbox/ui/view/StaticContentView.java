@@ -17,8 +17,10 @@ public class StaticContentView extends VerticalLayout {
 		staticContentFrame.getStyle().set("border", "none");
 
 		add(staticContentFrame);
+		
+		setSizeFull();
 
-		setHeight("1000px");
+//		setHeight("1000px");
 	}
 
 	

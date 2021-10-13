@@ -3,6 +3,8 @@ package eu.ecodex.labbox.ui.view.componentdocumentation;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.router.Route;
@@ -22,5 +24,15 @@ public class DomibusGatewayDocumentationView extends StaticContentView {
 
     public DomibusGatewayDocumentationView() {
     	super("html/gatewayDocumentation.html");
+    	
+    	Label txt = new Label("Path to external site");
+    	
+    	Anchor link = new Anchor();
+    	link.setHref("https://ec.europa.eu/cefdigital/wiki/display/CEFDIGITAL/Domibus+-+v4.2");
+    	link.setTarget("_blank");
+    	link.setTitle(txt.getText());
+    	link.add(txt);
+    	
+    	add(link);
     }
 }

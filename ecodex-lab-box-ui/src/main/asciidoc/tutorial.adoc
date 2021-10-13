@@ -1,5 +1,4 @@
 = Tutorial on the usage of the e-CODEX lab box
-
 :toc:
 
 The e-CODEX lab box has the intention to show first-timers in e-CODEX how the e-CODEX technical components (building-blocks) in an e-CODEX envrionment are working.

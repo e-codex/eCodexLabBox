@@ -31,7 +31,8 @@ public class HelpLayout extends VerticalLayout implements BeforeEnterObserver, R
     void init() {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
-        setWidth("95%");
+//        setWidth("95%");
+        setSizeFull();
 
         DCTabHandler.createTabs(applicationContext, TAB_GROUP_NAME);
         add(DCTabHandler.getTabs());

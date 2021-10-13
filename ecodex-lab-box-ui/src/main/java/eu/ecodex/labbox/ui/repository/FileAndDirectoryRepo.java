@@ -3,6 +3,8 @@ package eu.ecodex.labbox.ui.repository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Repository;
@@ -21,8 +23,11 @@ public class FileAndDirectoryRepo {
 
     @Getter
     private Path labenvHomeDirectory;
+    
+    @Getter
+    private Path connectorDocuSite;
 
-    public FileAndDirectoryRepo(@Value("${spring.profiles.active}") String activeProfile) {
+    public FileAndDirectoryRepo(@Value("${spring.profiles.active}") String activeProfile, @Value("${path.to.connector.documentation.site}") String pathToConnectorDocumentationSite) {
         this.mavenExecutable = Optional.empty();
 
         final ApplicationHome applicationHome = new ApplicationHome(this.getClass());
@@ -30,6 +35,10 @@ public class FileAndDirectoryRepo {
             this.labenvHomeDirectory = applicationHome.getDir().toPath().getParent().resolve("ecodex-lab-box");
         } else {
             this.labenvHomeDirectory = new File("C:\\Entwicklung\\ecodex-labhome-dev").toPath();
+        }
+        
+        if(!StringUtils.isEmpty(pathToConnectorDocumentationSite)) {
+        	this.connectorDocuSite = new File (this.labenvHomeDirectory + pathToConnectorDocumentationSite).toPath();
         }
     }
 

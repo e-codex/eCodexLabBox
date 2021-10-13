@@ -55,6 +55,10 @@ public class DirectoryController {
         return fileAndDirectoryRepo.getLabenvHomeDirectory();
     }
 
+    public synchronized Path getConnectorDocuSitePath() {
+        return fileAndDirectoryRepo.getConnectorDocuSite();
+    }
+    
     public synchronized Map<Path, Labenv> getLabEnvironments() {
         return labenvService.getLabenvironments();
     }
