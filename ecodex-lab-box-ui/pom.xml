@@ -111,6 +111,8 @@
 								<icons>font</icons>
 								<nofooter></nofooter>
 								<domibus-connector-version>${domibus-connector.version}</domibus-connector-version>
+								<domibus-connector-client-version>${domibus-connector-client-application.version}</domibus-connector-client-version>
+								<gateway-version>${domibus-gw.version}</gateway-version>
 							</attributes>
 						</configuration>
 					</execution>

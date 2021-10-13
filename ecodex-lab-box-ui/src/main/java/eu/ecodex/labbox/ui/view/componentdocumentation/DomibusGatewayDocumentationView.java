@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.view.componentdocumentation;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +23,13 @@ public class DomibusGatewayDocumentationView extends StaticContentView {
 
     public static final String ROUTE = "gatewayDocumentation";
 
-    public DomibusGatewayDocumentationView() {
+    public DomibusGatewayDocumentationView(@Value("${domibus.gateway.web.url}") String urlToDomibusGatewaySite) {
     	super("html/gatewayDocumentation.html");
     	
-    	Label txt = new Label("Path to external site");
+    	Label txt = new Label("Path to external DOMIBUS site");
     	
     	Anchor link = new Anchor();
-    	link.setHref("https://ec.europa.eu/cefdigital/wiki/display/CEFDIGITAL/Domibus+-+v4.2");
+    	link.setHref(urlToDomibusGatewaySite);
     	link.setTarget("_blank");
     	link.setTitle(txt.getText());
     	link.add(txt);

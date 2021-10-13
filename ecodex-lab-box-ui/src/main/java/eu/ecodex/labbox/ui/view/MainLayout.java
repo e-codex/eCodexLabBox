@@ -17,7 +17,6 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import eu.ecodex.labbox.ui.service.UpdateFrontendService;
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.componentdocumentation.DomibusGatewayDocumentationView;
 import eu.ecodex.labbox.ui.view.help.HelpView;
@@ -30,12 +29,14 @@ import eu.ecodex.labbox.ui.view.settings.ProxySettingsView;
 public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
 
     private final DCTabHandler tabManager = new DCTabHandler();
+    private final NotificationHandler notificationHandler;
 
-    public MainLayout(UpdateFrontendService updateFrontendService) {
+    public MainLayout(NotificationHandler notificationHandler) {
+        this.notificationHandler = notificationHandler;
 
         // if we were only using the map instead if a set and a map, then we would have to set the values of the map
         // to null here, in other words, only clearing the active notifications associated with an app state
-        updateFrontendService.getActiveNotifications().clear();
+        notificationHandler.getActiveNotifications().clear();
 
         // migrate this to new notification system when it's done
         if (Desktop.isDesktopSupported()) {
@@ -87,6 +88,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
         tabManager.getTabs().setOrientation(Tabs.Orientation.HORIZONTAL);
         topBar.add(tabManager.getTabs());
+        topBar.add(notificationHandler);
     }
 
     @Override

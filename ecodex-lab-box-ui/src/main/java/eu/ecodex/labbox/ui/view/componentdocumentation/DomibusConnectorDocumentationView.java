@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.view.componentdocumentation;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -23,23 +24,14 @@ public class DomibusConnectorDocumentationView extends StaticContentView {
 
     public static final String ROUTE = "connectorDocumentation";
     
-    private final DirectoryController directoryController;
-
-    public DomibusConnectorDocumentationView(DirectoryController directoryController) {
+    
+    public DomibusConnectorDocumentationView(DirectoryController directoryController, @Value("${path.to.connector.documentation.site}") String pathToConnectorDocumentationSite) {
     	super("html/connectorDocumentation.html");
     	
-    	this.directoryController = directoryController;
-    	
     	Label pathToDocumentation = new Label();
-    	pathToDocumentation.setText(directoryController.getConnectorDocuSitePath().toString());
+    	pathToDocumentation.setText(directoryController.getLabenvHomeDirectory().toString() + pathToConnectorDocumentationSite);
     	
-    	Anchor link = new Anchor();
-    	link.setHref("file:///"+directoryController.getConnectorDocuSitePath().toString());
-    	link.setTarget("_blank");
-    	link.setTitle(pathToDocumentation.getText());
-    	link.add(pathToDocumentation);
-    	
-    	add(link);
+    	add(pathToDocumentation);
     }
 
   

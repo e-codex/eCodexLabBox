@@ -1,4 +1,7 @@
-= domibusConnector documentation
+= domibusConnector {domibus-connector-version} documentation
 
-Version of domibusConnector in this e-CODEX lab box is *{domibus-connector-version}*
+The documentation of the domibusConnector is a site documentation. 
 
+Due to common browser restrictions it is not possible yet to provide a direct link to the documentation.
+
+Please copy the displayed path from below this text and paste it into a new browser window or tab.

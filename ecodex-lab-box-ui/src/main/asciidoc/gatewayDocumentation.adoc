@@ -1,1 +1,6 @@
-= DOMIBUS gateway documentation
+= DOMIBUS gateway {gateway-version} documentation
+
+The DOMIBUS gateway is a building block that is currently maintained and distributed by the CEF digital programme.
+
+Please klick the link below to access the official DOMIBUS website for the version used in this e-CODEX-lab-box release.
+
