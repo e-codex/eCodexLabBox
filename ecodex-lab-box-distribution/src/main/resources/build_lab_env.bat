@@ -60,7 +60,7 @@ goto :CheckLabId
 set "MVN_DIR=%cd%\apache-maven-3.8.1"
 
 :CheckLabId
-	If "%LAB_ID%"=="" GOTO :usage
+	If "%LAB_ID%"=="" EXIT 100
 
 echo.
 echo LAB_ID is %LAB_ID%
@@ -88,6 +88,7 @@ echo ##################### calling %MAVEN_CMD% install %MAVEN_ARGS% ############
 echo.
 
 call "%MAVEN_CMD%" install %MAVEN_ARGS%
+IF %ERRORLEVEL% NEQ 0 EXIT 200
 
 echo.
 echo ##################### labenv%LAB_ID% built #####################
@@ -97,12 +98,16 @@ echo.
 echo ##################### Setup of domibus-gateway database #####################
 echo.
 call %cd%\labenv%LAB_ID%\domibus-gateway\setup\setupdb.bat
+IF %ERRORLEVEL% NEQ 0 EXIT 300
 
 
 echo.
 echo ##################### Setup of domibusConnectorClient-Application database #####################
 echo.
 call %cd%\labenv%LAB_ID%\domibus-connector-client-application\setup\setupdb.bat
+IF %ERRORLEVEL% NEQ 0 EXIT 400
+
+
 
 
 goto end
@@ -129,4 +134,4 @@ echo ########################################################################
 
 
 :end
-exit
+exit 0

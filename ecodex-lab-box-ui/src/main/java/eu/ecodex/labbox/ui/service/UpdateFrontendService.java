@@ -94,7 +94,7 @@ public class UpdateFrontendService {
         final Text text = new Text(
                 MessageFormat.format("Building {0} failed, reason: {1}",
                 appEventState.getMetaData().getPath().getFileName(),
-                appEventState.getMetaData().getExitcode())
+                appEventState.getMetaData().getExitcode().text)
         );
         Div info = new Div(text);
         Button closeBtn = new Button(
@@ -135,7 +135,7 @@ public class UpdateFrontendService {
         notification.setId(state.getAppEventType().toString());
 
         Icon icon = VaadinIcon.WARNING.create();
-        final Text text = new Text("Remember, remember pmodes engender! Remember, remember pmodes engender! Remember, remember pmodes engender!");
+        final Text text = new Text("New Lab Environment built successfully! \nDon't forget to upload the labenv's pmodes to the gateway! \nMore details can be found in the tutorial.");
         Div info = new Div(text);
 
         Button confirmedButton = new Button(
