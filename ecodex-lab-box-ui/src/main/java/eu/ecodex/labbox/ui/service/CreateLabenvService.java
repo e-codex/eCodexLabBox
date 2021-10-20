@@ -26,10 +26,10 @@ public class CreateLabenvService {
         while (run.isAlive()) ; // blocks execution until process is finished
         if (run.exitValue() == Exitcode.SCRIPT_SUCCESS.value) {
             applicationEventPublisher.publishEvent(new LabenvBuildSucceeded(this, fullPath));
-        } else if (run.exitValue() == Exitcode.PROXY_CONNECTION_ERROR.value) {
-            applicationEventPublisher.publishEvent(new LabenvBuildFailed(this, Exitcode.PROXY_CONNECTION_ERROR, fullPath));
+//        } else if (run.exitValue() == Exitcode.PROXY_CONNECTION_ERROR.value) {
+//            applicationEventPublisher.publishEvent(new LabenvBuildFailed(this, Exitcode.PROXY_CONNECTION_ERROR, fullPath));
         } else {
-            applicationEventPublisher.publishEvent(new LabenvBuildFailed(this, Exitcode.SCRIPT_ERROR, fullPath));
+            applicationEventPublisher.publishEvent(new LabenvBuildFailed(this, Exitcode.getExitcodeByValue(run.exitValue()), fullPath));
         }
     }
 
