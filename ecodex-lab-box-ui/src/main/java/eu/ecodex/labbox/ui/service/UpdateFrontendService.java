@@ -152,7 +152,7 @@ public class UpdateFrontendService {
                 new Text("Remember to upload PModes for "),
                 fileName,
                 new Text(" . See "),
-                new Anchor("#", "Tutorial")
+                new Anchor("help/tutorial", "Tutorial")
         ));
         info.getStyle()
                 .set("font-size", "var(--lumo-font-size-s)")
