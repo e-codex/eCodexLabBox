@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.view.labenvironment;
 
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Label;
@@ -18,6 +19,7 @@ import eu.ecodex.labbox.ui.configuration.TabMetadata;
 import eu.ecodex.labbox.ui.controller.DirectoryController;
 import eu.ecodex.labbox.ui.controller.ProcessController;
 import eu.ecodex.labbox.ui.controller.SettingsController;
+import eu.ecodex.labbox.ui.controller.UpdateFrontendController;
 import eu.ecodex.labbox.ui.domain.Proxy;
 import eu.ecodex.labbox.ui.utils.StringToPathConverter;
 import lombok.Getter;
@@ -36,6 +38,7 @@ public class LabenvSetupListView extends VerticalLayout implements AfterNavigati
     private final DirectoryController directoryController;
     private final ProcessController processController;
     private final SettingsController settingsController;
+    private final UpdateFrontendController updateFrontendController;
 
     @Getter
     private final LabenvGrid grid;
@@ -45,12 +48,14 @@ public class LabenvSetupListView extends VerticalLayout implements AfterNavigati
 
 
     public LabenvSetupListView(DirectoryController directoryController,
-                               ProcessController processController, SettingsController settingsController) {
+                               ProcessController processController, SettingsController settingsController, UpdateFrontendController updateFrontendController) {
 
         this.directoryController = directoryController;
         this.processController = processController;
         this.settingsController = settingsController;
+        this.updateFrontendController = updateFrontendController;
 
+        this.updateFrontendController.getListOfViewsWithLiveUpdates().add(this);
         this.grid = new LabenvGrid();
         // try to use this for infos
         // see here: https://vaadin.com/docs/latest/ds/components/grid/#sorting
@@ -111,6 +116,11 @@ public class LabenvSetupListView extends VerticalLayout implements AfterNavigati
         // if user has not visited this view then getUI() will be null
         // that's why we .map instead of using .get, map won't do anything if null is passed
         getUI().map(ui -> ui.access(() -> grid.setItems(directoryController.getLabEnvironments().values())));
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        updateFrontendController.getListOfViewsWithLiveUpdates().remove(this);
     }
 
     @Override
