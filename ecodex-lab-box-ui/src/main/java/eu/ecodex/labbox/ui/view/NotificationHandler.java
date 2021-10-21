@@ -62,7 +62,6 @@ public class NotificationHandler extends VerticalLayout implements NotificationR
 
     @Override
     protected void onDetach(DetachEvent detachEvent) {
-        System.out.println("ttest");
         updateFrontendController.getNotificationReceivers().remove(this);
     }
 }

@@ -1,9 +1,5 @@
 package eu.ecodex.labbox.ui.view;
 
-import java.awt.Desktop;
-
-import org.springframework.stereotype.Component;
-
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,21 +8,21 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.RouterLayout;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
-
 import eu.ecodex.labbox.ui.utils.DCTabHandler;
 import eu.ecodex.labbox.ui.view.componentdocumentation.DomibusGatewayDocumentationView;
 import eu.ecodex.labbox.ui.view.help.HelpView;
 import eu.ecodex.labbox.ui.view.labenvironment.LabenvOverview;
 import eu.ecodex.labbox.ui.view.settings.ProxySettingsView;
+import org.springframework.stereotype.Component;
+
+import java.awt.Desktop;
 
 @UIScope
 @Component
 @Push
-public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
+public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver, AfterNavigationObserver {
 
     private final DCTabHandler tabManager = new DCTabHandler();
     private final NotificationHandler notificationHandler;
@@ -94,5 +90,10 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         tabManager.beforeEnter(event);
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+        notificationHandler.updateAppStateNotification();
     }
 }
