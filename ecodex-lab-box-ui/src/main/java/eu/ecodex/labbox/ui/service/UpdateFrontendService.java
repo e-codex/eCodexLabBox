@@ -4,7 +4,9 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -93,8 +95,8 @@ public class UpdateFrontendService {
         final Icon icon = VaadinIcon.WARNING.create();
         final Text text = new Text(
                 MessageFormat.format("Building {0} failed, reason: {1}",
-                appEventState.getMetaData().getPath().getFileName(),
-                appEventState.getMetaData().getExitcode().text)
+                        appEventState.getMetaData().getPath().getFileName(),
+                        appEventState.getMetaData().getExitcode().text)
         );
         Div info = new Div(text);
         Button closeBtn = new Button(
@@ -130,13 +132,31 @@ public class UpdateFrontendService {
 
     private Notification createLabenvCreatedRememberPmodeConfigNotification(AppEventState state) {
         Notification notification = new Notification();
-        notification.addThemeVariants(NotificationVariant.LUMO_PRIMARY);
         notification.setPosition(Notification.Position.TOP_CENTER);
-        notification.setId(state.getAppEventType().toString());
 
-        Icon icon = VaadinIcon.WARNING.create();
-        final Text text = new Text("New Lab Environment built successfully! \nDon't forget to upload the labenv's pmodes to the gateway! \nMore details can be found in the tutorial.");
-        Div info = new Div(text);
+        Icon icon = VaadinIcon.CHECK_CIRCLE.create();
+        icon.setColor("var(--lumo-success-color)");
+
+        Div uploadSuccessful = new Div(new Text("Lab Build successful"));
+        uploadSuccessful
+                .getStyle()
+                .set("font-weight", "600")
+                .set("color", "var(--lumo-success-text-color)");
+
+        Span fileName = new Span(state.getMetaData().getPath().getFileName().toString());
+        fileName.getStyle()
+                .set("font-size", "var(--lumo-font-size-s)")
+                .set("font-weight", "600");
+
+        Div info = new Div(uploadSuccessful, new Div(
+                new Text("Remember to upload PModes for "),
+                fileName,
+                new Text(" . See "),
+                new Anchor("#", "Tutorial")
+        ));
+        info.getStyle()
+                .set("font-size", "var(--lumo-font-size-s)")
+                .set("color", "var(--lumo-secondary-text-color)");
 
         Button confirmedButton = new Button(
                 "Confirm",
@@ -155,6 +175,7 @@ public class UpdateFrontendService {
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
         notification.add(layout);
+
         return notification;
     }
 }
