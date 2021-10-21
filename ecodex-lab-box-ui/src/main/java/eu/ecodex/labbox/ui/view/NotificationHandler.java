@@ -1,5 +1,6 @@
 package eu.ecodex.labbox.ui.view;
 
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -57,5 +58,11 @@ public class NotificationHandler extends VerticalLayout implements NotificationR
     @Override
     public void receiveOneOffNotification(Notification notification) {
 
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        System.out.println("ttest");
+        updateFrontendController.getNotificationReceivers().remove(this);
     }
 }
