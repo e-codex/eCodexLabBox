@@ -8,7 +8,175 @@ It gives the possibility to easily set-up so called "lab environments" which are
 There is also a test message prepared in each new lab environment which is easy to trigger to be sent to another lab environment.
 This way a user can follow the route of one message between working e-CODEX environments.
 
+== How the e-CODEX lab box works
+
+Within the *"lab"* subfolder of the e-CODEX lab box the *components and configuration* of this release are stored.
+This includes the *components themselves* as they also can be downloaded from their corresponding repositories, but also the *lab box specific configuration parts*.
+Those configuration parts are the *component specific configuration files*, some *tools* only implemented for the e-CODEX lab box and also *Key-/Truststores* and *PModes*.
+
+The e-CODEX lab box creates so called *"lab environments"*. Those lab environments, once created, contain:
+
+* *domibus-gateway*: The gateway component pre-configured
+* *domibus-connector*: The domibusConnector pre-configured
+* *domibus-connector-client-application*: The domibusConnectorClient-Application pre-configured
+* *pmodes*: Contains the PMode-File pre-defined for this specific lab environment. This is important once it comes to finish the setup of a lab environment.
+
+
+
+
+== Configuration of the e-CODEX lab box
+
+Though the e-CODEX lab box comes mostly pre-configured, there are still two configuration parts that need to be considered by the user.
+
+=== Apache Maven
+Lab environments are built using a batch script that calls an *Apache Maven* instance to execute the build.
+
+There are two options of Maven to be used:
+
+* *Using the e-CODEX lab box Maven*: The e-CODEX lab box comes with a complete Maven. This is a basic Maven installation that runs without further configuration. This Maven will, when called for the first time, build a repository inside the e-CODEX lab box directory.
+
+* *Using a Maven installation of your own environment*: If you already have an instance of Maven installed and configured at the environment where the e-CODEX lab box lies, then this Maven instance can be used. The advantage of using your own Maven (if existing) is, that basic environment specific settings are already configured. This could be a proxy configuraiton or the place of the local Maven repository. To use your own Maven installation it is necessary that the *MAVEN_HOME* environment variable is set.
+
+=== Proxy configuration
+If  you are using a Maven instance already installed and configured on the target environment, this configuration is not necessary since a valid proxy configuration most probably is already in place inside your Maven settings.
+
+Though, if the *e-CODEX lab box Maven* is used, you need to tell the e-CODEX lab box in two seperate steps *if* you are behind a proxy server and the *address* of this proxy server.
+
+Whereas the declaration if you need to use a proxy server is a part of "Creating a new lab environment", the address declaration of your proxy server needs to be configured beforehand.
+
+This is done by navigating to *Settings -> Proxy*. There you can enter the IP address and port of your proxy server.
+The data entered gets validated though only the syntax is checked if it has the valid format of an IP address and port number.
+
+Screenhot proxy settings
+[#img-proxy_settings]
+[link=images/proxy_settings.png,window=_tab]
+image::proxy_settings.png[proxy_settings,300,200]
 
 == Creating a new lab environment
 
-image::logo_ecodex_0.png[]
+To create a new lab environment, the tab *Lab Environments -> Setup* has to be opened.
+
+=== The Setup view explained
+
+Screenhot Lab Environments Setup
+[#img-setup_labenv]
+[link=images/setup_labenv.png,window=_tab]
+image::setup_labenv.png[setup_labenv,300,200]
+
+This screen gives you the following information and options:
+
+* *Path to Lab Home Directory* Shows you the exact directory where you can find your e-CODEX lab box in your file system. It is recommended to *NOT* change this setting. If you want to have your e-CODEX lab box on a different place, please copy the downloaded ZIP and start from scratch there.
+
+* *List of existing lab environments* This list is empty if no lab environment is created yet. If there are existing lab environments (like in the screenshot) you can see the name of the lab environment, the full path on your file system and a button that opens the lab environment in your systems file browser.
+
+* *use proxy* This checkbox is only active when proxy settings are made. For more information on that please see chapter <<Proxy configuration,Proxy configuration>>. You need to check this box before launching the *Add Labenvironment* button if you are using the integrated non-configured Maven.
+
+* *Add Labenvironment* This button launches the build of a new lab environment.
+
+=== Launching the build of a new lab environment
+
+It is possible to create up to *9 lab environments*. You need at least 2 lab environments to exchange messages between them.
+
+To *launch* the build, hit the button *Add Labenvironment*.
+
+This will initiate a *batch script* that mainly consists of the following steps;
+* Checking the parameters (lab.id, proxy settings)
+* Calling the maven build to actually create the lab environments
+* Calling the tool to setup the gateway database
+* Calling the tool to setup the domibusConnectorClient database
+
+While the batch script is running, the user interface of the e-CODEX lab box is on hold.
+
+Once the script is finished, you will receive a *notification* with the result of the build. This notification has to be confirmed. It also informs you, that the only manual step you have to take to finish the setup is the upload of the pmodes to the DOMIBUS gateway.
+This has to be done manually since there is not automatic way of doing this.
+
+The list of existing lab environments should be *refreshed automatically* at this moment. If not, do a browser refresh.
+
+== Launch components
+
+To launch components, the tab *Lab Environments -> Launch* has to be opened.
+
+=== The Launch view explained
+
+Screenhot Launch view
+[#img-launch-view]
+[link=images/launch_view.png,window=_tab]
+image::launch_view.png[launch_view,300,200]
+
+On this view you see a list of your lab environments.
+
+For every lab environment there is a section in the table.
+
+It shows the name of the lab environment and 3 Buttons for every component (Gateway, Connector, ConnectorClient):
+* *Start (component)* Starts the component in a seperate window.
+* *Stop (component)* Stops the component.
+* *Open (component) UI* If started properly, this button opens the administration user interface of the component.
+
+Additionally, there is a button for each lab environment called *Trigger Connector Client Message*.
+This button and the feature behind is explained in chapter <<Trigger messages between lab environments,Trigger messages between lab environments>>.
+
+=== Actually launch the components of a lab environment
+
+IMPORTANT: Each component launched consumes system resources. The more components (and lab environments) are started, the more memory and CPU is used. It can slow down the performance of your system significantly.
+
+Now you can start the gateway, the connector and the connectorClient by hitting the *Start* buttons.
+
+IMPORTANT: The startup of each component needs some time depending on the available system resources. It can take some minutes until everything is started properly.
+
+After successful startup of the component, you are able to enter the corresponding user interface by using the *Open (component) UI* button.
+
+
+== Upload PModes to DOMIBUS gateway
+
+IMPORTANT: This has to be done for every new lab environment
+
+As the *notification* after building a new lab environment already stated, it is necessary to upload the pmodes of the lab environment to the gateway before messages can be exchanged.
+
+For that purpose, open the user interface of the DOMIBUS gateway of the new lab environment.
+
+You can authenticate by using *admin/123456* at the UI.
+
+Once logged in, select *PMode -> Current* in the menu on the left.
+
+Screenhot PMode Current with menu
+[#img-pmode-current]
+[link=images/pmode_current.png,window=_tab]
+image::pmode_current.png[pmode_current,300,200]
+
+Hit the *Upload* button, enter any description (any String will do) and choose the *pmode-template.xml* file of the lab environment. It is in the lab environment home directory (for example labenv01) in sub-directory pmodes.
+
+IMPORTANT: It is very important that you choose the correct *pmode-template.xml* file that is part of the particular lab environment this gateway is part of. If you choose the wrong pmodes the message exchange with this lab environment will not work!
+
+You can then confirm with the OK button and the PModes will be uploaded. 
+
+== Trigger messages between lab environments
+
+The e-CODEX lab box offers a very comfortable way to trigger a first message from one lab environment to another one.
+For that purpose a message is prepared in every new lab environment on the domibusConnectorClient-Application.
+This message is already built with all parts necessary to send it to another lab environment.
+
+IMPORTANT: Before triggering a message from one lab environment to another, *all components of the source and target* lab environment need to be up and running!
+
+There are 2 ways to edit and trigger this pre-defined message:
+* *Trigger Connector Client Message* in the *Launch* view of *Lab Environments*. This button exists for every lab environment created. It opens the user interface of the domibusConnectorClient-Application in edit mode of the pre-defined message already.
+* *Open ConnectorClient UI* in the *Launch* view of *Lab Environments*. This button opens the user interface of the domibusConnectorClient-Application at the welcome page. You can then manually select and edit the pre-defined message, or create a new one.
+
+The only thing to enter before submitting the message is to fill the field *ToPartyId* with the gateway number (according to the pmodes).
+This is *gw* followed by the 2 digit lab id of the target lab environment.
+
+Example:
+If you have started *lab environment 01 and 02* and want to send a message from *labenv01* to *labenv02* you open the message of labenv01, enter *gw02* in the field *ToPartyId*  and hit *Submit Message*.
+The message is then processed by both lab environments and evidences for that message are sent back to labenv01.
+You can trace this on the user interfaces of all components, in log files and also in the execution windows of the components.
+
+
+== Open component documentation
+
+Since the e-CODEX lab box was created to give a first sight on the technical building blocks of e-CODEX and also to get familiar with the components required to run e-CODEX, the e-CODEX lab box also offers a comfortable way to reach the documentation of each component.
+
+This can be found in the *Component Documentation* view.
+
+There, you find a section for all of the 3 components that are part of the e-CODEX lab box with a short description and a link to the component documentation.
+
+The documentation offered here is not created especially for the e-CODEX lab box, but is the standard documentation that is distributed with the components at their release.
+

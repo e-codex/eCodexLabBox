@@ -6,6 +6,13 @@ Please leave the directory structure as is, since the configuration of the lab-b
 
 To start working with the lab box use the "start.bat" script on top level.
 This will start the user interface of the lab-box.
-Once started, it can be used in a standard browser by calling
-http://localhost:8080
+Once started, it should open the user interface in a standard browser window.
+If that does not work, please open a browser window and call
+http://localhost:8888
+
+VERSIONS USED IN THIS RELEASE:
+
+DOMIBUS gateway			4.2
+domibusConnector		4.3.3
+domibusConnectorClient	4.3.0
 

@@ -15,7 +15,7 @@
     <!-- <module>ecodex-lab-box-gw-pmode-upload</module> -->
     <module>ecodex-lab-box-builder</module>
     <module>ecodex-lab-box-ui</module>
-    <module>ecodex-lab-box-tutorial</module>
+    <!-- <module>ecodex-lab-box-tutorial</module> -->
     <module>ecodex-lab-box-distribution</module>
   </modules>
 
