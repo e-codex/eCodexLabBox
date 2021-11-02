@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>2021.01-SNAPSHOT</version>
+    <version>2021.01-RC1</version>
   </parent>
   <artifactId>ecodex-lab-box-builder</artifactId>
   <packaging>pom</packaging>
@@ -40,7 +40,7 @@
       </snapshots>
       <id>e-codex</id>
       <url>https://secure.e-codex.eu/nexus/content/groups/public/</url>
-	</repository>
+    </repository>
   </repositories>
   <build>
     <plugins>
@@ -58,10 +58,10 @@
           <!-- download domibus AS4 gw -->
           <execution>
             <id>copy-domibus</id>
-            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
@@ -81,10 +81,10 @@
           <!-- download domibus connector gateway plugin -->
           <execution>
             <id>copy-domibus-connector-gw-plugin</id>
-            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
@@ -122,10 +122,10 @@
           <!-- download h2 database -->
           <execution>
             <id>copy-h2-database</id>
-            <phase>package</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <outputDirectory>${project.basedir}/lab/h2-database</outputDirectory>
               <stripVersion>true</stripVersion>
@@ -142,10 +142,10 @@
           <!-- download domibus connector itself -->
           <execution>
             <id>copy-domibus-connector</id>
-            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
@@ -161,12 +161,12 @@
               </artifactItems>
             </configuration>
           </execution>
-		<execution>
+          <execution>
             <id>copy-domibus-connector-client-application</id>
-            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
@@ -183,7 +183,7 @@
               </artifactItems>
             </configuration>
           </execution>
-         <!--  <execution>
+          <!--  <execution>
             <id>download-pmode-uploader</id>
             <phase>package</phase>
             <goals>
@@ -207,10 +207,10 @@
           </execution> -->
           <execution>
             <id>download-test-keystores</id>
-            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
@@ -229,10 +229,10 @@
           </execution>
           <execution>
             <id>download-configs</id>
-            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
@@ -281,10 +281,10 @@
         <executions>
           <execution>
             <id>clean-lab-dir</id>
-            <phase>clean</phase>
             <goals>
               <goal>clean</goal>
             </goals>
+            <phase>clean</phase>
             <configuration>
               <directory>${project.basedir}/lab</directory>
             </configuration>

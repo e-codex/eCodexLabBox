@@ -4,21 +4,21 @@
   <parent>
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>2021.01-SNAPSHOT</version>
+    <version>2021.01-RC1</version>
   </parent>
   <artifactId>ecodex-lab-box-distribution</artifactId>
   <build>
-  	<finalName>ecodex-lab-box-${project.version}</finalName>
+    <finalName>ecodex-lab-box-${project.version}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
             <id>create-distribution-package</id>
-            <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
