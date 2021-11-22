@@ -4,7 +4,7 @@
 
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-parent</artifactId>
-  <version>2021.01-RC1</version>
+  <version>2021.01</version>
 
   <packaging>pom</packaging>
   <description>Ecodex related stuff</description>
