@@ -7,6 +7,7 @@ call setenv.bat
 if exist "%JAVA_HOME%" goto okJava
 echo The JAVA_HOME environment variable is not defined correctly
 echo This environment variable is needed to run this program
+pause
 goto end
 :okJava
 
