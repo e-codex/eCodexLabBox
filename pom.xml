@@ -4,7 +4,7 @@
 
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-parent</artifactId>
-  <version>2021.01-SNAPSHOT</version>
+  <version>2021.01</version>
 
   <packaging>pom</packaging>
   <description>Ecodex related stuff</description>
@@ -209,14 +209,6 @@
         <groupId>it.mulders.puml</groupId>
         <artifactId>plantuml-maven-plugin</artifactId>
         <version>0.1</version>
-        <executions>
-          <execution>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <sourceFiles>
             <directory>${basedir}</directory>
@@ -226,6 +218,14 @@
           </sourceFiles>
           <outputDirectory>${basedir}/src/site/resources/images</outputDirectory>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>pre-site</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

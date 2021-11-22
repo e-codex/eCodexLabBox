@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>2021.01-SNAPSHOT</version>
+    <version>2021.01</version>
   </parent>
   <groupId>eu.ecodex.labbox</groupId>
   <artifactId>ecodex-lab-box-config</artifactId>
@@ -16,10 +16,10 @@
         <executions>
           <execution>
             <id>create-distribution-package</id>
-            <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <appendAssemblyId>true</appendAssemblyId>
               <descriptorSourceDirectory>src/main/assembly</descriptorSourceDirectory>
