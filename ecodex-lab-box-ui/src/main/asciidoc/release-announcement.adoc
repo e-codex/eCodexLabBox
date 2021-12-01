@@ -1,0 +1,33 @@
+= New e-CODEX lab box release published
+
+Dear all,
+
+we are happy to announce a new major release of the
+e-CODEX lab box. 
+
+The e-CODEX-lab-box intends to be a starting point for those who want to get technically involved with e-CODEX building blocks. 
+The e-CODEX-lab-box shows what technical components need to be installed and configured when setting up an e-CODEX environment.
+It also gives insight on the message transfer and lets you exchange messages between lab environments.
+
+It comes with a user interface and documentation to guide through the process of setting up and running lab environments.
+
+== Version
+
+The new version is ecodex-lab-box-{project-version}.
+
+== Download location
+
+The ecodex-lab-box can be downloaded here:
+https://secure.e-codex.eu/nexus/content/repositories/releases/eu/ecodex/labbox/ecodex-lab-box-distribution/{project-version}
+
+== Changelog
+
+The e-CODEX building blocks used in this release of the ecodex-lab-box are:
+
+* DOMIBUS gateway 4.2
+* domibusConnector-4.3.3
+* domibusConnectorClientApplication-4.3.0
+
+Best regards,
+
+e-codex technical Team
