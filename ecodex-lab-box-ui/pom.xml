@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ecodex-lab-parent</artifactId>
         <groupId>eu.ecodex.labbox</groupId>
-        <version>2021.01-SNAPSHOT</version>
+        <version>2021.02-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -113,6 +113,7 @@
 								<domibus-connector-version>${domibus-connector.version}</domibus-connector-version>
 								<domibus-connector-client-version>${domibus-connector-client-application.version}</domibus-connector-client-version>
 								<gateway-version>${domibus-gw.version}</gateway-version>
+								<project-version>${project.version}</project-version>
 							</attributes>
 						</configuration>
 					</execution>
