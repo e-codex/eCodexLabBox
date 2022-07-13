@@ -166,7 +166,24 @@
                   <overwrite>true</overwrite>
                   <resources>
                     <resource>
-                      <directory>${project.basedir}/lab/domibus-connector/standalone</directory>
+                      <directory>${project.basedir}/lab/domibus-connector</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-domibus-connector-db-driver</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-connector/lib</outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>${project.basedir}/lab/h2-database</directory>
                       <filtering>false</filtering>
                     </resource>
                   </resources>

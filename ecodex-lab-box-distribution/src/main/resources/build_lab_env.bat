@@ -42,6 +42,9 @@ GOTO ParseParams
 
 :SetMavenHome
 set MVN_DIR=%MAVEN_HOME%
+if "%MVN_DIR%"=="" (
+	set MVN_DIR=%MVN_HOME%
+)
 goto :MavenHomeCheck
 
 :MavenHomeCheck  

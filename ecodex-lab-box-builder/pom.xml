@@ -144,19 +144,19 @@
             <id>copy-domibus-connector</id>
             <phase>package</phase>
             <goals>
-              <goal>unpack</goal>
+              <goal>copy</goal>
             </goals>
             <configuration>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <overWriteReleases>true</overWriteReleases>
-              <outputDirectory>${project.basedir}/lab/domibus-connector</outputDirectory>
+             <!--  <overWriteSnapshots>true</overWriteSnapshots>
+              <overWriteReleases>true</overWriteReleases> -->
+              <outputDirectory>${project.basedir}/lab/domibus-connector/bin</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <overWrite>true</overWrite>
+                  <!-- <overWrite>true</overWrite> -->
                   <groupId>eu.domibus.connector</groupId>
-                  <artifactId>domibusConnectorDistribution</artifactId>
+                  <artifactId>domibusConnectorBuilderStandalone</artifactId>
                   <version>${domibus-connector.version}</version>
-                  <type>zip</type>
+                  <type>jar</type>
                 </artifactItem>
               </artifactItems>
             </configuration>
