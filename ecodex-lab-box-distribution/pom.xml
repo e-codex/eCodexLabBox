@@ -6,6 +6,7 @@
     <artifactId>ecodex-lab-parent</artifactId>
     <version>2022.06.01-SNAPSHOT</version>
   </parent>
+  <packaging>pom</packaging>
   <artifactId>ecodex-lab-box-distribution</artifactId>
   <build>
   	<finalName>ecodex-lab-box-${project.version}</finalName>
