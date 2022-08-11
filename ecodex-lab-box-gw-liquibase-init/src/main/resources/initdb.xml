@@ -9,6 +9,7 @@
     <property name="current_db_user" value="USER()" dbms="h2"/>
 
     <include file="/db/changelog.xml"  />
+    <include file="/db/changelog-data.xml" />
 
 
 </databaseChangeLog>
