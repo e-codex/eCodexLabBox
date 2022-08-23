@@ -11,7 +11,7 @@
 
     <changeSet dbms="h2" author="sks" id="changelog-3.2-delta-1_h2_extension">
         <comment>create sequence</comment>
-        <createSequence sequenceName="HIBERNATE_SEQUENCE" minValue="1" maxValue="9999999999999999999999999999"
+        <createSequence sequenceName="HIBERNATE_SEQUENCE" minValue="1"
                         incrementBy="1" startValue="1" cacheSize="100" cycle="false" ordered="false"/>
     </changeSet>
 
