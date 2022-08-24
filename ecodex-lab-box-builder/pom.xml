@@ -16,7 +16,7 @@
     <domibus-connector-plugin.version>4.2.0</domibus-connector-plugin.version>
     <domibus-connector.version>4.3.3</domibus-connector.version>
     <domibus-connector-client-application.version>4.3.0</domibus-connector-client-application.version> -->
-    <h2database.version>1.4.200</h2database.version>
+
   </properties>
   <repositories>
     <repository>
@@ -42,6 +42,13 @@
       <url>https://secure.e-codex.eu/nexus/content/groups/public/</url>
 	</repository>
   </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>eu.ecodex.labbox</groupId>
+      <artifactId>ecodex-lab-box-gw-liquibase-init</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <!-- disable deploy for this module/project -->
@@ -100,26 +107,25 @@
               </artifactItems>
             </configuration>
           </execution>
-          <!-- download h2 database and copy it into domibus -->
-          <!--<execution>-->
-          <!--<id>copy-h2-database-into-domibus-lib</id>-->
-          <!--<phase>package</phase>-->
-          <!--<goals>-->
-          <!--<goal>copy</goal>-->
-          <!--</goals>-->
-          <!--<configuration>-->
-          <!--<outputDirectory>${project.basedir}/lab/domibus-gateway/domibus/lib</outputDirectory>-->
-          <!--<artifactItems>-->
-          <!--<artifactItem>-->
-          <!--<groupId>com.h2database</groupId>-->
-          <!--<artifactId>h2</artifactId>-->
-          <!--<version>1.4.197</version>-->
-          <!--<type>jar</type>-->
-          <!--</artifactItem>-->
-          <!--</artifactItems>-->
-          <!--</configuration>-->
-          <!--</execution>-->
-          <!-- download h2 database -->
+          <execution>
+            <id>copy-liquibase-init-app</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/lab/ecodex-lab-box-gw-liquibase-init</outputDirectory>
+              <stripVersion>true</stripVersion>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>eu.ecodex.labbox</groupId>
+                  <artifactId>ecodex-lab-box-gw-liquibase-init</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
           <execution>
             <id>copy-h2-database</id>
             <phase>package</phase>
