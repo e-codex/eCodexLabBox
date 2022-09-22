@@ -47,11 +47,11 @@
             <scope>test</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -69,56 +69,58 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>create-build-properties</id>-->
-<!--                        <goals>-->
-<!--                            <goal>build-info</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <id>create-build-properties</id>-->
+                <!--                        <goals>-->
+                <!--                            <goal>build-info</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>com.vaadin</groupId>-->
-<!--                <artifactId>vaadin-maven-plugin</artifactId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>prepare-frontend</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>com.vaadin</groupId>-->
+            <!--                <artifactId>vaadin-maven-plugin</artifactId>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>prepare-frontend</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
-<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-          						<id>convert-to-html</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.basedir}/src/main/resources/META-INF/resources/html</outputDirectory>
-							<attributes>
-								<source-highlighter>coderay</source-highlighter>
-								<imagesdir>./images</imagesdir>
-								<!-- <toc>left</toc> -->
-								<icons>font</icons>
-								<nofooter></nofooter>
-								<domibus-connector-version>${domibus-connector.version}</domibus-connector-version>
-								<domibus-connector-client-version>${domibus-connector-client-application.version}</domibus-connector-client-version>
-								<gateway-version>${domibus-gw.version}</gateway-version>
-								<project-version>${project.version}</project-version>
-							</attributes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>convert-to-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/main/resources/META-INF/resources/html
+                            </outputDirectory>
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                                <imagesdir>./images</imagesdir>
+                                <!-- <toc>left</toc> -->
+                                <icons>font</icons>
+                                <nofooter></nofooter>
+                                <domibus-connector-version>${domibus-connector.version}</domibus-connector-version>
+                                <domibus-connector-client-version>${domibus-connector-client-application.version}
+                                </domibus-connector-client-version>
+                                <gateway-version>${domibus-gw.version}</gateway-version>
+                                <project-version>${project.version}</project-version>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -150,6 +152,9 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <version>${spring.boot.version}</version>
+                        <configuration>
+                            <mainClass>eu.ecodex.labbox.ui.AppStarter</mainClass>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
