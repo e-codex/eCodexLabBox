@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>2022.06.01-SNAPSHOT</version>
+    <version>2022.09.1</version>
   </parent>
   <artifactId>ecodex-lab-box-builder</artifactId>
   <packaging>pom</packaging>
@@ -16,8 +16,14 @@
     <domibus-connector-plugin.version>4.2.0</domibus-connector-plugin.version>
     <domibus-connector.version>4.3.3</domibus-connector.version>
     <domibus-connector-client-application.version>4.3.0</domibus-connector-client-application.version> -->
-
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>eu.ecodex.labbox</groupId>
+      <artifactId>ecodex-lab-box-gw-liquibase-init</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
   <repositories>
     <repository>
       <releases>
@@ -40,15 +46,8 @@
       </snapshots>
       <id>e-codex</id>
       <url>https://secure.e-codex.eu/nexus/content/groups/public/</url>
-	</repository>
+    </repository>
   </repositories>
-  <dependencies>
-    <dependency>
-      <groupId>eu.ecodex.labbox</groupId>
-      <artifactId>ecodex-lab-box-gw-liquibase-init</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
   <build>
     <plugins>
       <!-- disable deploy for this module/project -->
@@ -153,7 +152,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-             <!--  <overWriteSnapshots>true</overWriteSnapshots>
+              <!--  <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases> -->
               <outputDirectory>${project.basedir}/lab/domibus-connector/bin</outputDirectory>
               <artifactItems>
@@ -167,7 +166,7 @@
               </artifactItems>
             </configuration>
           </execution>
-		<execution>
+          <execution>
             <id>copy-domibus-connector-client-application</id>
             <phase>package</phase>
             <goals>
@@ -189,7 +188,7 @@
               </artifactItems>
             </configuration>
           </execution>
-         <!--  <execution>
+          <!--  <execution>
             <id>download-pmode-uploader</id>
             <phase>package</phase>
             <goals>
