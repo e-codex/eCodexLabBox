@@ -1,0 +1,13 @@
+= Changelog
+
+== 2022.10.x
+
+* Upgrade Domibus GW to 5.0.1
+** Use new Domibus-Connector Plugin for GW 5.0
+** Use for testing packagaged GW of domibus-connector-plugin package
+** Use p-Mode autoupload
+** Use automatic DB-Init
+* Upgrade Domibus-Connector-Client to 4.4.6
+
+
+

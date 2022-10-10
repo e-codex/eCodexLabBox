@@ -74,31 +74,31 @@
                     <resource>
                       <directory>${project.basedir}/lab/domibus-gateway/domibus</directory>
                       <filtering>false</filtering>
-                      <excludes>
-                        <exclude>conf/domibus/plugins/config/*.*</exclude>
-                        <exclude>conf/domibus/plugins/lib/*.*</exclude>
-                      </excludes>
+<!--                      <excludes>-->
+<!--                        <exclude>conf/domibus/plugins/config/*.*</exclude>-->
+<!--                        <exclude>conf/domibus/plugins/lib/*.*</exclude>-->
+<!--                      </excludes>-->
                     </resource>
                   </resources>
                 </configuration>
               </execution>
-              <execution>
-                <id>copy-domibus-gw-plugin</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/conf/domibus/plugins</outputDirectory>
-                  <overwrite>true</overwrite>
-                  <resources>
-                    <resource>
-                      <directory>${project.basedir}/lab/domibus-gateway-plugin/conf/plugins</directory>
-                      <filtering>false</filtering>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
+<!--              <execution>-->
+<!--                <id>copy-domibus-gw-plugin</id>-->
+<!--                <phase>install</phase>-->
+<!--                <goals>-->
+<!--                  <goal>copy-resources</goal>-->
+<!--                </goals>-->
+<!--                <configuration>-->
+<!--                  <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/conf/domibus/plugins</outputDirectory>-->
+<!--                  <overwrite>true</overwrite>-->
+<!--                  <resources>-->
+<!--                    <resource>-->
+<!--                      <directory>${project.basedir}/lab/domibus-gateway-plugin/conf/plugins</directory>-->
+<!--                      <filtering>false</filtering>-->
+<!--                    </resource>-->
+<!--                  </resources>-->
+<!--                </configuration>-->
+<!--              </execution>-->
               <execution>
                 <id>copy-domibus-gw-keystores</id>
                 <phase>install</phase>
@@ -119,23 +119,23 @@
                   </resources>
                 </configuration>
               </execution>
-              <execution>
-                <id>copy-domibus-gw-db-driver</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/lib</outputDirectory>
-                  <overwrite>true</overwrite>
-                  <resources>
-                    <resource>
-                      <directory>${project.basedir}/lab/h2-database</directory>
-                      <filtering>false</filtering>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
+<!--              <execution>-->
+<!--                <id>copy-domibus-gw-db-driver</id>-->
+<!--                <phase>install</phase>-->
+<!--                <goals>-->
+<!--                  <goal>copy-resources</goal>-->
+<!--                </goals>-->
+<!--                <configuration>-->
+<!--                  <outputDirectory>${project.basedir}/labenv${lab.id}/domibus-gateway/lib</outputDirectory>-->
+<!--                  <overwrite>true</overwrite>-->
+<!--                  <resources>-->
+<!--                    <resource>-->
+<!--                      <directory>${project.basedir}/lab/h2-database</directory>-->
+<!--                      <filtering>false</filtering>-->
+<!--                    </resource>-->
+<!--                  </resources>-->
+<!--                </configuration>-->
+<!--              </execution>-->
               <execution>
                 <id>copy-domibus-connector</id>
                 <phase>install</phase>

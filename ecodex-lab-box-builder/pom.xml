@@ -63,7 +63,7 @@
         <executions>
           <!-- download domibus AS4 gw -->
           <execution>
-            <id>copy-domibus</id>
+            <id>copy-domibus-gw</id>
             <phase>package</phase>
             <goals>
               <goal>unpack</goal>
@@ -75,15 +75,39 @@
               <artifactItems>
                 <artifactItem>
                   <overWrite>true</overWrite>
-                  <groupId>eu.domibus</groupId>
-                  <artifactId>domibus-distribution</artifactId>
-                  <classifier>tomcat-full</classifier>
-                  <version>${domibus-gw.version}</version>
+                  <groupId>eu.domibus.connector.plugin</groupId>
+                  <artifactId>gw-with-plugin</artifactId>
+                  <version>${domibus-gw.plugin.version}</version>
                   <type>zip</type>
                 </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
+
+
+          <!-- download domibus AS4 gw -->
+<!--          <execution>-->
+<!--            <id>copy-domibus</id>-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>unpack</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <overWriteSnapshots>true</overWriteSnapshots>-->
+<!--              <overWriteReleases>true</overWriteReleases>-->
+<!--              <outputDirectory>${project.basedir}/lab/domibus-gateway</outputDirectory>-->
+<!--              <artifactItems>-->
+<!--                <artifactItem>-->
+<!--                  <overWrite>true</overWrite>-->
+<!--                  <groupId>eu.domibus</groupId>-->
+<!--                  <artifactId>domibus-distribution</artifactId>-->
+<!--                  <classifier>tomcat-full</classifier>-->
+<!--                  <version>${domibus-gw.version}</version>-->
+<!--                  <type>zip</type>-->
+<!--                </artifactItem>-->
+<!--              </artifactItems>-->
+<!--            </configuration>-->
+<!--          </execution>-->
           <!-- download domibus connector gateway plugin -->
           <execution>
             <id>copy-domibus-connector-gw-plugin</id>

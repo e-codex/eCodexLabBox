@@ -8,4 +8,4 @@ REM "%JAVA_HOME%\bin\java" -cp ${project.basedir}\labenv${lab.id}\domibus-gatewa
 
 echo on
 
-"%JAVA_HOME%\bin\java" -jar ${project.basedir}\lab\ecodex-lab-box-gw-liquibase-init\ecodex-lab-box-gw-liquibase-init.jar --spring.datasource.url=jdbc:h2:file:${project.basedir}\labenv${lab.id}\domibus-gateway\work\database;MODE=Oracle;SCHEMA=PUBLIC --spring.datasource.username=edelivery --spring.datasource.password=edelivery
+REM "%JAVA_HOME%\bin\java" -jar ${project.basedir}\lab\ecodex-lab-box-gw-liquibase-init\ecodex-lab-box-gw-liquibase-init.jar --spring.datasource.url=jdbc:h2:file:${project.basedir}\labenv${lab.id}\domibus-gateway\work\database;MODE=Oracle;SCHEMA=PUBLIC --spring.datasource.username=edelivery --spring.datasource.password=edelivery
