@@ -9,14 +9,6 @@
   <artifactId>ecodex-lab-box-builder</artifactId>
   <packaging>pom</packaging>
   <description>ECodex environment for local experiments and usage...</description>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- <domibus-gw.version>4.2</domibus-gw.version>
-    <domibus-connector-plugin.version>4.2.0</domibus-connector-plugin.version>
-    <domibus-connector.version>4.3.3</domibus-connector.version>
-    <domibus-connector-client-application.version>4.3.0</domibus-connector-client-application.version> -->
-  </properties>
   <dependencies>
     <dependency>
       <groupId>eu.ecodex.labbox</groupId>
@@ -77,74 +69,8 @@
                   <overWrite>true</overWrite>
                   <groupId>eu.domibus.connector.plugin</groupId>
                   <artifactId>gw-with-plugin</artifactId>
-                  <version>${domibus-gw.plugin.version}</version>
-                  <type>zip</type>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-
-
-          <!-- download domibus AS4 gw -->
-<!--          <execution>-->
-<!--            <id>copy-domibus</id>-->
-<!--            <phase>package</phase>-->
-<!--            <goals>-->
-<!--              <goal>unpack</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <overWriteSnapshots>true</overWriteSnapshots>-->
-<!--              <overWriteReleases>true</overWriteReleases>-->
-<!--              <outputDirectory>${project.basedir}/lab/domibus-gateway</outputDirectory>-->
-<!--              <artifactItems>-->
-<!--                <artifactItem>-->
-<!--                  <overWrite>true</overWrite>-->
-<!--                  <groupId>eu.domibus</groupId>-->
-<!--                  <artifactId>domibus-distribution</artifactId>-->
-<!--                  <classifier>tomcat-full</classifier>-->
-<!--                  <version>${domibus-gw.version}</version>-->
-<!--                  <type>zip</type>-->
-<!--                </artifactItem>-->
-<!--              </artifactItems>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-          <!-- download domibus connector gateway plugin -->
-          <execution>
-            <id>copy-domibus-connector-gw-plugin</id>
-            <phase>package</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <overWriteReleases>true</overWriteReleases>
-              <outputDirectory>${project.basedir}/lab/domibus-gateway-plugin</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <overWrite>true</overWrite>
-                  <groupId>eu.domibus.connector.plugin</groupId>
-                  <artifactId>domibus-connector-plugin-Distribution</artifactId>
                   <version>${domibus-connector-plugin.version}</version>
                   <type>zip</type>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-liquibase-init-app</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.basedir}/lab/ecodex-lab-box-gw-liquibase-init</outputDirectory>
-              <stripVersion>true</stripVersion>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>eu.ecodex.labbox</groupId>
-                  <artifactId>ecodex-lab-box-gw-liquibase-init</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -212,28 +138,6 @@
               </artifactItems>
             </configuration>
           </execution>
-          <!--  <execution>
-            <id>download-pmode-uploader</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <overWriteReleases>true</overWriteReleases>
-              <outputDirectory>${project.basedir}/lab/config/tools</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <overWrite>true</overWrite>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>ecodex-lab-box-gw-pmode-upload</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <destFileName>pModeUploader.jar</destFileName>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution> -->
           <execution>
             <id>download-test-keystores</id>
             <phase>package</phase>
@@ -251,6 +155,15 @@
                   <artifactId>ecodex-lab-box-config</artifactId>
                   <classifier>testkeystores</classifier>
                   <version>${project.version}</version>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <!-- download test-keystores provided by domibus connector gw plugin project -->
+                  <overWrite>true</overWrite>
+                  <groupId>eu.domibus.connector.plugin</groupId>
+                  <artifactId>domibus-connector-plugin</artifactId>
+                  <classifier>connector-gwlink-stores</classifier>
+                  <version>${domibus-connector-plugin.version}</version>
                   <type>zip</type>
                 </artifactItem>
               </artifactItems>

@@ -48,9 +48,7 @@
         </parties>
         <meps>
             <mep name="oneway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/oneWay"/>
-            <mep name="twoway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/twoWay"/>
             <binding name="push" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push"/>
-            <binding name="pushAndPush" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
         </meps>
         <properties>
             <property name="originalSenderProperty"
@@ -100,7 +98,7 @@
             <action name="eCODEXEvidenceDeliveryNonDeliveryToRecipient" value="DeliveryNonDeliveryToRecipient"/>
             <action name="eCODEXEvidenceRetrievalNonRetrievalToRecipient" value="RetrievalNonRetrievalToRecipient"/>
             <action name="GWTESTActionTestForm" value="Test_Form"/>
-            <action name="ConTESTActionTestForm" value="Connector-TEST"/>
+            <action name="ConTESTActionTestForm" value="ConTest_Form"/>
             <action name="SystemTestAction" value="System-TEST" />
             <action name="action1" value="Action1" />
             <action name="action2" value="Action2" />
@@ -277,8 +275,8 @@
 
         <process name="Process1"
                  agreement="agreementEmpty"
-                 mep="twoway"
-                 binding="pushAndPush"
+                 mep="oneway"
+                 binding="push"
                  initiatorRole="eCODEXRole"
                  responderRole="eCODEXRole">
             <initiatorParties>
@@ -315,8 +313,8 @@
 
         <process name="GWTESTProcess"
                  agreement="agreementEmpty"
-                 mep="twoway"
-                 binding="pushAndPush"
+                 mep="oneway"
+                 binding="push"
                  initiatorRole="eCODEXRole"
                  responderRole="eCODEXRole">
             <initiatorParties>
@@ -347,8 +345,8 @@
         </process>
         <process name="ConTESTProcess"
                  agreement="agreementEmpty"
-                 mep="twoway"
-                 binding="pushAndPush"
+                 mep="oneway"
+                 binding="push"
                  initiatorRole="eCODEXRole"
                  responderRole="eCODEXRole">
             <initiatorParties>
