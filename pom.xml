@@ -36,8 +36,8 @@
     <lombok.version>1.18.20</lombok.version>
     <apache.commons.lang.version>3.11</apache.commons.lang.version>
     <apache.commons.validator.version>1.7</apache.commons.validator.version>
-    <domibus-connector-plugin.version>4.4.0-ALPHA3</domibus-connector-plugin.version>
-    <domibus-connector.version>4.4.6</domibus-connector.version>
+    <domibus-connector-plugin.version>4.4.0-RC1</domibus-connector-plugin.version>
+    <domibus-connector.version>4.4.7</domibus-connector.version>
     <domibus-connector-client-application.version>4.4.6</domibus-connector-client-application.version>
     <h2database.version>2.1.214</h2database.version>
     <liquibase.version>4.15.0</liquibase.version>

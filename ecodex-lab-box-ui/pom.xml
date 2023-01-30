@@ -95,7 +95,7 @@
                 <nofooter></nofooter>
                 <domibus-connector-version>${domibus-connector.version}</domibus-connector-version>
                 <domibus-connector-client-version>${domibus-connector-client-application.version}</domibus-connector-client-version>
-                <gateway-version>${domibus-gw.version}</gateway-version>
+<!--                <gateway-version>${domibus-gw.version}</gateway-version>-->
                 <project-version>${project.version}</project-version>
               </attributes>
             </configuration>
