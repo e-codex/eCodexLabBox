@@ -157,15 +157,15 @@
                   <version>${project.version}</version>
                   <type>zip</type>
                 </artifactItem>
-                <artifactItem>
-                  <!-- download test-keystores provided by domibus connector gw plugin project -->
-                  <overWrite>true</overWrite>
-                  <groupId>eu.domibus.connector.plugin</groupId>
-                  <artifactId>domibus-connector-plugin</artifactId>
-                  <classifier>connector-gwlink-stores</classifier>
-                  <version>${domibus-connector-plugin.version}</version>
-                  <type>zip</type>
-                </artifactItem>
+<!--                <artifactItem>-->
+<!--                  &lt;!&ndash; download test-keystores provided by domibus connector gw plugin project &ndash;&gt;-->
+<!--                  <overWrite>true</overWrite>-->
+<!--                  <groupId>eu.domibus.connector.plugin</groupId>-->
+<!--                  <artifactId>domibus-connector-plugin</artifactId>-->
+<!--                  <classifier>connector-gwlink-stores</classifier>-->
+<!--                  <version>${domibus-connector-plugin.version}</version>-->
+<!--                  <type>zip</type>-->
+<!--                </artifactItem>-->
               </artifactItems>
             </configuration>
           </execution>
