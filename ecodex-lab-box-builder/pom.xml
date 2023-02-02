@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.ecodex.labbox</groupId>
     <artifactId>ecodex-lab-parent</artifactId>
-    <version>2023.01.31</version>
+    <version>2023.02.01</version>
   </parent>
   <artifactId>ecodex-lab-box-builder</artifactId>
   <packaging>pom</packaging>
